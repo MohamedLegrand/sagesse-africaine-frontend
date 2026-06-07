@@ -86,7 +86,6 @@ const PanierPage = () => {
     }
   };
 
-  // Redirection vers la page de paiement
   const procederAuPaiement = () => {
     const token = localStorage.getItem('access_token');
     if (!token) {
@@ -170,7 +169,7 @@ const PanierPage = () => {
               <div className="lg:col-span-2 space-y-4">
                 {lignes.map((ligne) => (
                   <div key={ligne.id} className="bg-white rounded-2xl shadow-lg p-4 flex gap-4 hover:shadow-xl transition">
-                    {/* Image */}
+                    {/* Image PNG */}
                     <div className="w-24 h-32 bg-amber-100 rounded-lg flex items-center justify-center flex-shrink-0 overflow-hidden">
                       {ligne.livre?.couverture_url ? (
                         <img 
@@ -179,7 +178,7 @@ const PanierPage = () => {
                           className="w-full h-full object-cover"
                           onError={(e) => {
                             e.target.onerror = null;
-                            e.target.style.display = 'none';
+                            e.target.src = '/images/default-book.png';
                           }}
                         />
                       ) : (
@@ -262,7 +261,6 @@ const PanierPage = () => {
                     <span className="text-2xl font-bold text-amber-700">{total?.toLocaleString() || 0} FCFA</span>
                   </div>
                   
-                  {/* Bouton Procéder au paiement */}
                   <button
                     onClick={procederAuPaiement}
                     className="w-full bg-gradient-to-r from-amber-600 to-amber-700 text-white py-3 rounded-xl font-semibold hover:shadow-lg transition flex items-center justify-center gap-2"

@@ -64,10 +64,7 @@ const NosLivresPage = () => {
     try {
       await api.post('/panier/ajouter', { livre_id: livreId, quantite: 1 });
       toast.success('Livre ajouté au panier');
-      
-      // Déclencher l'événement pour mettre à jour le compteur dans le header
       window.dispatchEvent(new Event('cartUpdated'));
-      
     } catch (error) {
       console.error('Erreur ajout panier:', error);
       toast.error('Erreur lors de l\'ajout au panier');
@@ -182,6 +179,7 @@ const NosLivresPage = () => {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {livresFiltres.map((livre) => (
                 <div key={livre.id} className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 group">
+                  {/* Couverture avec image PNG */}
                   <Link to={`/livre/${livre.id}`} className="block">
                     <div className="relative h-64 bg-amber-100 flex items-center justify-center overflow-hidden">
                       {livre.couverture_url ? (
@@ -191,11 +189,7 @@ const NosLivresPage = () => {
                           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                           onError={(e) => {
                             e.target.onerror = null;
-                            e.target.style.display = 'none';
-                            const parent = e.target.parentElement;
-                            if (parent) {
-                              parent.innerHTML = '<div class="flex items-center justify-center w-full h-full"><svg class="text-amber-300 text-6xl" fill="currentColor" viewBox="0 0 24 24"><path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg></div>';
-                            }
+                            e.target.src = '/images/default-book.png';
                           }}
                         />
                       ) : (
@@ -224,7 +218,7 @@ const NosLivresPage = () => {
                     
                     <div className="flex justify-between items-center">
                       <span className="text-2xl font-bold text-amber-700">
-                        {livre.est_gratuit ? 'Gratuit' : `${livre.prix} FCFA`}
+                        {livre.est_gratuit ? 'Gratuit' : `${livre.prix.toLocaleString()} FCFA`}
                       </span>
                       <button
                         onClick={() => handleAddToCart(livre.id)}

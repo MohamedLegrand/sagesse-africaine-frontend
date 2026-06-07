@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { 
   FaBook, FaPlus, FaEdit, FaTrash, FaEye, FaEyeSlash,
-  FaSearch, FaArrowLeft, FaUserCircle, FaSignOutAlt, FaCog,
-  FaCheck, FaTimes, FaSpinner
+  FaSearch, FaUserCircle, FaSignOutAlt, FaCog,
+  FaCheck, FaTimes, FaSpinner, FaFilePdf, FaImage
 } from 'react-icons/fa';
 import api from '../../../services/api';
 import toast from 'react-hot-toast';
@@ -20,7 +20,7 @@ const GestionLivresPage = () => {
     titre: '',
     auteur: '',
     description: '',
-    prix: 0,
+    prix: 6500,
     est_gratuit: false,
     langue: 'francais',
     isbn: '',
@@ -29,6 +29,10 @@ const GestionLivresPage = () => {
   });
   const [submitting, setSubmitting] = useState(false);
   const [collections, setCollections] = useState([]);
+  const [selectedPdf, setSelectedPdf] = useState(null);
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [imagePreview, setImagePreview] = useState(null);
+  const [uploading, setUploading] = useState(false);
 
   useEffect(() => {
     fetchLivres();
@@ -66,19 +70,76 @@ const GestionLivresPage = () => {
     }));
   };
 
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file && (file.type === 'image/png' || file.type === 'image/jpeg')) {
+      setSelectedImage(file);
+      setImagePreview(URL.createObjectURL(file));
+    } else {
+      toast.error('Veuillez sélectionner une image PNG ou JPEG');
+    }
+  };
+
+  const handlePdfChange = (e) => {
+    const file = e.target.files[0];
+    if (file && file.type === 'application/pdf') {
+      setSelectedPdf(file);
+    } else {
+      toast.error('Veuillez sélectionner un fichier PDF');
+    }
+  };
+
+  const uploadImage = async (livreId) => {
+    if (!selectedImage) return null;
+    
+    const formDataImg = new FormData();
+    formDataImg.append('fichier', selectedImage);
+    
+    try {
+      // Upload de l'image (à adapter selon ton API)
+      const response = await api.post(`/upload/couverture/${livreId}`, formDataImg, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+      });
+      return response.data.url;
+    } catch (error) {
+      console.error('Erreur upload image:', error);
+      return null;
+    }
+  };
+
+  const uploadPdf = async (livreId) => {
+    if (!selectedPdf) return false;
+    
+    const formDataPdf = new FormData();
+    formDataPdf.append('fichier', selectedPdf);
+    
+    try {
+      await api.post(`/fichiers-livres/${livreId}/upload`, formDataPdf, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+      });
+      return true;
+    } catch (error) {
+      console.error('Erreur upload PDF:', error);
+      return false;
+    }
+  };
+
   const openCreateModal = () => {
     setEditingLivre(null);
     setFormData({
       titre: '',
       auteur: '',
       description: '',
-      prix: 0,
+      prix: 6500,
       est_gratuit: false,
       langue: 'francais',
       isbn: '',
       couverture_url: '',
       collection_id: ''
     });
+    setSelectedPdf(null);
+    setSelectedImage(null);
+    setImagePreview(null);
     setShowModal(true);
   };
 
@@ -88,27 +149,69 @@ const GestionLivresPage = () => {
       titre: livre.titre || '',
       auteur: livre.auteur || '',
       description: livre.description || '',
-      prix: livre.prix || 0,
+      prix: livre.prix || 6500,
       est_gratuit: livre.est_gratuit || false,
       langue: livre.langue || 'francais',
       isbn: livre.isbn || '',
       couverture_url: livre.couverture_url || '',
       collection_id: livre.collection_id || ''
     });
+    setImagePreview(livre.couverture_url);
+    setSelectedPdf(null);
+    setSelectedImage(null);
     setShowModal(true);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSubmitting(true);
+    setUploading(true);
+    
     try {
+      let livreId = editingLivre?.id;
+      
       if (editingLivre) {
-        await api.put(`/livres/${editingLivre.id}`, formData);
+        await api.put(`/livres/${editingLivre.id}`, {
+          titre: formData.titre,
+          auteur: formData.auteur,
+          description: formData.description,
+          prix: formData.prix,
+          est_gratuit: formData.est_gratuit,
+          langue: formData.langue,
+          isbn: formData.isbn,
+          couverture_url: formData.couverture_url,
+          collection_id: formData.collection_id
+        });
         toast.success('Livre modifié avec succès');
       } else {
-        await api.post('/livres/', formData);
+        const response = await api.post('/livres/', {
+          titre: formData.titre,
+          auteur: formData.auteur,
+          description: formData.description,
+          prix: formData.prix,
+          est_gratuit: formData.est_gratuit,
+          langue: formData.langue,
+          isbn: formData.isbn,
+          couverture_url: formData.couverture_url,
+          collection_id: formData.collection_id
+        });
+        livreId = response.data.id;
         toast.success('Livre créé avec succès');
       }
+      
+      // Upload de l'image si sélectionnée
+      if (selectedImage && livreId) {
+        const imageUrl = await uploadImage(livreId);
+        if (imageUrl) {
+          await api.patch(`/livres/${livreId}`, { couverture_url: imageUrl });
+        }
+      }
+      
+      // Upload du PDF si sélectionné
+      if (selectedPdf && livreId) {
+        await uploadPdf(livreId);
+      }
+      
       setShowModal(false);
       fetchLivres();
     } catch (error) {
@@ -116,6 +219,7 @@ const GestionLivresPage = () => {
       toast.error('Erreur lors de la sauvegarde');
     } finally {
       setSubmitting(false);
+      setUploading(false);
     }
   };
 
@@ -255,11 +359,10 @@ const GestionLivresPage = () => {
                 <table className="w-full">
                   <thead className="bg-amber-50 border-b border-amber-200">
                     <tr>
-                      <th className="text-left p-4 text-amber-700">Couverture</th>
+                      <th className="text-left p-4 text-amber-700">Image</th>
                       <th className="text-left p-4 text-amber-700">Titre / Auteur</th>
                       <th className="text-left p-4 text-amber-700">Prix</th>
                       <th className="text-left p-4 text-amber-700">Statut</th>
-                      <th className="text-left p-4 text-amber-700">Date</th>
                       <th className="text-center p-4 text-amber-700">Actions</th>
                     </tr>
                   </thead>
@@ -267,9 +370,17 @@ const GestionLivresPage = () => {
                     {filteredLivres.map((livre) => (
                       <tr key={livre.id} className="border-b border-amber-100 hover:bg-amber-50 transition">
                         <td className="p-4">
-                          <div className="w-12 h-16 bg-amber-100 rounded-lg flex items-center justify-center">
+                          <div className="w-12 h-16 bg-amber-100 rounded-lg flex items-center justify-center overflow-hidden">
                             {livre.couverture_url ? (
-                              <img src={livre.couverture_url} alt="" className="w-full h-full object-cover rounded-lg" />
+                              <img 
+                                src={livre.couverture_url} 
+                                alt={livre.titre} 
+                                className="w-full h-full object-cover"
+                                onError={(e) => {
+                                  e.target.onerror = null;
+                                  e.target.src = '/images/default-book.png';
+                                }}
+                              />
                             ) : (
                               <FaBook className="text-amber-400 text-2xl" />
                             )}
@@ -281,7 +392,7 @@ const GestionLivresPage = () => {
                         </td>
                         <td className="p-4">
                           <span className="font-bold text-amber-700">
-                            {livre.est_gratuit ? 'Gratuit' : `${livre.prix} €`}
+                            {livre.est_gratuit ? 'Gratuit' : `${livre.prix} FCFA`}
                           </span>
                         </td>
                         <td className="p-4">
@@ -290,9 +401,6 @@ const GestionLivresPage = () => {
                           }`}>
                             {livre.est_publie ? 'Publié' : 'Brouillon'}
                           </span>
-                        </td>
-                        <td className="p-4 text-gray-600 text-sm">
-                          {new Date(livre.cree_le).toLocaleDateString('fr-FR')}
                         </td>
                         <td className="p-4">
                           <div className="flex justify-center gap-2">
@@ -402,13 +510,13 @@ const GestionLivresPage = () => {
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-amber-700 text-sm mb-1">Prix (€)</label>
+                  <label className="block text-amber-700 text-sm mb-1">Prix (FCFA)</label>
                   <input
                     type="number"
                     name="prix"
                     value={formData.prix}
                     onChange={handleInputChange}
-                    step="0.01"
+                    step="100"
                     className="w-full px-3 py-2 border border-amber-200 rounded-lg focus:border-amber-500 outline-none"
                   />
                 </div>
@@ -452,16 +560,35 @@ const GestionLivresPage = () => {
                   </select>
                 </div>
               </div>
+              
+              {/* Upload Image PNG */}
               <div>
-                <label className="block text-amber-700 text-sm mb-1">URL de couverture</label>
-                <input
-                  type="text"
-                  name="couverture_url"
-                  value={formData.couverture_url}
-                  onChange={handleInputChange}
-                  className="w-full px-3 py-2 border border-amber-200 rounded-lg focus:border-amber-500 outline-none"
-                />
+                <label className="block text-amber-700 text-sm mb-1">Image de couverture (PNG)</label>
+                <div className="flex items-center gap-4">
+                  <input
+                    type="file"
+                    accept="image/png,image/jpeg"
+                    onChange={handleImageChange}
+                    className="flex-1 px-3 py-2 border border-amber-200 rounded-lg"
+                  />
+                  {imagePreview && (
+                    <img src={imagePreview} alt="Aperçu" className="w-12 h-16 object-cover rounded" />
+                  )}
+                </div>
               </div>
+              
+              {/* Upload PDF */}
+              <div>
+                <label className="block text-amber-700 text-sm mb-1">Fichier PDF</label>
+                <input
+                  type="file"
+                  accept="application/pdf"
+                  onChange={handlePdfChange}
+                  className="w-full px-3 py-2 border border-amber-200 rounded-lg"
+                />
+                <p className="text-xs text-gray-400 mt-1">Format PDF uniquement</p>
+              </div>
+              
               <div className="flex items-center gap-2">
                 <input
                   type="checkbox"
@@ -472,6 +599,7 @@ const GestionLivresPage = () => {
                 />
                 <label className="text-amber-700">Livre gratuit</label>
               </div>
+              
               <div className="flex justify-end gap-3 pt-4 border-t border-amber-200">
                 <button
                   type="button"
@@ -483,7 +611,7 @@ const GestionLivresPage = () => {
                 <button
                   type="submit"
                   disabled={submitting}
-                  className="px-6 py-2 bg-gradient-to-r from-amber-600 to-amber-700 text-white rounded-lg hover:shadow-lg transition flex items-center gap-2"
+                  className="px-6 py-2 bg-gradient-to-r from-amber-600 to-amber-700 text-white rounded-lg hover:shadow-lg transition flex items-center gap-2 disabled:opacity-50"
                 >
                   {submitting ? <FaSpinner className="animate-spin" /> : <FaCheck />}
                   {editingLivre ? 'Modifier' : 'Créer'}

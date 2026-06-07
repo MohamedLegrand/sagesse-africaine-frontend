@@ -4,9 +4,7 @@ import {
   FaBook, 
   FaShoppingCart, 
   FaHeart, 
-  FaArrowRight,
   FaUserCircle,
-  FaHistory,
   FaSignOutAlt,
   FaBell
 } from 'react-icons/fa';
@@ -24,21 +22,17 @@ const TableauBordPage = () => {
   const [addingToCart, setAddingToCart] = useState(null);
   const [addingToFav, setAddingToFav] = useState(null);
   
-  // Utiliser le contexte des notifications
   const { nonLues } = useNotificationContext();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Récupérer le profil utilisateur
         const userResponse = await api.get('/utilisateurs/me');
         setUser(userResponse.data);
 
-        // Récupérer les collections
         const collectionsRes = await api.get('/collections/');
         setCollections(collectionsRes.data.collections || []);
         
-        // Récupérer tous les livres publiés
         const livresRes = await api.get('/livres/');
         setLivres(livresRes.data.livres || []);
         
@@ -83,6 +77,7 @@ const TableauBordPage = () => {
   const handleLogout = () => {
     localStorage.removeItem('access_token');
     localStorage.removeItem('refresh_token');
+    localStorage.removeItem('user_role');
     toast.success('Déconnexion réussie');
     window.location.href = '/connexion';
   };
@@ -140,7 +135,7 @@ const TableauBordPage = () => {
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                   {livresCollection.map((livre) => (
                     <div key={livre.id} className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 group">
-                      {/* Couverture */}
+                      {/* Couverture avec image PNG */}
                       <Link to={`/dashboard/livre/${livre.id}`} className="block">
                         <div className="relative h-64 bg-amber-100 flex items-center justify-center overflow-hidden">
                           {livre.couverture_url ? (
@@ -150,8 +145,7 @@ const TableauBordPage = () => {
                               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                               onError={(e) => {
                                 e.target.onerror = null;
-                                e.target.style.display = 'none';
-                                e.target.parentElement.innerHTML = '<div class="flex items-center justify-center w-full h-full"><svg class="text-amber-300 text-6xl" fill="currentColor" viewBox="0 0 24 24"><path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg></div>';
+                                e.target.src = '/images/default-book.png';
                               }}
                             />
                           ) : (
@@ -165,7 +159,6 @@ const TableauBordPage = () => {
                         </div>
                       </Link>
                       
-                      {/* Infos livre */}
                       <div className="p-4">
                         <Link to={`/dashboard/livre/${livre.id}`}>
                           <h3 className="font-playfair font-bold text-amber-800 text-lg mb-1 hover:text-amber-600 transition line-clamp-1">
@@ -174,10 +167,9 @@ const TableauBordPage = () => {
                         </Link>
                         <p className="text-amber-500 text-sm mb-2">{livre.auteur}</p>
                         
-                        {/* Prix et actions */}
                         <div className="flex justify-between items-center mt-3">
                           <span className="text-2xl font-bold text-amber-700">
-                            {livre.est_gratuit ? 'Gratuit' : `${livre.prix} FCFA`}
+                            {livre.est_gratuit ? 'Gratuit' : `${livre.prix.toLocaleString()} FCFA`}
                           </span>
                           <div className="flex gap-2">
                             <button
@@ -214,7 +206,6 @@ const TableauBordPage = () => {
             );
           })}
 
-          {/* Message si aucune collection */}
           {collections.length === 0 && (
             <div className="text-center py-20">
               <FaBook className="text-amber-300 text-6xl mx-auto mb-4" />
