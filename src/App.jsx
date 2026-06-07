@@ -20,10 +20,12 @@ import { MesNotificationsPage, ParametresNotificationPage, NotificationProvider 
 import { PaiementPage, ConfirmationPaiementPage } from './modules/paiement';
 import RouteProtegee from './modules/dashboard/components/RouteProtegee';
 import RouteAdmin from './modules/admin/components/RouteAdmin';
+import ScrollToTop from './modules/shared/components/UI/ScrollToTop';
 
 function App() {
   return (
     <Router>
+      <ScrollToTop />
       <Toaster 
         position="top-right"
         toastOptions={{

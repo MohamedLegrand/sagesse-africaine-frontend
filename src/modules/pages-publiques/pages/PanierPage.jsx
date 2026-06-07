@@ -14,27 +14,17 @@ const PanierPage = () => {
 
   const fetchPanier = useCallback(async () => {
     const token = localStorage.getItem('access_token');
-    console.log('=== FETCH PANIER ===');
-    console.log('Token présent:', token ? 'OUI' : 'NON');
     
     if (!token) {
-      console.log('Pas de token, arrêt du chargement');
       setLoading(false);
       return;
     }
     
     try {
-      console.log('Appel API GET /panier/');
       const response = await api.get('/panier/');
-      console.log('✅ Réponse API reçue:', response.data);
-      console.log('📚 Lignes:', response.data.lignes?.length || 0, 'articles');
-      console.log('💰 Total:', response.data.total, 'FCFA');
-      
       setPanier(response.data);
     } catch (error) {
-      console.error('❌ Erreur chargement panier:', error);
-      console.error('Status:', error.response?.status);
-      console.error('Message:', error.response?.data);
+      console.error('Erreur chargement panier:', error);
       toast.error('Erreur chargement du panier');
     } finally {
       setLoading(false);
@@ -49,7 +39,6 @@ const PanierPage = () => {
 
   const updateQuantite = async (livreId, nouvelleQuantite) => {
     if (nouvelleQuantite < 1) return;
-    console.log('🔄 Update quantité:', livreId, '->', nouvelleQuantite);
     setUpdating(true);
     try {
       await api.delete(`/panier/retirer/${livreId}`);
@@ -67,7 +56,6 @@ const PanierPage = () => {
   };
 
   const retirerArticle = async (livreId) => {
-    console.log('🗑️ Retirer article:', livreId);
     setUpdating(true);
     try {
       await api.delete(`/panier/retirer/${livreId}`);
@@ -84,7 +72,6 @@ const PanierPage = () => {
 
   const viderPanier = async () => {
     if (!window.confirm('Voulez-vous vraiment vider votre panier ?')) return;
-    console.log('🗑️ Vider tout le panier');
     setUpdating(true);
     try {
       await api.delete('/panier/vider');
@@ -99,39 +86,21 @@ const PanierPage = () => {
     }
   };
 
-  const passerCommande = async () => {
+  // Redirection vers la page de paiement
+  const procederAuPaiement = () => {
     const token = localStorage.getItem('access_token');
     if (!token) {
-      toast.error('Veuillez vous connecter pour passer commande');
+      toast.error('Veuillez vous connecter pour payer');
       navigate('/connexion');
       return;
     }
-    
-    console.log('💰 Passer commande');
-    setUpdating(true);
-    try {
-      const response = await api.post('/panier/commander');
-      console.log('✅ Commande créée:', response.data);
-      toast.success('Commande passée avec succès !');
-      window.dispatchEvent(new Event('cartUpdated'));
-      navigate('/dashboard/historique');
-    } catch (error) {
-      console.error('Erreur commande:', error);
-      toast.error('Erreur lors de la commande');
-    } finally {
-      setUpdating(false);
-    }
+    navigate('/paiement');
   };
 
   const lignes = panier?.lignes || [];
   const total = panier?.total || 0;
   const nombreLivres = panier?.nombre_livres || 0;
   const token = localStorage.getItem('access_token');
-
-  console.log('=== RENDU PANIER ===');
-  console.log('Nombre de lignes:', lignes.length);
-  console.log('Total:', total);
-  console.log('Nombre livres:', nombreLivres);
 
   if (!token && !loading) {
     return (
@@ -211,10 +180,6 @@ const PanierPage = () => {
                           onError={(e) => {
                             e.target.onerror = null;
                             e.target.style.display = 'none';
-                            const parent = e.target.parentElement;
-                            if (parent) {
-                              parent.innerHTML = '<svg class="text-amber-300 text-4xl" fill="currentColor" viewBox="0 0 24 24"><path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>';
-                            }
                           }}
                         />
                       ) : (
@@ -297,13 +262,13 @@ const PanierPage = () => {
                     <span className="text-2xl font-bold text-amber-700">{total?.toLocaleString() || 0} FCFA</span>
                   </div>
                   
+                  {/* Bouton Procéder au paiement */}
                   <button
-                    onClick={passerCommande}
-                    disabled={updating}
-                    className="w-full bg-gradient-to-r from-amber-600 to-amber-700 text-white py-3 rounded-xl font-semibold hover:shadow-lg transition flex items-center justify-center gap-2 disabled:opacity-50"
+                    onClick={procederAuPaiement}
+                    className="w-full bg-gradient-to-r from-amber-600 to-amber-700 text-white py-3 rounded-xl font-semibold hover:shadow-lg transition flex items-center justify-center gap-2"
                   >
                     <FaCreditCard />
-                    Passer la commande
+                    Procéder au paiement
                   </button>
                   
                   <Link to="/livres" className="block text-center text-amber-600 text-sm mt-4 hover:text-amber-700 transition">
