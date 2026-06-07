@@ -5,7 +5,7 @@ import { AccueilPage, ConnexionPage, InscriptionPage } from './modules/visiteur'
 import { NosLivresPage, QuiSommesNousPage, ContactPage, PanierPage } from './modules/pages-publiques';
 import { 
   TableauBordPage, BoutiquePage, DetailLivrePage, PanierPage as DashboardPanierPage, 
-  PaiementPage, BibliothequePage, HistoriquePage, ProfilPage, ParametresPage 
+  PaiementPage as DashboardPaiementPage, BibliothequePage, HistoriquePage, ProfilPage, ParametresPage 
 } from './modules/dashboard';
 import { 
   DashboardAdminPage,
@@ -16,6 +16,8 @@ import {
   GestionAvisPage,
   StatistiquesPage
 } from './modules/admin';
+import { MesNotificationsPage, ParametresNotificationPage, NotificationProvider } from './modules/notification';
+import { PaiementPage, ConfirmationPaiementPage } from './modules/paiement';
 import RouteProtegee from './modules/dashboard/components/RouteProtegee';
 import RouteAdmin from './modules/admin/components/RouteAdmin';
 
@@ -56,10 +58,24 @@ function App() {
         <Route path="/contact" element={<ContactPage />} />
         <Route path="/panier" element={<PanierPage />} />
         
-        {/* Dashboard utilisateur (protégé) */}
+        {/* Paiement public (protégé) */}
+        <Route path="/paiement" element={
+          <RouteProtegee>
+            <PaiementPage />
+          </RouteProtegee>
+        } />
+        <Route path="/confirmation-paiement" element={
+          <RouteProtegee>
+            <ConfirmationPaiementPage />
+          </RouteProtegee>
+        } />
+        
+        {/* Dashboard utilisateur (protégé) avec NotificationProvider */}
         <Route path="/dashboard" element={
           <RouteProtegee>
-            <TableauBordPage />
+            <NotificationProvider>
+              <TableauBordPage />
+            </NotificationProvider>
           </RouteProtegee>
         } />
         <Route path="/dashboard/boutique" element={
@@ -79,7 +95,7 @@ function App() {
         } />
         <Route path="/dashboard/paiement" element={
           <RouteProtegee>
-            <PaiementPage />
+            <DashboardPaiementPage />
           </RouteProtegee>
         } />
         <Route path="/dashboard/bibliotheque" element={
@@ -100,6 +116,20 @@ function App() {
         <Route path="/dashboard/parametres" element={
           <RouteProtegee>
             <ParametresPage />
+          </RouteProtegee>
+        } />
+        
+        {/* Notifications (protégé) */}
+        <Route path="/mes-notifications" element={
+          <RouteProtegee>
+            <NotificationProvider>
+              <MesNotificationsPage />
+            </NotificationProvider>
+          </RouteProtegee>
+        } />
+        <Route path="/parametres-notifications" element={
+          <RouteProtegee>
+            <ParametresNotificationPage />
           </RouteProtegee>
         } />
         

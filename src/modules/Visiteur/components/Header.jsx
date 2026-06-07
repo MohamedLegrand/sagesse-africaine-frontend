@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { FaUser, FaShoppingCart, FaBars, FaTimes } from 'react-icons/fa';
+import { FaUser, FaShoppingCart, FaBars, FaTimes, FaSignOutAlt, FaTachometerAlt, FaBell } from 'react-icons/fa';
 import api from '../../../services/api';
+import notificationService from '../../../modules/notification/services/notificationService';
 
 const Header = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [cartItemCount, setCartItemCount] = useState(0);
+  const [notificationCount, setNotificationCount] = useState(0);
+  const [userRole, setUserRole] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -18,15 +21,16 @@ const Header = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Vérifier l'authentification
+  // Vérifier l'authentification et le rôle
   useEffect(() => {
     const checkAuth = () => {
       const token = localStorage.getItem('access_token');
+      const role = localStorage.getItem('user_role');
       setIsAuthenticated(!!token);
+      setUserRole(role);
     };
     checkAuth();
     
-    // Écouter les changements de localStorage
     window.addEventListener('storage', checkAuth);
     return () => window.removeEventListener('storage', checkAuth);
   }, []);
@@ -47,24 +51,44 @@ const Header = () => {
     }
   };
 
-  // Récupérer le panier au chargement et après chaque ajout
+  // Fonction pour récupérer les notifications non lues
+  const fetchNotificationCount = async () => {
+    const token = localStorage.getItem('access_token');
+    if (token) {
+      try {
+        const count = await notificationService.compterNonLues();
+        setNotificationCount(count);
+      } catch (error) {
+        console.error('Erreur chargement notifications:', error);
+      }
+    } else {
+      setNotificationCount(0);
+    }
+  };
+
+  // Récupérer les données au chargement
   useEffect(() => {
-    fetchCartCount();
+    if (isAuthenticated) {
+      fetchCartCount();
+      fetchNotificationCount();
+    }
     
-    // Écouter l'événement personnalisé pour mettre à jour le panier
     const handleCartUpdate = () => {
       fetchCartCount();
     };
     
+    const handleNotificationUpdate = () => {
+      fetchNotificationCount();
+    };
+    
     window.addEventListener('cartUpdated', handleCartUpdate);
-    return () => window.removeEventListener('cartUpdated', handleCartUpdate);
-  }, []);
-
-  const menuItems = [
-    { nom: 'Accueil', path: '/' },
-    { nom: 'Livres', path: '/livres' },
-    { nom: 'Qui sommes-nous', path: '/qui-sommes-nous' },
-  ];
+    window.addEventListener('notificationUpdated', handleNotificationUpdate);
+    
+    return () => {
+      window.removeEventListener('cartUpdated', handleCartUpdate);
+      window.removeEventListener('notificationUpdated', handleNotificationUpdate);
+    };
+  }, [isAuthenticated]);
 
   const handleLogout = () => {
     localStorage.removeItem('access_token');
@@ -72,8 +96,43 @@ const Header = () => {
     localStorage.removeItem('user_role');
     setIsAuthenticated(false);
     setCartItemCount(0);
+    setNotificationCount(0);
     navigate('/');
   };
+
+  // Menu items pour utilisateur non connecté
+  const publicMenuItems = [
+    { nom: 'Accueil', path: '/' },
+    { nom: 'Livres', path: '/livres' },
+    { nom: 'Qui sommes-nous', path: '/qui-sommes-nous' },
+    { nom: 'Contact', path: '/contact' },
+  ];
+
+  // Menu items pour utilisateur connecté (dashboard)
+  const userMenuItems = [
+    { nom: 'Tableau de bord', path: '/dashboard', icon: FaTachometerAlt },
+    { nom: 'Mes livres', path: '/dashboard/bibliotheque', icon: FaBook },
+    { nom: 'Mes commandes', path: '/dashboard/historique', icon: FaShoppingCart },
+    { nom: 'Mon profil', path: '/dashboard/profil', icon: FaUser },
+  ];
+
+  // Menu items pour administrateur
+  const adminMenuItems = [
+    { nom: 'Dashboard Admin', path: '/admin', icon: FaTachometerAlt },
+    { nom: 'Gestion livres', path: '/admin/livres', icon: FaBook },
+    { nom: 'Gestion utilisateurs', path: '/admin/utilisateurs', icon: FaUser },
+    { nom: 'Gestion commandes', path: '/admin/commandes', icon: FaShoppingCart },
+  ];
+
+  // Choisir les items du menu selon le rôle
+  let menuItems = publicMenuItems;
+  if (isAuthenticated) {
+    if (userRole === 'admin') {
+      menuItems = adminMenuItems;
+    } else {
+      menuItems = userMenuItems;
+    }
+  }
 
   return (
     <nav
@@ -121,7 +180,7 @@ const Header = () => {
         {/* ACTIONS DESKTOP */}
         <div className="hidden lg:flex items-center gap-6">
 
-          {/* PANIER */}
+          {/* PANIER - visible pour tous */}
           <Link to="/panier" className="relative group">
             <div className="p-2 rounded-full bg-amber-50 group-hover:bg-amber-100 transition-all duration-300">
               <FaShoppingCart className="text-xl text-amber-700 group-hover:text-amber-500 transition-colors" />
@@ -133,18 +192,35 @@ const Header = () => {
             )}
           </Link>
 
+          {/* NOTIFICATIONS - visible uniquement pour utilisateur connecté */}
+          {isAuthenticated && (
+            <Link to="/mes-notifications" className="relative group">
+              <div className="p-2 rounded-full bg-amber-50 group-hover:bg-amber-100 transition-all duration-300">
+                <FaBell className="text-xl text-amber-700 group-hover:text-amber-500 transition-colors" />
+              </div>
+              {notificationCount > 0 && (
+                <span className="absolute -top-1 -right-1 bg-gradient-to-r from-red-500 to-red-600 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full shadow-lg animate-pulse">
+                  {notificationCount > 9 ? '9+' : notificationCount}
+                </span>
+              )}
+            </Link>
+          )}
+
           {/* USER ACTIONS */}
           {isAuthenticated ? (
             <div className="flex gap-3 items-center">
+              {/* Avatar ou icône utilisateur */}
               <Link to="/dashboard/profil" className="group">
                 <div className="p-2 rounded-full bg-amber-50 group-hover:bg-amber-100 transition-all duration-300">
                   <FaUser className="text-xl text-amber-700 group-hover:text-amber-500 transition-colors" />
                 </div>
               </Link>
+              {/* Bouton déconnexion */}
               <button
                 onClick={handleLogout}
-                className="text-red-600 hover:text-red-700 text-sm font-medium"
+                className="text-red-600 hover:text-red-700 text-sm font-medium flex items-center gap-1"
               >
+                <FaSignOutAlt />
                 Déconnexion
               </button>
             </div>
@@ -188,6 +264,30 @@ const Header = () => {
               {item.nom}
             </Link>
           ))}
+
+          {/* Panier et Notifications en mobile */}
+          <div className="flex gap-4 py-3 border-b border-amber-50">
+            <Link to="/panier" className="flex items-center gap-2 text-amber-700">
+              <FaShoppingCart />
+              <span>Panier</span>
+              {cartItemCount > 0 && (
+                <span className="bg-amber-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                  {cartItemCount}
+                </span>
+              )}
+            </Link>
+            {isAuthenticated && (
+              <Link to="/mes-notifications" className="flex items-center gap-2 text-amber-700">
+                <FaBell />
+                <span>Notifications</span>
+                {notificationCount > 0 && (
+                  <span className="bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                    {notificationCount}
+                  </span>
+                )}
+              </Link>
+            )}
+          </div>
 
           {!isAuthenticated ? (
             <div className="flex gap-3 mt-6">

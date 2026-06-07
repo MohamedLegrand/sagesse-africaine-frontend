@@ -33,11 +33,9 @@ const PanierPage = () => {
     if (nouvelleQuantite < 1) return;
     setUpdating(true);
     try {
-      // Mettre à jour la quantité (ajouter un nouveau avec la quantité ou retirer)
       if (nouvelleQuantite === 0) {
         await api.delete(`/panier/retirer/${livreId}`);
       } else {
-        // D'abord retirer l'ancien, puis ajouter le nouveau
         await api.delete(`/panier/retirer/${livreId}`);
         await api.post('/panier/ajouter', { livre_id: livreId, quantite: nouvelleQuantite });
       }
@@ -74,14 +72,9 @@ const PanierPage = () => {
     }
   };
 
-  const passerCommande = async () => {
-    try {
-      const response = await api.post('/panier/commander');
-      toast.success('Commande passée avec succès !');
-      navigate('/dashboard/historique');
-    } catch (error) {
-      toast.error('Erreur lors de la commande');
-    }
+  const procederAuPaiement = () => {
+    // Rediriger vers la page de paiement
+    navigate('/paiement');
   };
 
   if (loading) {
@@ -242,13 +235,13 @@ const PanierPage = () => {
                     <span className="text-2xl font-bold text-amber-700">{total} €</span>
                   </div>
                   
+                  {/* Bouton Procéder au paiement - remplace "Passer commande" */}
                   <button
-                    onClick={passerCommande}
-                    disabled={updating}
-                    className="w-full bg-gradient-to-r from-amber-600 to-amber-700 text-white py-3 rounded-xl font-semibold hover:shadow-lg transition flex items-center justify-center gap-2 disabled:opacity-50"
+                    onClick={procederAuPaiement}
+                    className="w-full bg-gradient-to-r from-amber-600 to-amber-700 text-white py-3 rounded-xl font-semibold hover:shadow-lg transition flex items-center justify-center gap-2"
                   >
                     <FaCreditCard />
-                    Passer la commande
+                    Procéder au paiement
                   </button>
                   
                   <Link to="/dashboard/boutique" className="block text-center text-amber-600 text-sm mt-4 hover:text-amber-700">

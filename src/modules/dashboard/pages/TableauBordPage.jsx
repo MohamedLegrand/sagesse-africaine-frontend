@@ -15,6 +15,7 @@ import {
 } from 'react-icons/fa';
 import api from '../../../services/api';
 import toast from 'react-hot-toast';
+import { useNotificationContext } from '../../notification/contextes/NotificationContext';
 
 const TableauBordPage = () => {
   const [user, setUser] = useState(null);
@@ -27,6 +28,10 @@ const TableauBordPage = () => {
   const [recentOrders, setRecentOrders] = useState([]);
   const [recentBooks, setRecentBooks] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [showNotifications, setShowNotifications] = useState(false);
+  
+  // Utiliser le contexte des notifications
+  const { notifications, nonLues, marquerCommeLu, fetchNotifications } = useNotificationContext();
 
   useEffect(() => {
     const fetchDashboardData = async () => {
@@ -61,13 +66,28 @@ const TableauBordPage = () => {
     };
 
     fetchDashboardData();
-  }, []);
+    fetchNotifications();
+  }, [fetchNotifications]);
 
   const handleLogout = () => {
     localStorage.removeItem('access_token');
     localStorage.removeItem('refresh_token');
     toast.success('Déconnexion réussie');
     window.location.href = '/connexion';
+  };
+
+  const handleMarkAsRead = async (notificationId) => {
+    await marquerCommeLu(notificationId);
+    toast.success('Notification marquée comme lue');
+  };
+
+  const getNotificationIcon = (type) => {
+    const icons = {
+      'commande': <FaShoppingCart className="text-green-600" />,
+      'livre': <FaBook className="text-blue-600" />,
+      'default': <FaBell className="text-amber-600" />
+    };
+    return icons[type] || icons.default;
   };
 
   const statsCards = [
@@ -126,11 +146,73 @@ const TableauBordPage = () => {
             </p>
           </div>
           <div className="flex items-center gap-4">
-            {/* Notification */}
-            <button className="relative p-2 rounded-full hover:bg-amber-100 transition">
-              <FaBell className="text-amber-600 text-xl" />
-              <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
-            </button>
+            {/* Notifications dropdown */}
+            <div className="relative">
+              <button 
+                onClick={() => setShowNotifications(!showNotifications)}
+                className="relative p-2 rounded-full hover:bg-amber-100 transition"
+              >
+                <FaBell className="text-amber-600 text-xl" />
+                {nonLues > 0 && (
+                  <span className="absolute top-0 right-0 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center animate-pulse">
+                    {nonLues > 9 ? '9+' : nonLues}
+                  </span>
+                )}
+              </button>
+              
+              {/* Dropdown notifications */}
+              {showNotifications && (
+                <div className="absolute right-0 mt-2 w-80 bg-white rounded-2xl shadow-xl border border-amber-100 z-50 overflow-hidden">
+                  <div className="p-4 border-b border-amber-100 flex justify-between items-center">
+                    <h3 className="font-semibold text-amber-800">Notifications</h3>
+                    <Link to="/mes-notifications" className="text-xs text-amber-600 hover:text-amber-700">
+                      Voir tout
+                    </Link>
+                  </div>
+                  <div className="max-h-96 overflow-y-auto">
+                    {notifications.length === 0 ? (
+                      <div className="p-4 text-center text-gray-500">
+                        Aucune notification
+                      </div>
+                    ) : (
+                      notifications.slice(0, 5).map((notif) => (
+                        <div 
+                          key={notif.id} 
+                          className={`p-3 border-b border-amber-50 hover:bg-amber-50 transition cursor-pointer ${!notif.est_lu ? 'bg-amber-50' : ''}`}
+                          onClick={() => handleMarkAsRead(notif.id)}
+                        >
+                          <div className="flex gap-3">
+                            <div className="flex-shrink-0">
+                              <div className="w-8 h-8 bg-amber-100 rounded-full flex items-center justify-center">
+                                {getNotificationIcon(notif.type)}
+                              </div>
+                            </div>
+                            <div className="flex-1">
+                              <p className="text-sm font-medium text-amber-800">{notif.titre}</p>
+                              <p className="text-xs text-gray-500">{notif.message}</p>
+                              <p className="text-xs text-gray-400 mt-1">
+                                {new Date(notif.cree_le).toLocaleDateString('fr-FR')}
+                              </p>
+                            </div>
+                            {!notif.est_lu && (
+                              <div className="w-2 h-2 bg-amber-500 rounded-full"></div>
+                            )}
+                          </div>
+                        </div>
+                      ))
+                    )}
+                  </div>
+                  {notifications.length > 5 && (
+                    <div className="p-2 text-center border-t border-amber-100">
+                      <Link to="/mes-notifications" className="text-sm text-amber-600 hover:text-amber-700">
+                        Voir toutes les notifications
+                      </Link>
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+            
             {/* Profil */}
             <Link to="/dashboard/profil">
               {user?.avatar_url ? (
@@ -191,6 +273,15 @@ const TableauBordPage = () => {
             <Link to="/dashboard/parametres" className="flex items-center gap-3 px-4 py-3 rounded-xl text-amber-700 hover:bg-amber-100 transition-all duration-300">
               <FaCog className="text-lg" />
               <span className="font-medium">Paramètres</span>
+            </Link>
+            <Link to="/mes-notifications" className="flex items-center gap-3 px-4 py-3 rounded-xl text-amber-700 hover:bg-amber-100 transition-all duration-300 relative">
+              <FaBell className="text-lg" />
+              <span className="font-medium">Notifications</span>
+              {nonLues > 0 && (
+                <span className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                  {nonLues}
+                </span>
+              )}
             </Link>
           </nav>
 
