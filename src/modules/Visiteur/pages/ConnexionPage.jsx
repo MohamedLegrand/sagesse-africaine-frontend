@@ -6,77 +6,55 @@ import Footer from '../components/Footer';
 import FormulaireConnexion from '../components/FormulaireConnexion';
 import toast from 'react-hot-toast';
 import api from '../../../services/api';
+import guestCart from '../../../services/guestCart';
 
 const ConnexionPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleLogin = async (formData) => {
-    console.log('=== DÉBUT HANDLELOGIN ===');
-    console.log('Email saisi:', formData.email);
-    console.log('Mot de passe saisi:', formData.mot_de_passe);
-    
     setIsLoading(true);
     try {
-      // 1. Appel API login
       const response = await api.post('/auth/login', {
         email: formData.email,
         mot_de_passe: formData.mot_de_passe,
       });
 
-      console.log('=== RÉPONSE LOGIN ===');
-      console.log('access_token:', response.data.access_token);
-      console.log('refresh_token:', response.data.refresh_token);
-
-      // 2. Stocker les tokens
       localStorage.setItem('access_token', response.data.access_token);
       localStorage.setItem('refresh_token', response.data.refresh_token);
-      
-      console.log('=== TOKENS STOCKÉS ===');
-      console.log('access_token dans localStorage:', localStorage.getItem('access_token'));
-      console.log('refresh_token dans localStorage:', localStorage.getItem('refresh_token'));
-      
-      // 3. FORCER le header Authorization pour les appels suivants
       api.defaults.headers.common['Authorization'] = `Bearer ${response.data.access_token}`;
-      console.log('=== HEADER AUTHORIZATION FORCÉ ===');
-      
-      // 4. Récupérer le profil utilisateur
-      console.log('=== RÉCUPÉRATION DU PROFIL ===');
+
       const userResponse = await api.get('/utilisateurs/me');
       const user = userResponse.data;
-      
-      console.log('=== PROFIL UTILISATEUR ===');
-      console.log('User complet:', user);
-      console.log('Rôle:', user.role);
-      console.log('Email:', user.email);
-      console.log('Prénom:', user.prenom);
-      console.log('Nom:', user.nom);
-      
-      // 5. Stocker le rôle
       localStorage.setItem('user_role', user.role);
-      console.log('=== RÔLE STOCKÉ ===');
-      console.log('user_role dans localStorage:', localStorage.getItem('user_role'));
       
       toast.success('Connexion réussie !');
-      
-      // 6. Redirection selon l'email ou le rôle
-      console.log('=== DIAGNOSTIC REDIRECTION ===');
-      console.log('Email tapé:', `"${formData.email}"`);
-      console.log('Email attendu:', '"sagesse@gmail.com"');
-      console.log('Comparaison email exacte:', formData.email === 'sagesse@gmail.com');
-      console.log('Comparaison email trim:', formData.email.trim() === 'sagesse@gmail.com');
-      console.log('Comparaison email lowercase:', formData.email.toLowerCase() === 'sagesse@gmail.com');
-      console.log('Rôle utilisateur:', user.role);
-      console.log('Rôle === admin ?', user.role === 'admin');
-      
+
+      // 6. Fusionner le panier invité dans le panier serveur
+      const guestItems = guestCart.getItems();
+      if (guestItems.length > 0) {
+        await Promise.all(
+          guestItems.map(item =>
+            api.post('/panier/ajouter', { livre_id: item.livre_id, quantite: item.quantite }).catch(() => {})
+          )
+        );
+        guestCart.clear();
+        toast.success(`${guestItems.length} article(s) de votre panier invité transféré(s)`);
+      }
+
+      // 7. Redirection — returnTo prioritaire, sinon selon le rôle
+      const returnTo = localStorage.getItem('auth_return_to');
+      if (returnTo) {
+        localStorage.removeItem('auth_return_to');
+        navigate(returnTo);
+        return;
+      }
+
       if (formData.email === 'sagesse@gmail.com') {
-        console.log('✅ CAS 1: Redirection vers /admin (email match)');
         navigate('/admin');
       } else if (user.role === 'admin') {
-        console.log('✅ CAS 2: Redirection vers /admin (role match)');
         navigate('/admin');
       } else {
-        console.log('✅ CAS 3: Redirection vers /dashboard');
         navigate('/dashboard');
       }
       

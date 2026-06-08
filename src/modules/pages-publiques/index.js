@@ -2,3 +2,8 @@ export { default as NosLivresPage } from './pages/NosLivresPage';
 export { default as QuiSommesNousPage } from './pages/QuiSommesNousPage';
 export { default as ContactPage } from './pages/ContactPage';
 export { default as PanierPage } from './pages/PanierPage';
+export { default as DetailLivrePubliquePage } from './pages/DetailLivrePubliquePage';
+export { default as EtreEditePage } from './pages/EtreEditePage';
+export { default as ConfidentialitePage } from './pages/ConfidentialitePage';
+export { default as MentionsLegalesPage } from './pages/MentionsLegalesPage';
+export { default as CGVPage } from './pages/CGVPage';

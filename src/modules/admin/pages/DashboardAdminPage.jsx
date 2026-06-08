@@ -6,6 +6,7 @@ import {
   FaMoneyBillWave, FaDownload, FaHeart
 } from 'react-icons/fa';
 import api from '../../../services/api';
+import authService from '../../../services/authService';
 import toast from 'react-hot-toast';
 
 const DashboardAdminPage = () => {
@@ -69,10 +70,8 @@ const DashboardAdminPage = () => {
     fetchAdminData();
   }, []);
 
-  const handleLogout = () => {
-    localStorage.removeItem('access_token');
-    localStorage.removeItem('refresh_token');
-    localStorage.removeItem('user_role');
+  const handleLogout = async () => {
+    await authService.logout();
     toast.success('Déconnexion réussie');
     window.location.href = '/connexion';
   };

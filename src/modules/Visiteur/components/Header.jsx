@@ -5,6 +5,8 @@ import {
   FaBell, FaBook, FaChevronDown, FaSearch
 } from 'react-icons/fa';
 import api from '../../../services/api';
+import authService from '../../../services/authService';
+import guestCart from '../../../services/guestCart';
 
 const Header = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -102,7 +104,7 @@ const Header = () => {
         console.error('Erreur panier:', error);
       }
     } else {
-      setCartItemCount(0);
+      setCartItemCount(guestCart.getCount());
     }
   };
 
@@ -140,10 +142,8 @@ const Header = () => {
     };
   }, [isAuthenticated]);
 
-  const handleLogout = () => {
-    localStorage.removeItem('access_token');
-    localStorage.removeItem('refresh_token');
-    localStorage.removeItem('user_role');
+  const handleLogout = async () => {
+    await authService.logout();
     setIsAuthenticated(false);
     navigate('/');
   };
@@ -191,7 +191,7 @@ const Header = () => {
 
         {/* MENU DESKTOP */}
         <div className="hidden lg:flex items-center gap-8">
-          <Link to="/" className="relative text-amber-800 hover:text-amber-600 font-medium transition-colors duration-300 group">
+          <Link to={isAuthenticated ? '/dashboard' : '/'} className="relative text-amber-800 hover:text-amber-600 font-medium transition-colors duration-300 group">
             Accueil
             <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-amber-400 to-amber-600 transition-all duration-300 group-hover:w-full"></span>
           </Link>
@@ -374,7 +374,7 @@ const Header = () => {
             </div>
           </form>
           
-          <Link to="/" className="block py-3 text-amber-800 hover:text-amber-600 border-b border-amber-50" onClick={() => setMobileMenuOpen(false)}>Accueil</Link>
+          <Link to={isAuthenticated ? '/dashboard' : '/'} className="block py-3 text-amber-800 hover:text-amber-600 border-b border-amber-50" onClick={() => setMobileMenuOpen(false)}>Accueil</Link>
           
           {/* Boutique mobile */}
           <div className="py-2 border-b border-amber-50">

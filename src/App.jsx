@@ -1,8 +1,11 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
-import { AccueilPage, ConnexionPage, InscriptionPage } from './modules/visiteur';
-import { NosLivresPage, QuiSommesNousPage, ContactPage, PanierPage } from './modules/pages-publiques';
+import { AccueilPage, ConnexionPage, InscriptionPage, OublierMotDePassePage, ReinitialiserMotDePassePage } from './modules/visiteur';
+import {
+  NosLivresPage, QuiSommesNousPage, ContactPage, PanierPage, DetailLivrePubliquePage,
+  EtreEditePage, ConfidentialitePage, MentionsLegalesPage, CGVPage
+} from './modules/pages-publiques';
 import { 
   TableauBordPage, BoutiquePage, DetailLivrePage, PanierPage as DashboardPanierPage, 
   PaiementPage as DashboardPaiementPage, BibliothequePage, HistoriquePage, ProfilPage, ParametresPage 
@@ -55,11 +58,18 @@ function App() {
         <Route path="/" element={<AccueilPage />} />
         <Route path="/connexion" element={<ConnexionPage />} />
         <Route path="/inscription" element={<InscriptionPage />} />
+        <Route path="/mot-de-passe-oublie" element={<OublierMotDePassePage />} />
+        <Route path="/reinitialiser-mot-de-passe" element={<ReinitialiserMotDePassePage />} />
         <Route path="/livres" element={<NosLivresPage />} />
         <Route path="/qui-sommes-nous" element={<QuiSommesNousPage />} />
         <Route path="/contact" element={<ContactPage />} />
         <Route path="/panier" element={<PanierPage />} />
-        
+        <Route path="/livre/:id" element={<DetailLivrePubliquePage />} />
+        <Route path="/etre-edite" element={<EtreEditePage />} />
+        <Route path="/confidentialite" element={<ConfidentialitePage />} />
+        <Route path="/mentions-legales" element={<MentionsLegalesPage />} />
+        <Route path="/cgv" element={<CGVPage />} />
+
         {/* Paiement public (protégé) */}
         <Route path="/paiement" element={
           <RouteProtegee>
@@ -72,12 +82,10 @@ function App() {
           </RouteProtegee>
         } />
         
-        {/* Dashboard utilisateur (protégé) avec NotificationProvider */}
+        {/* Dashboard utilisateur (protégé) */}
         <Route path="/dashboard" element={
           <RouteProtegee>
-            <NotificationProvider>
-              <TableauBordPage />
-            </NotificationProvider>
+            <TableauBordPage />
           </RouteProtegee>
         } />
         <Route path="/dashboard/boutique" element={

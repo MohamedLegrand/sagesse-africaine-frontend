@@ -6,6 +6,7 @@ import {
   FaUserCheck, FaUserTag, FaArrowLeft
 } from 'react-icons/fa';
 import api from '../../../services/api';
+import authService from '../../../services/authService';
 import toast from 'react-hot-toast';
 
 const GestionUtilisateursPage = () => {
@@ -173,9 +174,8 @@ const GestionUtilisateursPage = () => {
     { path: '/admin/avis', icon: FaBook, label: 'Modération avis', active: false },
   ];
 
-  const handleLogout = () => {
-    localStorage.removeItem('access_token');
-    localStorage.removeItem('refresh_token');
+  const handleLogout = async () => {
+    await authService.logout();
     window.location.href = '/connexion';
   };
 

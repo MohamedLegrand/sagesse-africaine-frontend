@@ -1,34 +1,25 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { FaBook, FaSearch, FaFilter, FaStar, FaStarHalfAlt, FaShoppingCart } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
+import { FaBook, FaSearch, FaStar, FaStarHalfAlt, FaShoppingCart } from 'react-icons/fa';
 import Header from '../../visiteur/components/Header';
 import Footer from '../../visiteur/components/Footer';
 import api from '../../../services/api';
+import guestCart from '../../../services/guestCart';
 import toast from 'react-hot-toast';
 
 const NosLivresPage = () => {
-  const navigate = useNavigate();
   const [livres, setLivres] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
-  const [selectedCategorie, setSelectedCategorie] = useState('');
-  const [collections, setCollections] = useState([]);
   const [page, setPage] = useState(1);
-  const [total, setTotal] = useState(0);
   const [totalPages, setTotalPages] = useState(1);
   const [addingToCart, setAddingToCart] = useState(null);
 
   const fetchLivres = useCallback(async () => {
     setLoading(true);
     try {
-      const params = { page, taille: 12 };
-      if (selectedCategorie) {
-        params.collection_id = selectedCategorie;
-      }
-      const response = await api.get('/livres/', { params });
-      
+      const response = await api.get('/livres/', { params: { page, taille: 12 } });
       setLivres(response.data.livres || []);
-      setTotal(response.data.total || 0);
       setTotalPages(Math.ceil((response.data.total || 0) / 12));
     } catch (error) {
       console.error('Erreur chargement livres:', error);
@@ -36,38 +27,27 @@ const NosLivresPage = () => {
     } finally {
       setLoading(false);
     }
-  }, [page, selectedCategorie]);
-
-  const fetchCollections = useCallback(async () => {
-    try {
-      const response = await api.get('/collections/', { params: { page: 1, taille: 100 } });
-      setCollections(response.data.collections || []);
-    } catch (error) {
-      console.error('Erreur chargement collections:', error);
-    }
-  }, []);
+  }, [page]);
 
   useEffect(() => {
     fetchLivres();
-    fetchCollections();
-  }, [fetchLivres, fetchCollections]);
+  }, [fetchLivres]);
 
-  const handleAddToCart = async (livreId) => {
+  const handleAddToCart = async (livre) => {
     const token = localStorage.getItem('access_token');
     if (!token) {
-      toast.error('Veuillez vous connecter pour ajouter au panier');
-      navigate('/connexion');
+      guestCart.addItem(livre);
+      toast.success('Livre ajouté au panier');
       return;
     }
-    
-    setAddingToCart(livreId);
+    setAddingToCart(livre.id);
     try {
-      await api.post('/panier/ajouter', { livre_id: livreId, quantite: 1 });
+      await api.post('/panier/ajouter', { livre_id: livre.id, quantite: 1 });
       toast.success('Livre ajouté au panier');
       window.dispatchEvent(new Event('cartUpdated'));
     } catch (error) {
       console.error('Erreur ajout panier:', error);
-      toast.error('Erreur lors de l\'ajout au panier');
+      toast.error("Erreur lors de l'ajout au panier");
     } finally {
       setAddingToCart(null);
     }
@@ -128,36 +108,17 @@ const NosLivresPage = () => {
             </div>
           </div>
 
-          {/* Filtres et recherche */}
+          {/* Recherche */}
           <div className="bg-white rounded-2xl shadow-lg p-6 mb-8">
-            <div className="flex flex-col md:flex-row gap-4">
-              <div className="flex-1 relative">
-                <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-amber-400" />
-                <input
-                  type="text"
-                  placeholder="Rechercher un livre, un auteur..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full pl-10 pr-4 py-3 border border-amber-200 rounded-xl focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 outline-none"
-                />
-              </div>
-              
-              <div className="relative min-w-[200px]">
-                <FaFilter className="absolute left-3 top-1/2 transform -translate-y-1/2 text-amber-400" />
-                <select
-                  value={selectedCategorie}
-                  onChange={(e) => {
-                    setSelectedCategorie(e.target.value);
-                    setPage(1);
-                  }}
-                  className="w-full pl-10 pr-4 py-3 border border-amber-200 rounded-xl focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 outline-none appearance-none bg-white"
-                >
-                  <option value="">Toutes les catégories</option>
-                  {collections.map(col => (
-                    <option key={col.id} value={col.id}>{col.nom}</option>
-                  ))}
-                </select>
-              </div>
+            <div className="relative">
+              <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-amber-400" />
+              <input
+                type="text"
+                placeholder="Rechercher un livre, un auteur..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full pl-10 pr-4 py-3 border border-amber-200 rounded-xl focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 outline-none"
+              />
             </div>
           </div>
 
@@ -221,7 +182,7 @@ const NosLivresPage = () => {
                         {livre.est_gratuit ? 'Gratuit' : `${livre.prix.toLocaleString()} FCFA`}
                       </span>
                       <button
-                        onClick={() => handleAddToCart(livre.id)}
+                        onClick={() => handleAddToCart(livre)}
                         disabled={addingToCart === livre.id}
                         className="bg-gradient-to-r from-amber-600 to-amber-700 text-white px-4 py-2 rounded-xl text-sm font-medium hover:shadow-lg transition flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                       >

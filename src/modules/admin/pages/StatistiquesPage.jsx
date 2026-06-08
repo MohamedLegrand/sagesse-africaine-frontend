@@ -6,6 +6,7 @@ import {
   FaChartLine, FaChartBar, FaChartPie, FaSpinner
 } from 'react-icons/fa';
 import api from '../../../services/api';
+import authService from '../../../services/authService';
 import toast from 'react-hot-toast';
 
 const StatistiquesPage = () => {
@@ -157,9 +158,8 @@ const StatistiquesPage = () => {
     { path: '/admin/statistiques', icon: FaChartLine, label: 'Statistiques', active: true },
   ];
 
-  const handleLogout = () => {
-    localStorage.removeItem('access_token');
-    localStorage.removeItem('refresh_token');
+  const handleLogout = async () => {
+    await authService.logout();
     window.location.href = '/connexion';
   };
 

@@ -1,9 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { 
-  FaFacebook, FaWhatsapp, FaYoutube, FaTelegram, 
-  FaInstagram, FaLinkedin, FaEnvelope, FaPhone, 
-  FaMapMarkerAlt, FaBook, FaArrowUp 
+import {
+  FaFacebook, FaWhatsapp, FaYoutube, FaTelegram,
+  FaInstagram, FaLinkedin, FaEnvelope, FaPhone,
+  FaMapMarkerAlt, FaBook, FaArrowUp
 } from 'react-icons/fa';
 
 const Footer = () => {
@@ -16,18 +16,16 @@ const Footer = () => {
     { icon: FaLinkedin, href: 'https://linkedin.com', color: 'hover:bg-[#0077B5]' },
   ];
 
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
+  const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
 
   return (
     <footer className="bg-black-deep text-white pt-16 pb-8 relative">
       {/* Ligne décorative dorée en haut */}
-      <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-gold to-transparent"></div>
-      
+      <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-gold to-transparent" />
+
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
-          
+
           {/* Logo et description */}
           <div>
             <div className="flex items-center gap-2 mb-4">
@@ -41,7 +39,7 @@ const Footer = () => {
             <p className="text-gray-400 text-sm mb-4 leading-relaxed">
               « Un peuple qui maîtrise ses savoirs maîtrise aussi son destin »
             </p>
-            <div className="w-12 h-0.5 bg-gold mb-3"></div>
+            <div className="w-12 h-0.5 bg-gold mb-3" />
             <p className="text-gray-600 text-xs">
               Groupe panafricain de presses, d'édition et de diffusion culturelle
             </p>
@@ -51,13 +49,22 @@ const Footer = () => {
           <div>
             <h4 className="font-semibold text-gold mb-4 relative inline-block">
               Liens rapides
-              <div className="absolute -bottom-1 left-0 w-full h-0.5 bg-gold"></div>
+              <div className="absolute -bottom-1 left-0 w-full h-0.5 bg-gold" />
             </h4>
             <ul className="space-y-3 mt-4">
-              <li><Link to="/qui-sommes-nous" className="text-gray-400 hover:text-gold transition-all duration-300 text-sm flex items-center gap-2 group"><span className="w-0 h-0.5 bg-gold group-hover:w-3 transition-all"></span>Qui sommes-nous</Link></li>
-              <li><Link to="/etre-edite" className="text-gray-400 hover:text-gold transition-all duration-300 text-sm flex items-center gap-2 group"><span className="w-0 h-0.5 bg-gold group-hover:w-3 transition-all"></span>Être édité chez nous</Link></li>
-              <li><Link to="/livres" className="text-gray-400 hover:text-gold transition-all duration-300 text-sm flex items-center gap-2 group"><span className="w-0 h-0.5 bg-gold group-hover:w-3 transition-all"></span>Notre catalogue</Link></li>
-              <li><Link to="/contact" className="text-gray-400 hover:text-gold transition-all duration-300 text-sm flex items-center gap-2 group"><span className="w-0 h-0.5 bg-gold group-hover:w-3 transition-all"></span>Contact</Link></li>
+              {[
+                { to: '/qui-sommes-nous', label: 'Qui sommes-nous' },
+                { to: '/etre-edite', label: 'Être édité chez nous' },
+                { to: '/livres', label: 'Notre catalogue' },
+                { to: '/contact', label: 'Contact' },
+              ].map(({ to, label }) => (
+                <li key={to}>
+                  <Link to={to} className="text-gray-400 hover:text-gold transition-all duration-300 text-sm flex items-center gap-2 group">
+                    <span className="w-0 h-0.5 bg-gold group-hover:w-3 transition-all" />
+                    {label}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
@@ -65,7 +72,7 @@ const Footer = () => {
           <div>
             <h4 className="font-semibold text-gold mb-4 relative inline-block">
               Contact
-              <div className="absolute -bottom-1 left-0 w-full h-0.5 bg-gold"></div>
+              <div className="absolute -bottom-1 left-0 w-full h-0.5 bg-gold" />
             </h4>
             <ul className="space-y-4 mt-4">
               <li className="flex items-start gap-3 text-gray-400 text-sm group">
@@ -98,7 +105,7 @@ const Footer = () => {
           <div>
             <h4 className="font-semibold text-gold mb-4 relative inline-block">
               Suivez-nous
-              <div className="absolute -bottom-1 left-0 w-full h-0.5 bg-gold"></div>
+              <div className="absolute -bottom-1 left-0 w-full h-0.5 bg-gold" />
             </h4>
             <div className="flex gap-3 flex-wrap mt-4">
               {socialLinks.map((social, index) => (
@@ -107,7 +114,7 @@ const Footer = () => {
                   href={social.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={`text-gray-400 text-lg transition-all duration-300 hover:text-white hover:scale-110 w-9 h-9 rounded-full flex items-center justify-center hover:bg-gold/20 border border-gold/30 hover:border-gold`}
+                  className="text-gray-400 text-lg transition-all duration-300 hover:text-white hover:scale-110 w-9 h-9 rounded-full flex items-center justify-center hover:bg-gold/20 border border-gold/30 hover:border-gold"
                 >
                   <social.icon />
                 </a>
@@ -119,19 +126,36 @@ const Footer = () => {
           </div>
         </div>
 
-        {/* Séparateur doré */}
-        <div className="relative">
-          <div className="border-t border-gold/30 pt-6">
-            <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-              <p className="text-gray-500 text-sm">
-                &copy; {new Date().getFullYear()} SAGESSE AFRICAINE. Tous droits réservés.
-              </p>
-              <p className="text-gold/60 text-xs flex items-center gap-2">
-                <span className="w-8 h-px bg-gold/50"></span>
-                Une école de pensée pour la renaissance intellectuelle africaine
-                <span className="w-8 h-px bg-gold/50"></span>
-              </p>
-            </div>
+        {/* Séparateur */}
+        <div className="border-t border-gold/20 pt-6">
+
+          {/* Liens légaux */}
+          <div className="flex flex-wrap justify-center gap-x-6 gap-y-2 mb-5">
+            {[
+              { to: '/confidentialite', label: 'Politique de confidentialité' },
+              { to: '/mentions-legales', label: 'Mentions légales' },
+              { to: '/cgv', label: 'CGV' },
+              { to: '/etre-edite', label: 'Être édité chez nous' },
+            ].map(({ to, label }) => (
+              <Link
+                key={to}
+                to={to}
+                className="text-gray-600 hover:text-gold transition text-xs"
+              >
+                {label}
+              </Link>
+            ))}
+          </div>
+
+          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+            <p className="text-gray-500 text-sm">
+              &copy; {new Date().getFullYear()} SAGESSE AFRICAINE. Tous droits réservés.
+            </p>
+            <p className="text-gold/60 text-xs flex items-center gap-2">
+              <span className="w-8 h-px bg-gold/50" />
+              Une école de pensée pour la renaissance intellectuelle africaine
+              <span className="w-8 h-px bg-gold/50" />
+            </p>
           </div>
         </div>
       </div>

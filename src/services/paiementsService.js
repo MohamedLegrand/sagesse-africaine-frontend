@@ -1,6 +1,6 @@
-import api from '../../../services/api';
+import api from './api';
 
-const paiementService = {
+const paiementsService = {
   getPaiementParCommande: async (commandeId) => {
     const response = await api.get(`/paiements/${commandeId}`);
     return response.data;
@@ -12,4 +12,4 @@ const paiementService = {
   },
 };
 
-export default paiementService;
+export default paiementsService;

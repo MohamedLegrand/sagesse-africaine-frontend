@@ -6,6 +6,7 @@ import {
   FaCheck, FaTimes, FaSpinner, FaFilePdf, FaImage
 } from 'react-icons/fa';
 import api from '../../../services/api';
+import authService from '../../../services/authService';
 import toast from 'react-hot-toast';
 
 const GestionLivresPage = () => {
@@ -89,23 +90,8 @@ const GestionLivresPage = () => {
     }
   };
 
-  const uploadImage = async (livreId) => {
-    if (!selectedImage) return null;
-    
-    const formDataImg = new FormData();
-    formDataImg.append('fichier', selectedImage);
-    
-    try {
-      // Upload de l'image (à adapter selon ton API)
-      const response = await api.post(`/upload/couverture/${livreId}`, formDataImg, {
-        headers: { 'Content-Type': 'multipart/form-data' }
-      });
-      return response.data.url;
-    } catch (error) {
-      console.error('Erreur upload image:', error);
-      return null;
-    }
-  };
+  // Le backend accepte uniquement une URL pour la couverture (couverture_url)
+  // Pas d'endpoint d'upload d'image — la couverture est renseignée via l'URL dans le formulaire
 
   const uploadPdf = async (livreId) => {
     if (!selectedPdf) return false;
@@ -199,13 +185,6 @@ const GestionLivresPage = () => {
         toast.success('Livre créé avec succès');
       }
       
-      // Upload de l'image si sélectionnée
-      if (selectedImage && livreId) {
-        const imageUrl = await uploadImage(livreId);
-        if (imageUrl) {
-          await api.patch(`/livres/${livreId}`, { couverture_url: imageUrl });
-        }
-      }
       
       // Upload du PDF si sélectionné
       if (selectedPdf && livreId) {
@@ -267,9 +246,8 @@ const GestionLivresPage = () => {
     { path: '/admin/avis', icon: FaBook, label: 'Modération avis', active: false },
   ];
 
-  const handleLogout = () => {
-    localStorage.removeItem('access_token');
-    localStorage.removeItem('refresh_token');
+  const handleLogout = async () => {
+    await authService.logout();
     window.location.href = '/connexion';
   };
 

@@ -28,31 +28,36 @@ api.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config;
-    
+
     if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
-      
+
+      const refreshToken = localStorage.getItem('refresh_token');
+
+      // Pas de refresh token → utilisateur non connecté, rejeter sans rediriger
+      if (!refreshToken) {
+        return Promise.reject(error);
+      }
+
       try {
-        const refreshToken = localStorage.getItem('refresh_token');
-        if (!refreshToken) throw new Error('No refresh token');
-        
         const response = await api.post('/auth/refresh', { refresh_token: refreshToken });
-        
+
         localStorage.setItem('access_token', response.data.access_token);
         if (response.data.refresh_token) {
           localStorage.setItem('refresh_token', response.data.refresh_token);
         }
-        
+
         originalRequest.headers.Authorization = `Bearer ${response.data.access_token}`;
         return api(originalRequest);
       } catch (refreshError) {
+        // Token expiré et refresh échoué → déconnecter et rediriger
         localStorage.removeItem('access_token');
         localStorage.removeItem('refresh_token');
         window.location.href = '/connexion';
         return Promise.reject(refreshError);
       }
     }
-    
+
     return Promise.reject(error);
   }
 );
