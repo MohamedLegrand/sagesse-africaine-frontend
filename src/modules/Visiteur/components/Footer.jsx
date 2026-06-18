@@ -1,66 +1,86 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import {
-  FaFacebook, FaWhatsapp, FaYoutube, FaTelegram,
-  FaInstagram, FaLinkedin, FaEnvelope, FaPhone,
-  FaMapMarkerAlt, FaBook, FaArrowUp
-} from 'react-icons/fa';
+import { Mail, Phone, MapPin, BookOpen, ArrowUp } from 'lucide-react';
+import { FaFacebook, FaWhatsapp, FaYoutube, FaInstagram, FaLinkedin, FaTelegram } from 'react-icons/fa';
+
+const socialLinks = [
+  { icon: FaFacebook,  href: 'https://facebook.com',              label: 'Facebook'  },
+  { icon: FaWhatsapp,  href: 'https://wa.me/237677314412',        label: 'WhatsApp'  },
+  { icon: FaYoutube,   href: 'https://youtube.com',               label: 'YouTube'   },
+  { icon: FaInstagram, href: 'https://instagram.com',             label: 'Instagram' },
+  { icon: FaLinkedin,  href: 'https://linkedin.com',              label: 'LinkedIn'  },
+  { icon: FaTelegram,  href: 'https://t.me/sagesseafricaine',     label: 'Telegram'  },
+];
 
 const Footer = () => {
-  const socialLinks = [
-    { icon: FaFacebook, href: 'https://facebook.com', color: 'hover:bg-[#1877F2]' },
-    { icon: FaWhatsapp, href: 'https://wa.me/237677314412', color: 'hover:bg-[#25D366]' },
-    { icon: FaYoutube, href: 'https://youtube.com', color: 'hover:bg-[#FF0000]' },
-    { icon: FaTelegram, href: 'https://t.me/sagesseafricaine', color: 'hover:bg-[#26A5E4]' },
-    { icon: FaInstagram, href: 'https://instagram.com', color: 'hover:bg-[#E4405F]' },
-    { icon: FaLinkedin, href: 'https://linkedin.com', color: 'hover:bg-[#0077B5]' },
-  ];
-
-  const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
-
   return (
-    <footer className="bg-black-deep text-white pt-16 pb-8 relative">
-      {/* Ligne décorative dorée en haut */}
-      <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-gold to-transparent" />
+    <footer className="bg-brown-950 text-white">
 
-      <div className="container mx-auto px-4">
+      {/* Bande kente */}
+      <div className="h-1 flex">
+        <div className="flex-1 bg-terra-500" />
+        <div className="flex-1 bg-gold-500" />
+        <div className="flex-1 bg-terra-700" />
+        <div className="flex-1 bg-gold-400" />
+        <div className="flex-1 bg-terra-500" />
+        <div className="flex-1 bg-gold-500" />
+        <div className="flex-1 bg-terra-700" />
+        <div className="flex-1 bg-gold-400" />
+      </div>
+
+      <div className="container-editorial py-14">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
 
-          {/* Logo et description */}
-          <div>
-            <div className="flex items-center gap-2 mb-4">
-              <div className="p-2 bg-gold/10 rounded-lg">
-                <FaBook className="text-gold text-2xl" />
+          {/* Marque */}
+          <div className="lg:col-span-1">
+            <div className="flex items-center gap-3 mb-5">
+              <img
+                src="/images/logo.png"
+                alt="SAGESSE AFRICAINE"
+                className="h-14 w-auto brightness-0 invert"
+                onError={(e) => { e.target.style.display = 'none'; }}
+              />
+              <div>
+                <span className="font-playfair text-lg font-bold text-white">SAGESSE AFRICAINE</span>
+                <div className="h-0.5 w-8 bg-gold-400 mt-1" />
               </div>
-              <span className="font-playfair text-xl font-bold">
-                SAGESSE <span className="text-gold">AFRICAINE</span>
-              </span>
             </div>
-            <p className="text-gray-400 text-sm mb-4 leading-relaxed">
-              « Un peuple qui maîtrise ses savoirs maîtrise aussi son destin »
+            <p className="text-brown-400 text-sm leading-relaxed mb-5">
+              Groupe panafricain de presses, d'édition et de diffusion culturelle. Un peuple qui maîtrise ses savoirs maîtrise aussi son destin.
             </p>
-            <div className="w-12 h-0.5 bg-gold mb-3" />
-            <p className="text-gray-600 text-xs">
-              Groupe panafricain de presses, d'édition et de diffusion culturelle
-            </p>
+            <div className="flex gap-2">
+              {socialLinks.map(({ icon: Icon, href, label }) => (
+                <a
+                  key={label}
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={label}
+                  className="w-9 h-9 rounded-lg bg-brown-900 border border-brown-800 flex items-center justify-center text-brown-400 hover:text-white hover:border-terra-500 hover:bg-terra-500/20 transition-all duration-200"
+                >
+                  <Icon className="w-4 h-4" />
+                </a>
+              ))}
+            </div>
           </div>
 
           {/* Liens rapides */}
           <div>
-            <h4 className="font-semibold text-gold mb-4 relative inline-block">
-              Liens rapides
-              <div className="absolute -bottom-1 left-0 w-full h-0.5 bg-gold" />
-            </h4>
-            <ul className="space-y-3 mt-4">
+            <h4 className="text-white font-semibold text-sm mb-4 uppercase tracking-wider">Navigation</h4>
+            <ul className="space-y-2.5">
               {[
-                { to: '/qui-sommes-nous', label: 'Qui sommes-nous' },
-                { to: '/etre-edite', label: 'Être édité chez nous' },
-                { to: '/livres', label: 'Notre catalogue' },
-                { to: '/contact', label: 'Contact' },
+                { to: '/',               label: 'Accueil' },
+                { to: '/livres',         label: 'Catalogue' },
+                { to: '/qui-sommes-nous',label: 'Qui sommes-nous' },
+                { to: '/etre-edite',     label: 'Être édité chez nous' },
+                { to: '/contact',        label: 'Contact' },
               ].map(({ to, label }) => (
                 <li key={to}>
-                  <Link to={to} className="text-gray-400 hover:text-gold transition-all duration-300 text-sm flex items-center gap-2 group">
-                    <span className="w-0 h-0.5 bg-gold group-hover:w-3 transition-all" />
+                  <Link
+                    to={to}
+                    className="text-brown-400 hover:text-white text-sm transition-colors flex items-center gap-2 group"
+                  >
+                    <span className="w-0 h-0.5 bg-terra-400 group-hover:w-3 transition-all duration-200" />
                     {label}
                   </Link>
                 </li>
@@ -70,30 +90,21 @@ const Footer = () => {
 
           {/* Contact */}
           <div>
-            <h4 className="font-semibold text-gold mb-4 relative inline-block">
-              Contact
-              <div className="absolute -bottom-1 left-0 w-full h-0.5 bg-gold" />
-            </h4>
-            <ul className="space-y-4 mt-4">
-              <li className="flex items-start gap-3 text-gray-400 text-sm group">
-                <div className="p-1.5 rounded-lg bg-gold/10 group-hover:bg-gold/20 transition-colors">
-                  <FaMapMarkerAlt className="text-gold" />
-                </div>
-                <span>Yaoundé - Cameroun</span>
+            <h4 className="text-white font-semibold text-sm mb-4 uppercase tracking-wider">Contact</h4>
+            <ul className="space-y-4">
+              <li className="flex items-start gap-3">
+                <MapPin className="w-4 h-4 text-terra-400 mt-0.5 flex-shrink-0" />
+                <span className="text-brown-400 text-sm">Yaoundé, Cameroun</span>
               </li>
-              <li className="flex items-center gap-3 text-gray-400 text-sm group">
-                <div className="p-1.5 rounded-lg bg-gold/10 group-hover:bg-gold/20 transition-colors">
-                  <FaEnvelope className="text-gold" />
-                </div>
-                <a href="mailto:Marieconstantin51@yahoo.com" className="hover:text-gold transition">
+              <li className="flex items-center gap-3">
+                <Mail className="w-4 h-4 text-terra-400 flex-shrink-0" />
+                <a href="mailto:Marieconstantin51@yahoo.com" className="text-brown-400 hover:text-white text-sm transition-colors">
                   Marieconstantin51@yahoo.com
                 </a>
               </li>
-              <li className="flex items-center gap-3 text-gray-400 text-sm group">
-                <div className="p-1.5 rounded-lg bg-gold/10 group-hover:bg-gold/20 transition-colors">
-                  <FaPhone className="text-gold" />
-                </div>
-                <div>
+              <li className="flex items-start gap-3">
+                <Phone className="w-4 h-4 text-terra-400 mt-0.5 flex-shrink-0" />
+                <div className="text-brown-400 text-sm">
                   <p>(+237) 677 31 44 12</p>
                   <p>(+237) 693 21 54 31</p>
                 </div>
@@ -101,71 +112,59 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Réseaux sociaux */}
+          {/* Newsletter */}
           <div>
-            <h4 className="font-semibold text-gold mb-4 relative inline-block">
-              Suivez-nous
-              <div className="absolute -bottom-1 left-0 w-full h-0.5 bg-gold" />
-            </h4>
-            <div className="flex gap-3 flex-wrap mt-4">
-              {socialLinks.map((social, index) => (
-                <a
-                  key={index}
-                  href={social.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-gray-400 text-lg transition-all duration-300 hover:text-white hover:scale-110 w-9 h-9 rounded-full flex items-center justify-center hover:bg-gold/20 border border-gold/30 hover:border-gold"
-                >
-                  <social.icon />
-                </a>
-              ))}
-            </div>
-            <p className="text-gray-600 text-xs mt-6">
-              Rejoignez notre communauté
+            <h4 className="text-white font-semibold text-sm mb-4 uppercase tracking-wider">Restez informé</h4>
+            <p className="text-brown-400 text-sm mb-4 leading-relaxed">
+              Recevez nos nouvelles parutions et actualités culturelles.
             </p>
+            <form
+              onSubmit={(e) => { e.preventDefault(); }}
+              className="flex flex-col gap-2"
+            >
+              <input
+                type="email"
+                placeholder="Votre adresse e-mail"
+                className="px-3 py-2.5 bg-brown-900 border border-brown-800 rounded-lg text-sm text-white placeholder-brown-500 focus:border-terra-500 focus:outline-none focus:ring-1 focus:ring-terra-500/30"
+              />
+              <button
+                type="submit"
+                className="px-4 py-2.5 bg-terra-500 hover:bg-terra-600 text-white text-sm font-semibold rounded-lg transition-colors"
+              >
+                S'abonner
+              </button>
+            </form>
           </div>
         </div>
 
-        {/* Séparateur */}
-        <div className="border-t border-gold/20 pt-6">
-
-          {/* Liens légaux */}
-          <div className="flex flex-wrap justify-center gap-x-6 gap-y-2 mb-5">
-            {[
-              { to: '/confidentialite', label: 'Politique de confidentialité' },
-              { to: '/mentions-legales', label: 'Mentions légales' },
-              { to: '/cgv', label: 'CGV' },
-              { to: '/etre-edite', label: 'Être édité chez nous' },
-            ].map(({ to, label }) => (
-              <Link
-                key={to}
-                to={to}
-                className="text-gray-600 hover:text-gold transition text-xs"
-              >
-                {label}
-              </Link>
-            ))}
-          </div>
-
+        {/* Séparateur et bas de page */}
+        <div className="border-t border-brown-800 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <p className="text-gray-500 text-sm">
-              &copy; {new Date().getFullYear()} SAGESSE AFRICAINE. Tous droits réservés.
+            <p className="text-brown-500 text-xs">
+              © {new Date().getFullYear()} SAGESSE AFRICAINE — Tous droits réservés
             </p>
-            <p className="text-gold/60 text-xs flex items-center gap-2">
-              <span className="w-8 h-px bg-gold/50" />
-              Une école de pensée pour la renaissance intellectuelle africaine
-              <span className="w-8 h-px bg-gold/50" />
-            </p>
+            <div className="flex flex-wrap justify-center gap-x-5 gap-y-1">
+              {[
+                { to: '/confidentialite',  label: 'Confidentialité' },
+                { to: '/mentions-legales', label: 'Mentions légales' },
+                { to: '/cgv',              label: 'CGV' },
+              ].map(({ to, label }) => (
+                <Link key={to} to={to} className="text-brown-500 hover:text-brown-300 transition-colors text-xs">
+                  {label}
+                </Link>
+              ))}
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Bouton retour haut */}
+      {/* Bouton retour en haut */}
       <button
-        onClick={scrollToTop}
-        className="absolute right-6 bottom-6 bg-gold/20 hover:bg-gold text-gold hover:text-black p-3 rounded-full transition-all duration-300 hover:scale-110 border border-gold"
+        onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+        className="fixed right-5 bottom-5 w-10 h-10 bg-terra-500 hover:bg-terra-600 text-white rounded-full flex items-center justify-center shadow-lg transition-all duration-200 hover:scale-110 z-20"
+        aria-label="Retour en haut"
       >
-        <FaArrowUp />
+        <ArrowUp className="w-4 h-4" />
       </button>
     </footer>
   );

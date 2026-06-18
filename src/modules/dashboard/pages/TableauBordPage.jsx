@@ -1,33 +1,79 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { FaBook, FaShoppingCart, FaHeart } from 'react-icons/fa';
+import { BookOpen, ShoppingBag, Heart, ArrowRight, Package } from 'lucide-react';
 import api from '../../../services/api';
 import toast from 'react-hot-toast';
 import DashboardLayout from '../components/DashboardLayout';
+
+const BookCard = ({ livre, onAddToCart, adding }) => (
+  <div className="book-card group">
+    <Link to={`/dashboard/livre/${livre.id}`} className="block flex-shrink-0">
+      <div className="relative aspect-[2/3] bg-cream-100 overflow-hidden">
+        {livre.couverture_url ? (
+          <img
+            src={livre.couverture_url}
+            alt={livre.titre}
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+            onError={(e) => { e.target.onerror = null; e.target.src = '/images/default-book.png'; }}
+          />
+        ) : (
+          <div className="w-full h-full flex items-center justify-center bg-cream-200">
+            <BookOpen className="w-8 h-8 text-brown-300" />
+          </div>
+        )}
+        {livre.est_gratuit && (
+          <span className="absolute top-2 left-2 bg-green-600 text-white text-[10px] font-bold px-2 py-0.5 rounded">
+            GRATUIT
+          </span>
+        )}
+      </div>
+    </Link>
+    <div className="p-3 flex flex-col flex-1 gap-1.5">
+      <Link to={`/dashboard/livre/${livre.id}`}>
+        <h3 className="font-playfair font-bold text-brown-900 text-sm leading-snug line-clamp-2 hover:text-terra-600 transition-colors">
+          {livre.titre}
+        </h3>
+      </Link>
+      <p className="text-xs text-brown-400">{livre.auteur}</p>
+      <div className="flex items-center justify-between mt-auto pt-2">
+        <span className="font-bold text-brown-900 text-sm">
+          {livre.est_gratuit ? <span className="text-green-600">Gratuit</span> : `${livre.prix?.toLocaleString()} F`}
+        </span>
+        <button
+          onClick={() => onAddToCart(livre.id)}
+          disabled={adding === livre.id}
+          className="flex items-center gap-1 px-2.5 py-1.5 bg-terra-500 hover:bg-terra-600 text-white text-xs font-semibold rounded-lg transition-colors disabled:opacity-50"
+        >
+          {adding === livre.id ? (
+            <div className="w-3 h-3 border-2 border-white border-t-transparent rounded-full animate-spin" />
+          ) : (
+            <ShoppingBag className="w-3 h-3" />
+          )}
+          Ajouter
+        </button>
+      </div>
+    </div>
+  </div>
+);
 
 const TableauBordPage = () => {
   const [collections, setCollections] = useState([]);
   const [livres, setLivres] = useState([]);
   const [loading, setLoading] = useState(true);
   const [addingToCart, setAddingToCart] = useState(null);
+  const [activeCol, setActiveCol] = useState('all');
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const [collectionsRes, livresRes] = await Promise.all([
-          api.get('/collections/'),
-          api.get('/livres/'),
-        ]);
-        setCollections(collectionsRes.data.collections || []);
+    Promise.all([
+      api.get('/collections/'),
+      api.get('/livres/'),
+    ])
+      .then(([colRes, livresRes]) => {
+        setCollections(colRes.data.collections || []);
         setLivres(livresRes.data.livres || []);
-      } catch (error) {
-        console.error('Erreur chargement:', error);
-        toast.error('Erreur chargement du catalogue');
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchData();
+      })
+      .catch(() => toast.error('Erreur de chargement'))
+      .finally(() => setLoading(false));
   }, []);
 
   const handleAddToCart = async (livreId) => {
@@ -36,123 +82,152 @@ const TableauBordPage = () => {
       await api.post('/panier/ajouter', { livre_id: livreId, quantite: 1 });
       toast.success('Livre ajouté au panier');
       window.dispatchEvent(new Event('cartUpdated'));
-    } catch (error) {
-      console.error('Erreur ajout panier:', error);
+    } catch {
       toast.error("Erreur lors de l'ajout");
     } finally {
       setAddingToCart(null);
     }
   };
 
+  const publishedLivres = livres.filter(l => l.est_publie);
+  const filteredLivres = activeCol === 'all'
+    ? publishedLivres
+    : publishedLivres.filter(l => l.collection_id === activeCol);
+
+  const tabs = [{ id: 'all', label: 'Tous' }, ...collections.map(c => ({ id: c.id, label: c.nom }))];
+
   return (
     <DashboardLayout>
-      <div className="container mx-auto px-2">
-        {/* En-tête */}
-        <div className="text-center mb-10">
-          <h1 className="text-3xl md:text-4xl font-playfair font-bold text-amber-800 mb-3">
-            Notre catalogue
-          </h1>
-          <p className="text-amber-500">Découvrez tous nos livres par collection</p>
-          <div className="flex items-center justify-center gap-2 mt-3">
-            <div className="w-16 h-px bg-amber-300"></div>
-            <div className="w-2 h-2 bg-amber-400 rounded-full"></div>
-            <div className="w-16 h-px bg-amber-300"></div>
-          </div>
+      {/* En-tête */}
+      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
+        <div>
+          <span className="section-eyebrow">Boutique</span>
+          <h1 className="section-title mt-1">Notre catalogue</h1>
+          <p className="text-brown-500 text-sm mt-1">
+            {publishedLivres.length} ouvrages disponibles
+          </p>
         </div>
-
-        {loading ? (
-          <div className="flex justify-center items-center py-20">
-            <div className="w-12 h-12 border-4 border-amber-500 border-t-transparent rounded-full animate-spin"></div>
-          </div>
-        ) : (
-          <>
-            {/* Livres par collection */}
-            {collections.map((collection) => {
-              const livresCollection = livres.filter(l => l.collection_id === collection.id && l.est_publie);
-              if (livresCollection.length === 0) return null;
-              return (
-                <div key={collection.id} id={`collection-${collection.id}`} className="mb-14 scroll-mt-20">
-                  <div className="mb-5">
-                    <h2 className="text-xl md:text-2xl font-playfair font-bold text-amber-800 border-l-4 border-amber-500 pl-3">
-                      {collection.nom}
-                    </h2>
-                    {collection.description && (
-                      <p className="text-gray-500 text-sm mt-2 ml-3">{collection.description}</p>
-                    )}
-                  </div>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                    {livresCollection.map((livre) => (
-                      <div key={livre.id} className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 group">
-                        <Link to={`/dashboard/livre/${livre.id}`} className="block">
-                          <div className="relative h-64 bg-amber-100 flex items-center justify-center overflow-hidden">
-                            {livre.couverture_url ? (
-                              <img
-                                src={livre.couverture_url}
-                                alt={livre.titre}
-                                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                                onError={(e) => { e.target.onerror = null; e.target.src = '/images/default-book.png'; }}
-                              />
-                            ) : (
-                              <FaBook className="text-amber-300 text-6xl" />
-                            )}
-                            {livre.est_gratuit && (
-                              <span className="absolute top-3 right-3 bg-green-500 text-white text-xs px-2 py-1 rounded-full">
-                                Gratuit
-                              </span>
-                            )}
-                          </div>
-                        </Link>
-                        <div className="p-4">
-                          <Link to={`/dashboard/livre/${livre.id}`}>
-                            <h3 className="font-playfair font-bold text-amber-800 text-lg mb-1 hover:text-amber-600 transition line-clamp-1">
-                              {livre.titre}
-                            </h3>
-                          </Link>
-                          <p className="text-amber-500 text-sm mb-2">{livre.auteur}</p>
-                          <div className="flex justify-between items-center mt-3">
-                            <span className="text-xl font-bold text-amber-700">
-                              {livre.est_gratuit ? 'Gratuit' : `${livre.prix?.toLocaleString()} FCFA`}
-                            </span>
-                            <div className="flex gap-2">
-                              <button
-                                onClick={() => toast('Fonctionnalité à venir')}
-                                className="p-2 rounded-full hover:bg-amber-100 transition text-amber-400"
-                                title="Ajouter aux favoris"
-                              >
-                                <FaHeart />
-                              </button>
-                              <button
-                                onClick={() => handleAddToCart(livre.id)}
-                                disabled={addingToCart === livre.id}
-                                className="bg-gradient-to-r from-amber-600 to-amber-700 text-white px-3 py-2 rounded-xl text-sm font-medium hover:shadow-lg transition flex items-center gap-1 disabled:opacity-50"
-                              >
-                                {addingToCart === livre.id ? (
-                                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                                ) : (
-                                  <FaShoppingCart />
-                                )}
-                                Ajouter
-                              </button>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              );
-            })}
-
-            {collections.length === 0 && (
-              <div className="text-center py-20">
-                <FaBook className="text-amber-300 text-6xl mx-auto mb-4" />
-                <h2 className="text-2xl font-playfair text-amber-700 mb-2">Aucun livre disponible</h2>
-                <p className="text-gray-500">Revenez plus tard pour découvrir notre catalogue</p>
-              </div>
-            )}
-          </>
-        )}
+        <Link to="/dashboard/panier" className="btn-outline text-sm flex-shrink-0">
+          <ShoppingBag className="w-4 h-4" />
+          Mon panier
+        </Link>
       </div>
+
+      {loading ? (
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+          {[...Array(10)].map((_, i) => (
+            <div key={i} className="rounded-xl bg-cream-100 animate-pulse">
+              <div className="aspect-[2/3] bg-cream-200 rounded-t-xl" />
+              <div className="p-3 space-y-2">
+                <div className="h-3 bg-cream-200 rounded w-3/4" />
+                <div className="h-2 bg-cream-200 rounded w-1/2" />
+                <div className="h-7 bg-cream-200 rounded mt-3" />
+              </div>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <>
+          {/* Filtres */}
+          {collections.length > 0 && (
+            <div className="flex gap-2 overflow-x-auto pb-2 mb-6 scrollbar-thin">
+              {tabs.map(tab => (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveCol(tab.id)}
+                  className={`flex-shrink-0 px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+                    activeCol === tab.id
+                      ? 'bg-terra-500 text-white'
+                      : 'bg-white text-brown-600 hover:bg-cream-100 border border-cream-200'
+                  }`}
+                >
+                  {tab.label}
+                </button>
+              ))}
+            </div>
+          )}
+
+          {/* Collections groupées (quand "Tous") */}
+          {activeCol === 'all' ? (
+            <div className="space-y-12">
+              {collections.map((collection) => {
+                const livresCol = publishedLivres.filter(l => l.collection_id === collection.id);
+                if (livresCol.length === 0) return null;
+                return (
+                  <div key={collection.id} id={`collection-${collection.id}`} className="scroll-mt-20">
+                    {/* Titre collection */}
+                    <div className="flex items-center justify-between mb-5">
+                      <div>
+                        <h2 className="font-playfair text-xl font-bold text-brown-900">
+                          {collection.nom}
+                        </h2>
+                        {collection.description && (
+                          <p className="text-brown-400 text-sm mt-0.5">{collection.description}</p>
+                        )}
+                      </div>
+                      <span className="text-xs text-brown-400 bg-cream-100 px-3 py-1 rounded-full">
+                        {livresCol.length} ouvrage{livresCol.length > 1 ? 's' : ''}
+                      </span>
+                    </div>
+
+                    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+                      {livresCol.map(livre => (
+                        <BookCard
+                          key={livre.id}
+                          livre={livre}
+                          onAddToCart={handleAddToCart}
+                          adding={addingToCart}
+                        />
+                      ))}
+                    </div>
+                  </div>
+                );
+              })}
+
+              {/* Livres sans collection */}
+              {(() => {
+                const sans = publishedLivres.filter(l =>
+                  !collections.some(c => c.id === l.collection_id)
+                );
+                if (sans.length === 0) return null;
+                return (
+                  <div>
+                    <h2 className="font-playfair text-xl font-bold text-brown-900 mb-5">Autres ouvrages</h2>
+                    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+                      {sans.map(livre => (
+                        <BookCard key={livre.id} livre={livre} onAddToCart={handleAddToCart} adding={addingToCart} />
+                      ))}
+                    </div>
+                  </div>
+                );
+              })()}
+            </div>
+          ) : (
+            <div>
+              {filteredLivres.length > 0 ? (
+                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+                  {filteredLivres.map(livre => (
+                    <BookCard key={livre.id} livre={livre} onAddToCart={handleAddToCart} adding={addingToCart} />
+                  ))}
+                </div>
+              ) : (
+                <div className="text-center py-20 text-brown-400">
+                  <Package className="w-12 h-12 mx-auto mb-3 opacity-40" />
+                  <p className="font-medium">Aucun livre dans cette collection pour l'instant.</p>
+                </div>
+              )}
+            </div>
+          )}
+
+          {publishedLivres.length === 0 && (
+            <div className="text-center py-20 text-brown-400">
+              <BookOpen className="w-12 h-12 mx-auto mb-3 opacity-40" />
+              <p className="font-medium">Aucun livre disponible pour le moment.</p>
+              <p className="text-sm mt-1">Revenez bientôt pour découvrir nos parutions.</p>
+            </div>
+          )}
+        </>
+      )}
     </DashboardLayout>
   );
 };

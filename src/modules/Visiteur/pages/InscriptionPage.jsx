@@ -1,11 +1,18 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { FaBook, FaShieldAlt, FaUserPlus } from 'react-icons/fa';
+import { useNavigate, Link } from 'react-router-dom';
+import { BookOpen, Shield, Star, Globe } from 'lucide-react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import FormulaireInscription from '../components/FormulaireInscription';
 import toast from 'react-hot-toast';
 import api from '../../../services/api';
+
+const perks = [
+  { icon: BookOpen, title: 'Bibliothèque illimitée',   desc: 'Accès à tous vos livres achetés, depuis n\'importe où.' },
+  { icon: Globe,    title: 'Communauté panafricaine',  desc: 'Rejoignez des milliers de lecteurs à travers le continent.' },
+  { icon: Star,     title: 'Recommandations',          desc: 'Des suggestions de lecture personnalisées selon vos goûts.' },
+  { icon: Shield,   title: 'Sécurité garantie',        desc: 'Données protégées, paiements sécurisés, confidentialité.' },
+];
 
 const InscriptionPage = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -14,19 +21,15 @@ const InscriptionPage = () => {
   const handleRegister = async (formData) => {
     setIsLoading(true);
     try {
-      // Appel API vers le backend FastAPI
-      const response = await api.post('/auth/register', {
+      await api.post('/auth/register', {
         email: formData.email,
         mot_de_passe: formData.mot_de_passe,
         prenom: formData.prenom,
         nom: formData.nom,
       });
-
-      console.log('Inscription réussie:', response.data);
-      toast.success('Inscription réussie ! Vous pouvez maintenant vous connecter.');
+      toast.success('Compte créé avec succès ! Vous pouvez vous connecter.');
       navigate('/connexion');
     } catch (error) {
-      console.error('Erreur d\'inscription:', error);
       if (error.response?.status === 422) {
         toast.error('Données invalides. Vérifiez votre email.');
       } else if (error.response?.status === 400) {
@@ -40,45 +43,85 @@ const InscriptionPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-white to-amber-100">
+    <div className="min-h-screen bg-white">
       <Header />
-      
-      <main className="pt-32 pb-20">
-        <div className="container mx-auto px-4">
-          <div className="max-w-md mx-auto">
-            {/* Header de la page */}
-            <div className="text-center mb-8">
-              <div className="inline-flex items-center justify-center w-16 h-16 bg-amber-100 rounded-2xl mb-4 shadow-lg">
-                <FaUserPlus className="text-amber-600 text-3xl" />
+
+      <main className="pt-24 md:pt-28">
+        <div className="min-h-[calc(100vh-80px)] grid grid-cols-1 lg:grid-cols-2">
+
+          {/* Colonne formulaire */}
+          <div className="flex items-center justify-center p-6 sm:p-10 bg-cream-50 order-2 lg:order-1">
+            <div className="w-full max-w-md">
+              <div className="mb-8">
+                <h1 className="font-playfair text-3xl font-bold text-brown-950 mb-2">
+                  Créer un compte
+                </h1>
+                <p className="text-brown-500 text-sm">
+                  Rejoignez la communauté Sagesse Africaine. Gratuit, sans engagement.
+                </p>
               </div>
-              <h1 className="text-3xl font-playfair font-bold text-amber-800 mb-2">
-                Inscription
-              </h1>
-              <p className="text-amber-500">
-                Rejoignez la communauté SAGESSE AFRICAINE
+
+              <div className="bg-white rounded-2xl border border-cream-200 p-6 sm:p-8 shadow-sm">
+                <FormulaireInscription onSubmit={handleRegister} isLoading={isLoading} />
+              </div>
+
+              <p className="text-center text-xs text-brown-400 mt-6 flex items-center justify-center gap-1.5">
+                <Shield className="w-3.5 h-3.5" />
+                Inscription gratuite — aucune carte de crédit requise
               </p>
-              <div className="flex items-center justify-center gap-2 mt-4">
-                <div className="w-12 h-px bg-amber-300"></div>
-                <div className="w-1.5 h-1.5 bg-amber-400 rounded-full"></div>
-                <div className="w-12 h-px bg-amber-300"></div>
+            </div>
+          </div>
+
+          {/* Colonne avantages */}
+          <div className="hidden lg:flex flex-col justify-between bg-terra-600 p-12 xl:p-16 order-1 lg:order-2">
+            <Link to="/" className="flex items-center gap-3">
+              <img
+                src="/images/logo.png"
+                alt="SAGESSE AFRICAINE"
+                className="h-14 w-auto brightness-0 invert"
+                onError={(e) => { e.target.style.display = 'none'; }}
+              />
+              <div>
+                <span className="font-playfair text-white font-bold text-xl">SAGESSE AFRICAINE</span>
+                <div className="h-0.5 w-8 bg-white/50 mt-1" />
+              </div>
+            </Link>
+
+            <div>
+              <h2 className="font-playfair text-3xl font-bold text-white mb-2">
+                Votre passeport vers la culture africaine
+              </h2>
+              <p className="text-terra-100 text-sm leading-relaxed mb-8">
+                Des milliers de lecteurs nous font déjà confiance pour accéder
+                aux meilleurs ouvrages du continent.
+              </p>
+
+              <div className="space-y-4">
+                {perks.map(({ icon: Icon, title, desc }) => (
+                  <div key={title} className="flex items-start gap-4 bg-terra-500/50 rounded-xl p-4">
+                    <div className="w-9 h-9 rounded-lg bg-white/20 flex items-center justify-center flex-shrink-0">
+                      <Icon className="w-4.5 h-4.5 text-white" style={{ width: '18px', height: '18px' }} />
+                    </div>
+                    <div>
+                      <p className="font-semibold text-white text-sm">{title}</p>
+                      <p className="text-terra-100 text-xs mt-0.5 leading-relaxed">{desc}</p>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
 
-            {/* Carte du formulaire */}
-            <div className="bg-white/60 backdrop-blur-sm rounded-2xl shadow-xl border border-amber-100 p-8">
-              <FormulaireInscription onSubmit={handleRegister} isLoading={isLoading} />
-            </div>
-
-            {/* Avantages */}
-            <div className="mt-8 grid grid-cols-2 gap-4">
-              <div className="text-center p-3 bg-white/40 rounded-xl border border-amber-100">
-                <FaBook className="text-amber-500 mx-auto mb-2" />
-                <p className="text-xs text-amber-700">Accès à votre bibliothèque</p>
+            <div className="flex items-center gap-3 bg-white/10 rounded-xl p-4">
+              <div className="flex -space-x-2">
+                {[1,2,3].map(i => (
+                  <div key={i} className="w-8 h-8 rounded-full bg-white/30 border-2 border-terra-500 flex items-center justify-center">
+                    <span className="text-xs text-white font-bold">{i}</span>
+                  </div>
+                ))}
               </div>
-              <div className="text-center p-3 bg-white/40 rounded-xl border border-amber-100">
-                <FaShieldAlt className="text-amber-500 mx-auto mb-2" />
-                <p className="text-xs text-amber-700">Téléchargements sécurisés</p>
-              </div>
+              <p className="text-white text-xs">
+                <strong>10 000+</strong> lecteurs actifs nous ont rejoints
+              </p>
             </div>
           </div>
         </div>

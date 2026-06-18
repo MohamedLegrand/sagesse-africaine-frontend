@@ -9,3 +9,4 @@ export { default as StatistiquesPage } from './pages/StatistiquesPage';
 
 // Composants
 export { default as RouteAdmin } from './components/RouteAdmin';
+export { default as AdminLayout } from './components/AdminLayout';

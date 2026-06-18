@@ -1,3 +1,136 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,600&family=Inter:wght@300;400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    color: #2c1810;
+    background-color: #ffffff;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: 'Playfair Display', Georgia, serif;
+  }
+}
+
+@layer components {
+  /* Boutons */
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 bg-terra-500 text-white px-6 py-3 rounded-lg font-semibold text-sm
+      hover:bg-terra-600 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-terra-400 focus:ring-offset-2;
+  }
+
+  .btn-outline {
+    @apply inline-flex items-center justify-center gap-2 border-2 border-terra-500 text-terra-600 px-6 py-3 rounded-lg font-semibold text-sm
+      hover:bg-terra-500 hover:text-white transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-terra-400 focus:ring-offset-2;
+  }
+
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 text-brown-800 px-4 py-2 rounded-lg font-medium text-sm
+      hover:bg-cream-100 transition-colors duration-200;
+  }
+
+  /* Inputs */
+  .input-field {
+    @apply w-full px-4 py-3 border border-brown-200 rounded-lg text-brown-900 placeholder-brown-300
+      focus:border-terra-400 focus:ring-2 focus:ring-terra-400/20 focus:outline-none
+      transition-all duration-200 bg-white text-sm;
+  }
+
+  .input-label {
+    @apply block text-brown-700 text-sm font-medium mb-1.5;
+  }
+
+  /* Cartes livres */
+  .book-card {
+    @apply bg-white rounded-xl overflow-hidden border border-cream-200 hover:border-terra-200
+      hover:shadow-lg transition-all duration-300 flex flex-col;
+  }
+
+  /* Section titre */
+  .section-eyebrow {
+    @apply text-terra-500 text-xs font-bold tracking-[0.15em] uppercase;
+  }
+
+  .section-title {
+    @apply font-playfair text-3xl md:text-4xl font-bold text-brown-950;
+  }
+
+  /* Sidebar nav item */
+  .nav-item {
+    @apply flex items-center gap-3 px-3 py-2.5 rounded-lg text-brown-600 text-sm font-medium
+      hover:bg-cream-100 hover:text-brown-900 transition-all duration-150;
+  }
+
+  .nav-item-active {
+    @apply flex items-center gap-3 px-3 py-2.5 rounded-lg bg-terra-500 text-white text-sm font-medium;
+  }
+
+  /* Badge */
+  .badge {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+  }
+}
+
+@layer utilities {
+  .font-playfair {
+    font-family: 'Playfair Display', Georgia, serif;
+  }
+
+  /* Ligne dorée décorative */
+  .gold-line {
+    @apply h-0.5 bg-gradient-to-r from-transparent via-gold-400 to-transparent;
+  }
+
+  /* Masque de fondu en bas pour les listes de livres */
+  .fade-bottom {
+    mask-image: linear-gradient(to bottom, black 70%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, black 70%, transparent 100%);
+  }
+
+  /* Scrollbar personnalisée */
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 4px;
+  }
+  .scrollbar-thin::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background: #e0ad7c;
+    border-radius: 2px;
+  }
+
+  /* Lignes kente africaines - motif décoratif */
+  .kente-border {
+    border-image: repeating-linear-gradient(
+      90deg,
+      #d4a017 0px, #d4a017 8px,
+      #c4622d 8px, #c4622d 16px,
+      #2c1810 16px, #2c1810 24px,
+      #c4622d 24px, #c4622d 32px
+    ) 2;
+  }
+
+  /* Ombre livre */
+  .book-shadow {
+    box-shadow: 4px 4px 0 0 rgba(44, 24, 16, 0.15);
+  }
+
+  /* Container responsive */
+  .container-editorial {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+}

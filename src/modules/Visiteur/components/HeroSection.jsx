@@ -1,173 +1,156 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
-import { FaArrowRight, FaBookOpen, FaCrown, FaChevronDown } from 'react-icons/fa';
+import { ArrowRight, BookOpen, Users, Library, Award } from 'lucide-react';
+
+const stats = [
+  { icon: BookOpen, value: '100+', label: 'Ouvrages publiés' },
+  { icon: Users,    value: '50+',  label: 'Auteurs africains' },
+  { icon: Library,  value: '10k+', label: 'Lecteurs actifs' },
+  { icon: Award,    value: '15+',  label: 'Collections' },
+];
 
 const HeroSection = () => {
-  const [displayText, setDisplayText] = useState('');
-  const fullText = 'SAGESSE AFRICAINE';
-
-  useEffect(() => {
-    let i = 0;
-    const interval = setInterval(() => {
-      if (i <= fullText.length) {
-        setDisplayText(fullText.substring(0, i));
-        i++;
-      } else {
-        clearInterval(interval);
-      }
-    }, 80);
-    return () => clearInterval(interval);
-  }, []);
-
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-amber-50 via-orange-50 to-amber-100">
+    <section className="bg-cream-50 pt-28 pb-0 md:pt-32 overflow-hidden">
+      <div className="container-editorial">
 
-      {/* Cercles décoratifs */}
-      <div className="absolute top-20 right-10 w-96 h-96 bg-amber-300/20 rounded-full blur-3xl animate-pulse pointer-events-none" />
-      <div className="absolute bottom-20 left-10 w-[32rem] h-[32rem] bg-amber-400/15 rounded-full blur-3xl animate-pulse delay-1000 pointer-events-none" />
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[45rem] h-[45rem] bg-amber-500/5 rounded-full blur-3xl pointer-events-none" />
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
 
-      {/* Couronnes décoratives */}
-      <div className="absolute top-24 left-[10%] text-amber-400/10 text-7xl animate-pulse pointer-events-none">
-        <FaCrown />
-      </div>
-      <div className="absolute bottom-32 right-[8%] text-amber-400/10 text-7xl animate-pulse delay-700 pointer-events-none">
-        <FaCrown />
-      </div>
+          {/* Colonne gauche — Texte */}
+          <div className="max-w-xl">
 
-      {/* Étoiles scintillantes */}
-      <div className="absolute inset-0 pointer-events-none">
-        {[...Array(12)].map((_, i) => (
-          <div
-            key={i}
-            className="absolute bg-amber-400 rounded-full animate-ping"
-            style={{
-              width: Math.random() * 3 + 1 + 'px',
-              height: Math.random() * 3 + 1 + 'px',
-              top: Math.random() * 100 + '%',
-              left: Math.random() * 100 + '%',
-              animationDuration: Math.random() * 3 + 2 + 's',
-              animationDelay: Math.random() * 3 + 's',
-              opacity: Math.random() * 0.5 + 0.2
-            }}
-          />
-        ))}
-      </div>
+            {/* Eyebrow */}
+            <div className="flex items-center gap-2 mb-6">
+              <div className="h-0.5 w-8 bg-terra-500" />
+              <span className="text-terra-500 text-xs font-bold tracking-[0.2em] uppercase">
+                Groupe panafricain d'édition
+              </span>
+            </div>
 
-      <div className="relative z-10 container mx-auto px-4 py-20 text-center">
+            {/* Titre principal */}
+            <h1 className="font-playfair text-5xl sm:text-6xl lg:text-7xl font-bold text-brown-950 leading-[1.05] mb-6">
+              La sagesse<br />
+              <span className="text-terra-500">africaine</span>,<br />
+              votre héritage
+            </h1>
 
-        {/* Badge */}
-        <div className="inline-flex items-center gap-2 bg-white/80 backdrop-blur-sm border border-amber-200 text-amber-700 text-xs font-semibold tracking-widest uppercase px-5 py-2.5 rounded-full mb-8 shadow-sm hover:shadow-md hover:bg-white transition-all duration-300">
-          <FaBookOpen className="text-amber-500" />
-          Groupe panafricain d'édition
-        </div>
+            {/* Sous-titre */}
+            <p className="text-brown-600 text-lg leading-relaxed mb-8 max-w-md">
+              Plateforme panafricaine de production intellectuelle, scientifique,
+              culturelle et éducative. Découvrez les savoirs qui honorent notre continent.
+            </p>
 
-        {/* Titre avec animation */}
-        <div className="mb-6">
-          <h1 className="font-playfair font-bold leading-tight text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl">
-            <span className="bg-gradient-to-r from-amber-600 via-amber-500 to-amber-700 bg-clip-text text-transparent">
-              SAGESSE
-            </span>
-            <br />
-            <span className="bg-gradient-to-r from-amber-700 via-amber-600 to-amber-800 bg-clip-text text-transparent">
-              AFRICAINE
-            </span>
-          </h1>
-        </div>
+            {/* CTA */}
+            <div className="flex flex-col xs:flex-row gap-3 mb-12">
+              <Link to="/livres" className="btn-primary text-base px-7 py-3.5">
+                Explorer le catalogue
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+              <Link to="/inscription" className="btn-outline text-base px-7 py-3.5">
+                Rejoindre la communauté
+              </Link>
+            </div>
 
-        {/* Séparateur doré animé */}
-        <div className="flex items-center justify-center gap-3 mb-8">
-          <div className="w-16 h-px bg-gradient-to-r from-transparent via-amber-400 to-transparent" />
-          <div className="flex gap-1">
-            <div className="w-2 h-2 bg-amber-400 rounded-full animate-pulse" />
-            <div className="w-2 h-2 bg-amber-500 rounded-full" />
-            <div className="w-2 h-2 bg-amber-400 rounded-full animate-pulse delay-300" />
+            {/* Citation */}
+            <blockquote className="border-l-4 border-gold-400 pl-4">
+              <p className="font-playfair italic text-brown-700 text-base leading-relaxed">
+                « Un peuple qui maîtrise ses savoirs maîtrise aussi son destin »
+              </p>
+            </blockquote>
           </div>
-          <div className="w-16 h-px bg-gradient-to-r from-transparent via-amber-400 to-transparent" />
-        </div>
 
-        {/* Citation avec guillemets */}
-        <div className="relative max-w-2xl mx-auto mb-6">
-          <div className="absolute -top-6 -left-6 text-amber-400/30 text-5xl font-playfair">«</div>
-          <p className="text-lg sm:text-xl md:text-2xl font-playfair italic text-amber-800 leading-relaxed px-8">
-            Un peuple qui maîtrise ses savoirs maîtrise aussi son destin
-          </p>
-          <div className="absolute -bottom-8 -right-6 text-amber-400/30 text-5xl font-playfair">»</div>
-        </div>
+          {/* Colonne droite — Visuel livres en mosaïque */}
+          <div className="relative hidden lg:block">
+            <div className="relative h-[520px]">
 
-        {/* Description */}
-        <p className="text-gray-600 text-sm sm:text-base max-w-xl mx-auto mb-12 leading-relaxed">
-          Plateforme panafricaine de production intellectuelle, scientifique, culturelle et éducative.
-          Découvrez des ouvrages qui honorent et transmettent les savoirs africains.
-        </p>
-
-        {/* Boutons CTA */}
-        <div className="flex flex-col sm:flex-row gap-5 justify-center mb-20">
-          <Link
-            to="/livres"
-            className="group inline-flex items-center justify-center gap-2 bg-gradient-to-r from-amber-600 to-amber-700
-              text-white px-8 py-4 rounded-full font-semibold text-base
-              hover:shadow-xl hover:shadow-amber-500/30 hover:scale-105 transition-all duration-300"
-          >
-            Explorer le catalogue
-            <FaArrowRight className="group-hover:translate-x-1 transition-transform duration-300" />
-          </Link>
-          <Link
-            to="/inscription"
-            className="group inline-flex items-center justify-center gap-2 border-2 border-amber-600
-              text-amber-700 px-8 py-4 rounded-full font-semibold text-base
-              hover:bg-amber-600 hover:text-white hover:shadow-lg hover:shadow-amber-500/25 transition-all duration-300 hover:scale-105"
-          >
-            Rejoindre la communauté
-          </Link>
-        </div>
-
-        {/* Statistiques avec animations */}
-        <div className="flex flex-wrap items-center justify-center gap-8 sm:gap-12">
-          {[
-            { value: '100+', label: 'Livres publiés', delay: 0 },
-            { value: '50+', label: 'Auteurs', delay: 100 },
-            { value: '10k+', label: 'Lecteurs', delay: 200 },
-            { value: '15+', label: 'Collections', delay: 300 },
-          ].map(({ value, label, delay }) => (
-            <div 
-              key={label} 
-              className="text-center group animate-fade-in-up cursor-pointer"
-              style={{ animationDelay: `${delay}ms` }}
-            >
-              <div className="text-2xl sm:text-3xl font-bold font-playfair text-amber-700 group-hover:scale-110 transition-transform duration-300">
-                {value}
+              {/* Livre principal */}
+              <div className="absolute left-12 top-8 w-44 h-60 bg-brown-950 rounded-lg shadow-2xl overflow-hidden book-shadow">
+                <img
+                  src="/images/livre1.jpg"
+                  alt="Livre phare"
+                  className="w-full h-full object-cover"
+                  onError={(e) => {
+                    e.target.style.display = 'none';
+                    e.target.parentElement.classList.add('flex', 'items-center', 'justify-center', 'bg-gradient-to-b', 'from-brown-800', 'to-brown-950');
+                    const icon = document.createElement('div');
+                    icon.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" class="w-12 h-12 text-gold-400 opacity-50" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" /></svg>';
+                    e.target.parentElement.appendChild(icon.firstChild);
+                  }}
+                />
               </div>
-              <div className="text-xs sm:text-sm text-amber-500 mt-1 tracking-wide group-hover:text-amber-600 transition-colors">
-                {label}
+
+              {/* Livre 2 */}
+              <div className="absolute left-60 top-20 w-36 h-48 rounded-lg shadow-xl overflow-hidden book-shadow bg-terra-800">
+                <img
+                  src="/images/livre2.jpg"
+                  alt="Livre 2"
+                  className="w-full h-full object-cover"
+                  onError={(e) => { e.target.style.display = 'none'; }}
+                />
               </div>
-              <div className="w-8 h-px bg-amber-300 mx-auto mt-2 group-hover:w-12 transition-all duration-300" />
+
+              {/* Livre 3 */}
+              <div className="absolute left-4 top-72 w-40 h-52 rounded-lg shadow-xl overflow-hidden book-shadow bg-gold-800">
+                <img
+                  src="/images/livre3.jpg"
+                  alt="Livre 3"
+                  className="w-full h-full object-cover"
+                  onError={(e) => { e.target.style.display = 'none'; }}
+                />
+              </div>
+
+              {/* Livre 4 */}
+              <div className="absolute left-52 top-72 w-36 h-48 rounded-lg shadow-xl overflow-hidden book-shadow bg-brown-700">
+                <img
+                  src="/images/livre4.jpg"
+                  alt="Livre 4"
+                  className="w-full h-full object-cover"
+                  onError={(e) => { e.target.style.display = 'none'; }}
+                />
+              </div>
+
+              {/* Carte flottante nouveauté */}
+              <div className="absolute right-0 top-16 bg-white border border-cream-200 rounded-xl p-4 shadow-lg w-48">
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="w-2 h-2 bg-terra-500 rounded-full" />
+                  <span className="text-xs font-semibold text-terra-600 uppercase tracking-wide">Nouveau</span>
+                </div>
+                <p className="font-playfair font-bold text-brown-900 text-sm leading-snug">
+                  Découvrez notre dernière parution
+                </p>
+                <Link to="/livres" className="mt-3 flex items-center gap-1 text-xs font-semibold text-terra-500 hover:text-terra-700">
+                  Voir le livre <ArrowRight className="w-3 h-3" />
+                </Link>
+              </div>
+
+              {/* Badge collections */}
+              <div className="absolute right-4 bottom-20 bg-brown-950 text-white rounded-xl p-3 shadow-lg">
+                <div className="flex items-center gap-2">
+                  <Library className="w-4 h-4 text-gold-400" />
+                  <div>
+                    <p className="text-xs text-brown-300">Collections</p>
+                    <p className="font-bold text-sm">15+ thèmes</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Stats bar */}
+        <div className="border-t border-cream-200 mt-8 py-8 grid grid-cols-2 md:grid-cols-4 gap-6">
+          {stats.map(({ icon: Icon, value, label }) => (
+            <div key={label} className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-lg bg-terra-50 flex items-center justify-center flex-shrink-0">
+                <Icon className="w-5 h-5 text-terra-500" />
+              </div>
+              <div>
+                <div className="font-playfair text-2xl font-bold text-brown-950">{value}</div>
+                <div className="text-xs text-brown-500 font-medium">{label}</div>
+              </div>
             </div>
           ))}
         </div>
-      </div>
-
-      {/* Flèche vers le bas */}
-      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce cursor-pointer z-20">
-        <div className="flex flex-col items-center gap-1">
-          <span className="text-amber-400 text-xs uppercase tracking-wider font-medium">Découvrir</span>
-          <div className="w-6 h-9 border-2 border-amber-400 rounded-full flex justify-center">
-            <div className="w-1 h-2 bg-amber-400 rounded-full mt-2 animate-pulse" />
-          </div>
-        </div>
-      </div>
-
-      {/* Vagues dorées en bas */}
-      <div className="absolute bottom-0 left-0 right-0 pointer-events-none">
-        <svg viewBox="0 0 1440 80" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full">
-          <path d="M0 80L60 70C120 60 240 40 360 35C480 30 600 40 720 45C840 50 960 50 1080 45C1200 40 1320 30 1380 25L1440 20V80H1380C1320 80 1200 80 1080 80C960 80 840 80 720 80C600 80 480 80 360 80C240 80 120 80 60 80H0Z" fill="url(#waveGradient)" fillOpacity="0.4"/>
-          <defs>
-            <linearGradient id="waveGradient" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#D4AF37" stopOpacity="0.3"/>
-              <stop offset="100%" stopColor="#D4AF37" stopOpacity="0"/>
-            </linearGradient>
-          </defs>
-        </svg>
       </div>
     </section>
   );

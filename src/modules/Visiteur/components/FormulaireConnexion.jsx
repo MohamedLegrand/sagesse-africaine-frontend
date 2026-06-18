@@ -1,20 +1,12 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { FaEnvelope, FaLock, FaEye, FaEyeSlash, FaArrowRight } from 'react-icons/fa';
+import { Mail, Lock, Eye, EyeOff, ArrowRight } from 'lucide-react';
 
 const FormulaireConnexion = ({ onSubmit, isLoading }) => {
   const [showPassword, setShowPassword] = useState(false);
-  const [formData, setFormData] = useState({
-    email: '',
-    mot_de_passe: '',
-  });
+  const [formData, setFormData] = useState({ email: '', mot_de_passe: '' });
 
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-  };
+  const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -22,101 +14,90 @@ const FormulaireConnexion = ({ onSubmit, isLoading }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
+    <form onSubmit={handleSubmit} className="space-y-5">
+
       {/* Email */}
       <div>
-        <label className="block text-amber-800 text-sm font-medium mb-2">
-          Email
-        </label>
+        <label htmlFor="email" className="input-label">Adresse e-mail</label>
         <div className="relative">
-          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <FaEnvelope className="text-amber-400" />
-          </div>
+          <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-brown-300" />
           <input
+            id="email"
             type="email"
             name="email"
             value={formData.email}
             onChange={handleChange}
             required
-            className="w-full pl-10 pr-4 py-3 border border-amber-200 rounded-xl focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 outline-none transition-all duration-300 bg-white/50"
+            className="input-field pl-10"
             placeholder="votre@email.com"
+            autoComplete="email"
           />
         </div>
       </div>
 
       {/* Mot de passe */}
       <div>
-        <label className="block text-amber-800 text-sm font-medium mb-2">
-          Mot de passe
-        </label>
+        <div className="flex items-center justify-between mb-1.5">
+          <label htmlFor="mot_de_passe" className="input-label mb-0">Mot de passe</label>
+          <Link to="/mot-de-passe-oublie" className="text-xs text-terra-500 hover:text-terra-700 transition-colors font-medium">
+            Mot de passe oublié ?
+          </Link>
+        </div>
         <div className="relative">
-          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <FaLock className="text-amber-400" />
-          </div>
+          <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-brown-300" />
           <input
+            id="mot_de_passe"
             type={showPassword ? 'text' : 'password'}
             name="mot_de_passe"
             value={formData.mot_de_passe}
             onChange={handleChange}
             required
-            className="w-full pl-10 pr-12 py-3 border border-amber-200 rounded-xl focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 outline-none transition-all duration-300 bg-white/50"
+            className="input-field pl-10 pr-10"
             placeholder="••••••••"
+            autoComplete="current-password"
           />
           <button
             type="button"
             onClick={() => setShowPassword(!showPassword)}
-            className="absolute inset-y-0 right-0 pr-3 flex items-center"
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-brown-300 hover:text-brown-600 transition-colors"
+            aria-label={showPassword ? 'Masquer' : 'Afficher'}
           >
-            {showPassword ? (
-              <FaEyeSlash className="text-amber-400 hover:text-amber-600" />
-            ) : (
-              <FaEye className="text-amber-400 hover:text-amber-600" />
-            )}
+            {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
           </button>
         </div>
       </div>
 
-      {/* Mot de passe oublié */}
-      <div className="text-right">
-        <Link
-          to="/mot-de-passe-oublie"
-          className="text-sm text-amber-500 hover:text-amber-700 transition"
-        >
-          Mot de passe oublié ?
-        </Link>
-      </div>
-
-      {/* Bouton connexion */}
+      {/* Bouton */}
       <button
         type="submit"
         disabled={isLoading}
-        className="w-full bg-gradient-to-r from-amber-600 to-amber-700 text-white py-3 rounded-xl font-semibold hover:shadow-lg hover:shadow-amber-500/25 transition-all duration-300 transform hover:scale-[1.02] flex items-center justify-center gap-2 group disabled:opacity-50 disabled:cursor-not-allowed"
+        className="w-full btn-primary py-3 text-sm justify-center disabled:opacity-60 disabled:cursor-not-allowed"
       >
         {isLoading ? (
-          <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+          <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
         ) : (
           <>
             Se connecter
-            <FaArrowRight className="group-hover:translate-x-1 transition-transform" />
+            <ArrowRight className="w-4 h-4" />
           </>
         )}
       </button>
 
       {/* Séparateur */}
-      <div className="relative my-6">
+      <div className="relative">
         <div className="absolute inset-0 flex items-center">
-          <div className="w-full border-t border-amber-200"></div>
+          <div className="w-full border-t border-cream-200" />
         </div>
-        <div className="relative flex justify-center text-sm">
-          <span className="px-4 bg-white text-amber-400">ou</span>
+        <div className="relative flex justify-center">
+          <span className="px-3 bg-white text-xs text-brown-400">ou</span>
         </div>
       </div>
 
       {/* Lien inscription */}
-      <p className="text-center text-amber-600">
+      <p className="text-center text-sm text-brown-600">
         Pas encore de compte ?{' '}
-        <Link to="/inscription" className="text-amber-700 font-semibold hover:text-amber-500 transition">
-          Créer un compte
+        <Link to="/inscription" className="font-semibold text-terra-600 hover:text-terra-800 transition-colors">
+          Créer un compte gratuitement
         </Link>
       </p>
     </form>
