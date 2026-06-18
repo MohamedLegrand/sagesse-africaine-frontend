@@ -66,9 +66,9 @@ const HeroSection = () => {
               {/* Livre principal */}
               <div className="absolute left-12 top-8 w-44 h-60 bg-brown-950 rounded-lg shadow-2xl overflow-hidden book-shadow">
                 <img
-                  src="/images/livre1.jpg"
+                  src="/images/livres/ange-ou-demon.png"
                   alt="Livre phare"
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover" 
                   onError={(e) => {
                     e.target.style.display = 'none';
                     e.target.parentElement.classList.add('flex', 'items-center', 'justify-center', 'bg-gradient-to-b', 'from-brown-800', 'to-brown-950');
@@ -82,7 +82,7 @@ const HeroSection = () => {
               {/* Livre 2 */}
               <div className="absolute left-60 top-20 w-36 h-48 rounded-lg shadow-xl overflow-hidden book-shadow bg-terra-800">
                 <img
-                  src="/images/livre2.jpg"
+                  src="/images/livres/guerre-spiritualites.png"
                   alt="Livre 2"
                   className="w-full h-full object-cover"
                   onError={(e) => { e.target.style.display = 'none'; }}
@@ -92,7 +92,7 @@ const HeroSection = () => {
               {/* Livre 3 */}
               <div className="absolute left-4 top-72 w-40 h-52 rounded-lg shadow-xl overflow-hidden book-shadow bg-gold-800">
                 <img
-                  src="/images/livre3.jpg"
+                  src="/images/livres/protocole-mths.png"
                   alt="Livre 3"
                   className="w-full h-full object-cover"
                   onError={(e) => { e.target.style.display = 'none'; }}
@@ -102,7 +102,7 @@ const HeroSection = () => {
               {/* Livre 4 */}
               <div className="absolute left-52 top-72 w-36 h-48 rounded-lg shadow-xl overflow-hidden book-shadow bg-brown-700">
                 <img
-                  src="/images/livre4.jpg"
+                  src="/images/livres/vie-apres-mort.png"
                   alt="Livre 4"
                   className="w-full h-full object-cover"
                   onError={(e) => { e.target.style.display = 'none'; }}
