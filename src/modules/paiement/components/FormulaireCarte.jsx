@@ -48,7 +48,7 @@ const FormulaireCarte = ({ onSubmit, loading }) => {
           onChange={handleChange}
           required
           className="w-full px-4 py-3 border border-amber-200 rounded-xl focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 outline-none"
-          placeholder="Jean DUPONT"
+          placeholder="Mohamed LEGRAND"
         />
       </div>
       

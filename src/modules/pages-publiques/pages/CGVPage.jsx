@@ -53,8 +53,8 @@ const CGVPage = () => {
                 <div><span className="font-semibold text-amber-700">Siège :</span> Yaoundé, Cameroun</div>
                 <div>
                   <span className="font-semibold text-amber-700">Email :</span>{' '}
-                  <a href="mailto:Marieconstantin51@yahoo.com" className="text-amber-600 hover:underline">
-                    Marieconstantin51@yahoo.com
+                  <a href="mailto:contact@sagesseafricaine.com" className="text-amber-600 hover:underline">
+                    contact@sagesseafricaine.com
                   </a>
                 </div>
                 <div><span className="font-semibold text-amber-700">Téléphone :</span> (+237) 677 31 44 12</div>
@@ -161,8 +161,8 @@ const CGVPage = () => {
               <ul className="list-none space-y-2 mt-2">
                 <li>
                   <span className="font-semibold">Email :</span>{' '}
-                  <a href="mailto:Marieconstantin51@yahoo.com" className="text-amber-600 hover:underline">
-                    Marieconstantin51@yahoo.com
+                  <a href="mailto:contact@sagesseafricaine.com" className="text-amber-600 hover:underline">
+                    contact@sagesseafricaine.com
                   </a>
                 </li>
                 <li><span className="font-semibold">Téléphone :</span> (+237) 677 31 44 12</li>
@@ -186,8 +186,8 @@ const CGVPage = () => {
                 <p className="text-gray-500 text-sm mt-1">
                   Vos transactions sont protégées par des protocoles de chiffrement avancés.
                   Pour toute question : {' '}
-                  <a href="mailto:Marieconstantin51@yahoo.com" className="text-amber-600 hover:underline">
-                    Marieconstantin51@yahoo.com
+                  <a href="mailto:contact@sagesseafricaine.com" className="text-amber-600 hover:underline">
+                    contact@sagesseafricaine.com
                   </a>
                 </p>
               </div>

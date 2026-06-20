@@ -82,16 +82,14 @@ const ConnexionPage = () => {
 
           {/* Colonne gauche — visuel */}
           <div className="hidden lg:flex flex-col justify-between bg-brown-950 p-12 xl:p-16">
-            <Link to="/" className="flex items-center gap-3">
-              <img
-                src="/images/logo.png"
-                alt="SAGESSE AFRICAINE"
-                className="h-14 w-auto brightness-0 invert"
-                onError={(e) => { e.target.style.display = 'none'; }}
-              />
-              <div>
-                <span className="font-playfair text-white font-bold text-xl">SAGESSE AFRICAINE</span>
-                <div className="h-0.5 w-8 bg-gold-400 mt-1" />
+            <Link to="/" className="inline-flex">
+              <div className="bg-white rounded-xl p-2">
+                <img
+                  src="/images/logo.png"
+                  alt="SAGESSE AFRICAINE"
+                  className="h-14 w-auto"
+                  onError={(e) => { e.target.style.display = 'none'; }}
+                />
               </div>
             </Link>
 
@@ -115,6 +113,19 @@ const ConnexionPage = () => {
           {/* Colonne droite — formulaire */}
           <div className="flex items-center justify-center p-6 sm:p-10 bg-cream-50">
             <div className="w-full max-w-md">
+
+              {/* Logo — visible uniquement sur mobile */}
+              <div className="flex lg:hidden justify-center mb-8">
+                <Link to="/">
+                  <img
+                    src="/images/logo.png"
+                    alt="SAGESSE AFRICAINE"
+                    className="h-20 w-auto max-w-[220px]"
+                    onError={(e) => { e.target.style.display = 'none'; }}
+                  />
+                </Link>
+              </div>
+
               <div className="mb-8">
                 <h1 className="font-playfair text-3xl font-bold text-brown-950 mb-2">
                   Connexion

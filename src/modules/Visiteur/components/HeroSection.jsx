@@ -29,7 +29,7 @@ const HeroSection = () => {
 
             {/* Titre principal */}
             <h1 className="font-playfair text-5xl sm:text-6xl lg:text-7xl font-bold text-brown-950 leading-[1.05] mb-6">
-              La sagesse<br />
+              Sagesse<br />
               <span className="text-terra-500">africaine</span>,<br />
               votre héritage
             </h1>
@@ -54,12 +54,12 @@ const HeroSection = () => {
             {/* Citation */}
             <blockquote className="border-l-4 border-gold-400 pl-4">
               <p className="font-playfair italic text-brown-700 text-base leading-relaxed">
-                « Un peuple qui maîtrise ses savoirs maîtrise aussi son destin »
+                « un peuple qui maîtrise ses savoirs, maîtrise aussi son destin »
               </p>
             </blockquote>
           </div>
 
-          {/* Colonne droite — Visuel livres en mosaïque */}
+          {/* Colonne droite — Visuel livres en mosaïque (desktop) */}
           <div className="relative hidden lg:block">
             <div className="relative h-[520px]">
 
@@ -133,6 +133,85 @@ const HeroSection = () => {
                   </div>
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Livres — mosaïque mobile uniquement */}
+        <div className="lg:hidden mt-8">
+
+          {/* Séparateur décoratif */}
+          <div className="flex items-center gap-3 mb-5">
+            <div className="h-px flex-1 bg-cream-200" />
+            <span className="text-terra-500 text-xs font-bold tracking-[0.18em] uppercase">À découvrir</span>
+            <div className="h-px flex-1 bg-cream-200" />
+          </div>
+
+          {/* Rangée principale : 1 grand livre + 2 empilés */}
+          <div className="flex gap-3 h-56">
+
+            {/* Livre phare */}
+            <div className="w-[42%] flex-shrink-0 relative">
+              <div className="h-full bg-brown-950 rounded-xl overflow-hidden shadow-xl relative">
+                <img
+                  src="/images/livres/ange-ou-demon.png"
+                  alt="Ange ou Démon"
+                  className="w-full h-full object-cover"
+                  onError={(e) => { e.target.style.display = 'none'; }}
+                />
+                <span className="absolute top-2 left-2 bg-terra-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">
+                  Nouveau
+                </span>
+              </div>
+            </div>
+
+            {/* 2 livres empilés */}
+            <div className="flex flex-col gap-2 flex-1">
+              <div className="flex-1 bg-terra-800 rounded-xl overflow-hidden shadow-lg">
+                <img
+                  src="/images/livres/guerre-spiritualites.png"
+                  alt="Guerre des Spiritualités"
+                  className="w-full h-full object-cover"
+                  onError={(e) => { e.target.style.display = 'none'; }}
+                />
+              </div>
+              <div className="flex-1 bg-gold-800 rounded-xl overflow-hidden shadow-lg">
+                <img
+                  src="/images/livres/protocole-mths.png"
+                  alt="Protocole MTHS"
+                  className="w-full h-full object-cover"
+                  onError={(e) => { e.target.style.display = 'none'; }}
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Rangée basse : 4e livre + badge collections */}
+          <div className="flex gap-3 mt-3 items-stretch">
+            <div className="w-[28%] flex-shrink-0 min-h-[80px]">
+              <div className="h-full bg-brown-700 rounded-xl overflow-hidden shadow-lg">
+                <img
+                  src="/images/livres/vie-apres-mort.png"
+                  alt="Vie après la mort"
+                  className="w-full h-full object-cover"
+                  onError={(e) => { e.target.style.display = 'none'; }}
+                />
+              </div>
+            </div>
+            <div className="flex-1 bg-brown-950 text-white rounded-xl p-3 shadow-lg flex flex-col justify-between">
+              <div className="flex items-center gap-2">
+                <Library className="w-4 h-4 text-gold-400 flex-shrink-0" />
+                <div>
+                  <p className="text-[10px] text-brown-300 uppercase tracking-wide">Collections</p>
+                  <p className="font-playfair font-bold text-base">15+ thèmes</p>
+                </div>
+              </div>
+              <Link
+                to="/livres"
+                className="flex items-center gap-1 text-xs font-semibold text-gold-400 hover:text-gold-300 mt-2"
+              >
+                Explorer le catalogue <ArrowRight className="w-3 h-3" />
+              </Link>
             </div>
           </div>
         </div>

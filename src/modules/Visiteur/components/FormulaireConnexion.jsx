@@ -29,7 +29,7 @@ const FormulaireConnexion = ({ onSubmit, isLoading }) => {
             onChange={handleChange}
             required
             className="input-field pl-10"
-            placeholder="votre@email.com"
+            placeholder="mohamed@gmail.com"
             autoComplete="email"
           />
         </div>

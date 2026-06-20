@@ -44,10 +44,10 @@ const BookCard = ({ livre, onAddToCart, addingId, addedIds, prefix = '' }) => {
         </Link>
         <p className="text-xs text-brown-400">{livre.auteur}</p>
 
-        <div className="flex items-center justify-between mt-auto pt-2 gap-2">
+        <div className="flex flex-col gap-1.5 mt-auto pt-2">
           <Link
             to={to}
-            className="flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-semibold bg-cream-100 text-brown-700 hover:bg-cream-200 transition-colors flex-shrink-0"
+            className="flex items-center justify-center gap-1 px-2 py-1.5 rounded-lg text-xs font-semibold bg-cream-100 text-brown-700 hover:bg-cream-200 transition-colors w-full"
           >
             Voir plus
           </Link>
@@ -55,7 +55,7 @@ const BookCard = ({ livre, onAddToCart, addingId, addedIds, prefix = '' }) => {
           <button
             onClick={() => onAddToCart(livre)}
             disabled={isAdding || isAdded}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all duration-200
+            className={`flex items-center justify-center gap-1.5 px-2 py-1.5 rounded-lg text-xs font-semibold transition-all duration-200 w-full
               ${isAdded
                 ? 'bg-green-100 text-green-700 cursor-default'
                 : 'bg-terra-500 text-white hover:bg-terra-600 disabled:opacity-50'
@@ -122,7 +122,7 @@ const CatalogueSection = () => {
     return (
       <section className="py-20 bg-white border-t border-cream-100">
         <div className="container-editorial">
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+          <div className="grid grid-cols-2 xs:grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4">
             {[...Array(8)].map((_, i) => (
               <div key={i} className="bg-cream-50 rounded-xl animate-pulse">
                 <div className="aspect-[2/3] bg-cream-200 rounded-t-xl" />
@@ -181,7 +181,7 @@ const CatalogueSection = () => {
         )}
 
         {/* Grille livres */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+        <div className="grid grid-cols-2 xs:grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4">
           {filteredLivres.map((livre) => (
             <BookCard
               key={livre.id}

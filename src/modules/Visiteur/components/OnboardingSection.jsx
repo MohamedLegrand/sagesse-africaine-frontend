@@ -50,7 +50,7 @@ const OnboardingSection = () => {
             <span className="text-terra-500">en 4 étapes</span>
           </h2>
           <p className="text-brown-500 mt-4 text-sm leading-relaxed">
-            Rejoindre la communauté Sagesse Africaine est simple, rapide et gratuit.
+            Rejoindre la communauté Sagesse africaine est simple, rapide et gratuit.
           </p>
         </div>
 

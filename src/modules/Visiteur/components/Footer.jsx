@@ -33,20 +33,18 @@ const Footer = () => {
 
           {/* Marque */}
           <div className="lg:col-span-1">
-            <div className="flex items-center gap-3 mb-5">
-              <img
-                src="/images/logo.png"
-                alt="SAGESSE AFRICAINE"
-                className="h-14 w-auto brightness-0 invert"
-                onError={(e) => { e.target.style.display = 'none'; }}
-              />
-              <div>
-                <span className="font-playfair text-lg font-bold text-white">SAGESSE AFRICAINE</span>
-                <div className="h-0.5 w-8 bg-gold-400 mt-1" />
+            <div className="mb-5">
+              <div className="bg-white rounded-xl p-2 inline-flex">
+                <img
+                  src="/images/logo.png"
+                  alt="SAGESSE AFRICAINE"
+                  className="h-16 w-auto"
+                  onError={(e) => { e.target.style.display = 'none'; }}
+                />
               </div>
             </div>
             <p className="text-brown-400 text-sm leading-relaxed mb-5">
-              Groupe panafricain de presses, d'édition et de diffusion culturelle. Un peuple qui maîtrise ses savoirs maîtrise aussi son destin.
+              Groupe panafricain de presses, d'édition et de diffusion culturelle. « un peuple qui maîtrise ses savoirs, maîtrise aussi son destin »
             </p>
             <div className="flex gap-2">
               {socialLinks.map(({ icon: Icon, href, label }) => (
@@ -98,8 +96,8 @@ const Footer = () => {
               </li>
               <li className="flex items-center gap-3">
                 <Mail className="w-4 h-4 text-terra-400 flex-shrink-0" />
-                <a href="mailto:Marieconstantin51@yahoo.com" className="text-brown-400 hover:text-white text-sm transition-colors">
-                  Marieconstantin51@yahoo.com
+                <a href="mailto:contact@sagesseafricaine.com" className="text-brown-400 hover:text-white text-sm transition-colors">
+                  contact@sagesseafricaine.com
                 </a>
               </li>
               <li className="flex items-start gap-3">

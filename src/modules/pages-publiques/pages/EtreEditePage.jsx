@@ -211,9 +211,9 @@ const EtreEditePage = () => {
             <div className="mt-8 bg-amber-50 border border-amber-200 rounded-2xl p-6 text-center">
               <p className="text-amber-700 font-medium mb-3">Préférez-vous nous contacter directement ?</p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <a href="mailto:Marieconstantin51@yahoo.com"
+                <a href="mailto:contact@sagesseafricaine.com"
                   className="flex items-center justify-center gap-2 text-amber-600 hover:text-amber-800 transition text-sm">
-                  <FaEnvelope /> Marieconstantin51@yahoo.com
+                  <FaEnvelope /> contact@sagesseafricaine.com
                 </a>
                 <a href="tel:+237677314412"
                   className="flex items-center justify-center gap-2 text-amber-600 hover:text-amber-800 transition text-sm">

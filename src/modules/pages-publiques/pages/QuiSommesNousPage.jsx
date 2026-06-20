@@ -45,7 +45,7 @@ const QuiSommesNousPage = () => {
           {/* Citation */}
           <div className="bg-amber-800/10 rounded-2xl p-8 mb-16 text-center">
             <p className="text-2xl md:text-3xl font-playfair italic text-amber-800">
-              « Un peuple qui maîtrise ses savoirs maîtrise aussi son destin »
+              « un peuple qui maîtrise ses savoirs, maîtrise aussi son destin »
             </p>
           </div>
 
@@ -107,7 +107,7 @@ const QuiSommesNousPage = () => {
           {/* Chiffres clés */}
           <div className="bg-amber-800 rounded-2xl p-8 mb-16">
             <h2 className="text-2xl font-playfair font-bold text-white text-center mb-8">
-              SAGESSE AFRICAINE en chiffres
+              Sagesse africaine en chiffres
             </h2>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
               {stats.map((stat, index) => (
@@ -122,7 +122,7 @@ const QuiSommesNousPage = () => {
           {/* CTA */}
           <div className="text-center">
             <h2 className="text-2xl font-playfair font-bold text-amber-800 mb-4">
-              Rejoignez l'aventure SAGESSE AFRICAINE
+              Rejoignez l'aventure Sagesse africaine
             </h2>
             <p className="text-gray-600 mb-6">
               Publiez avec nous, devenez auteur ou simplement lecteur

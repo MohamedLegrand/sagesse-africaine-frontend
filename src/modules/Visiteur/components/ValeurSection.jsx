@@ -49,7 +49,7 @@ const ValeurSection = () => {
               <span className="text-gold-400">taillée pour l'Afrique</span>
             </h2>
             <p className="text-brown-200 leading-relaxed mb-8 text-sm">
-              Sagesse Africaine n'est pas une librairie ordinaire. C'est un projet éditorial
+              Sagesse africaine n'est pas une librairie ordinaire. C'est un projet éditorial
               qui place la culture et l'intelligence africaines au centre. Chaque livre publié
               est un acte de souveraineté intellectuelle.
             </p>
