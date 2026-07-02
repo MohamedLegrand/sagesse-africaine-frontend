@@ -54,7 +54,7 @@ const ConfidentialitePage = () => {
                 groupe panafricain de presses, d'édition et de diffusion culturelle, dont le siège social
                 est situé à Yaoundé, Cameroun.
               </p>
-              <p>Contact : <a href="mailto:contact@sagesseafricaine.com" className="text-amber-600 hover:underline">contact@sagesseafricaine.com</a></p>
+              <p>Contact : <a href="mailto:contact@sagesseafricaine.org" className="text-amber-600 hover:underline">contact@sagesseafricaine.org</a></p>
             </Section>
 
             <Section titre="2. Données collectées">
@@ -156,8 +156,8 @@ const ConfidentialitePage = () => {
               </ul>
               <p className="mt-4">
                 Pour exercer vos droits, contactez-nous à :{' '}
-                <a href="mailto:contact@sagesseafricaine.com" className="text-amber-600 hover:underline">
-                  contact@sagesseafricaine.com
+                <a href="mailto:contact@sagesseafricaine.org" className="text-amber-600 hover:underline">
+                  contact@sagesseafricaine.org
                 </a>
               </p>
             </Section>
@@ -185,8 +185,8 @@ const ConfidentialitePage = () => {
                 <p className="font-semibold text-amber-800 text-sm">Des questions sur cette politique ?</p>
                 <p className="text-gray-500 text-sm mt-1">
                   Contactez notre responsable protection des données à :{' '}
-                  <a href="mailto:contact@sagesseafricaine.com" className="text-amber-600 hover:underline">
-                    contact@sagesseafricaine.com
+                  <a href="mailto:contact@sagesseafricaine.org" className="text-amber-600 hover:underline">
+                    contact@sagesseafricaine.org
                   </a>
                 </p>
               </div>

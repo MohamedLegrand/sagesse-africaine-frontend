@@ -2,11 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import {
   LayoutDashboard, Store, Library, ShoppingBag, Clock,
-  UserCircle, Settings, Bell, LogOut, Menu, X, ChevronRight, BookOpen
+  UserCircle, Settings, LogOut, Menu, X, ChevronRight, BookOpen
 } from 'lucide-react';
 import api from '../../../services/api';
 import authService from '../../../services/authService';
 import toast from 'react-hot-toast';
+import ClocheNotification from '../../notification/components/ClocheNotification';
 
 const navItems = [
   { path: '/dashboard',              label: 'Accueil',          icon: LayoutDashboard, exact: true },
@@ -23,17 +24,12 @@ const DashboardLayout = ({ children }) => {
   const location = useLocation();
   const [user, setUser] = useState(null);
   const [cartCount, setCartCount] = useState(0);
-  const [notifCount, setNotifCount] = useState(0);
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  const fetchCounts = async () => {
+  const fetchCartCount = async () => {
     try {
-      const [panierRes, notifRes] = await Promise.all([
-        api.get('/panier/'),
-        api.get('/notifications/'),
-      ]);
-      setCartCount(panierRes.data.nombre_livres || 0);
-      setNotifCount((notifRes.data.notifications || []).filter(n => !n.est_lu).length);
+      const r = await api.get('/panier/');
+      setCartCount(r.data.nombre_livres || 0);
     } catch {}
   };
 
@@ -43,14 +39,12 @@ const DashboardLayout = ({ children }) => {
         const r = await api.get('/utilisateurs/me');
         setUser(r.data);
       } catch {}
-      fetchCounts();
+      fetchCartCount();
     };
     init();
-    window.addEventListener('cartUpdated', fetchCounts);
-    window.addEventListener('notificationUpdated', fetchCounts);
+    window.addEventListener('cartUpdated', fetchCartCount);
     return () => {
-      window.removeEventListener('cartUpdated', fetchCounts);
-      window.removeEventListener('notificationUpdated', fetchCounts);
+      window.removeEventListener('cartUpdated', fetchCartCount);
     };
   }, []);
 
@@ -190,17 +184,7 @@ const DashboardLayout = ({ children }) => {
               )}
             </Link>
 
-            <Link
-              to="/mes-notifications"
-              className="relative p-2 rounded-lg text-brown-600 hover:bg-cream-100 transition-colors"
-            >
-              <Bell className="w-5 h-5" />
-              {notifCount > 0 && (
-                <span className="absolute -top-0.5 -right-0.5 bg-red-500 text-white text-[10px] w-4 h-4 flex items-center justify-center rounded-full font-bold">
-                  {notifCount > 9 ? '9+' : notifCount}
-                </span>
-              )}
-            </Link>
+            <ClocheNotification />
 
             <Link to="/dashboard/profil" className="flex items-center gap-2 px-2 py-1.5 rounded-lg hover:bg-cream-100 transition-colors">
               {user?.avatar_url ? (

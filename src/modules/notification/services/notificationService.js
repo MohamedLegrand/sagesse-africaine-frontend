@@ -1,61 +1,35 @@
 import api from '../../../services/api';
 
 const notificationService = {
-  // Récupérer toutes les notifications de l'utilisateur
   getMesNotifications: async () => {
-    try {
-      const response = await api.get('/notifications/');
-      return response.data;
-    } catch (error) {
-      console.error('Erreur chargement notifications:', error);
-      throw error;
-    }
+    const response = await api.get('/notifications/');
+    return response.data;
   },
 
-  // Marquer une notification comme lue
+  getNotification: async (notificationId) => {
+    const response = await api.get(`/notifications/${notificationId}`);
+    return response.data;
+  },
+
   marquerCommeLu: async (notificationId) => {
-    try {
-      const response = await api.patch(`/notifications/${notificationId}/lire`);
-      return response.data;
-    } catch (error) {
-      console.error('Erreur marquage notification:', error);
-      throw error;
-    }
+    const response = await api.patch(`/notifications/${notificationId}/lire`);
+    return response.data;
   },
 
-  // Marquer toutes les notifications comme lues
   marquerToutLu: async () => {
-    try {
-      const response = await api.patch('/notifications/lire-tout');
-      return response.data;
-    } catch (error) {
-      console.error('Erreur marquage tout:', error);
-      throw error;
-    }
+    const response = await api.patch('/notifications/lire-tout');
+    return response.data;
   },
 
-  // Supprimer une notification
   supprimerNotification: async (notificationId) => {
-    try {
-      const response = await api.delete(`/notifications/${notificationId}`);
-      return response.data;
-    } catch (error) {
-      console.error('Erreur suppression notification:', error);
-      throw error;
-    }
+    const response = await api.delete(`/notifications/${notificationId}`);
+    return response.data;
   },
 
-  // Compter les notifications non lues
-  compterNonLues: async () => {
-    try {
-      const response = await api.get('/notifications/');
-      const nonLues = response.data.notifications?.filter(n => !n.est_lu).length || 0;
-      return nonLues;
-    } catch (error) {
-      console.error('Erreur comptage notifications:', error);
-      return 0;
-    }
-  }
+  supprimerTout: async () => {
+    const response = await api.delete('/notifications/');
+    return response.data;
+  },
 };
 
 export default notificationService;

@@ -20,6 +20,7 @@ import {
   StatistiquesPage
 } from './modules/admin';
 import { MesNotificationsPage, ParametresNotificationPage, NotificationProvider } from './modules/notification';
+
 import { PaiementPage, ConfirmationPaiementPage } from './modules/paiement';
 import RouteProtegee from './modules/dashboard/components/RouteProtegee';
 import RouteAdmin from './modules/admin/components/RouteAdmin';
@@ -28,8 +29,9 @@ import ScrollToTop from './modules/shared/components/UI/ScrollToTop';
 function App() {
   return (
     <Router>
-      <ScrollToTop />
-      <Toaster 
+      <NotificationProvider>
+        <ScrollToTop />
+        <Toaster
         position="top-right"
         toastOptions={{
           duration: 4000,
@@ -51,9 +53,9 @@ function App() {
             },
           },
         }}
-      />
-      
-      <Routes>
+        />
+
+        <Routes>
         {/* Pages publiques */}
         <Route path="/" element={<AccueilPage />} />
         <Route path="/connexion" element={<ConnexionPage />} />
@@ -76,7 +78,7 @@ function App() {
             <PaiementPage />
           </RouteProtegee>
         } />
-        <Route path="/confirmation-paiement" element={
+        <Route path="/confirmation-paiement/:commandeId" element={
           <RouteProtegee>
             <ConfirmationPaiementPage />
           </RouteProtegee>
@@ -132,9 +134,7 @@ function App() {
         {/* Notifications (protégé) */}
         <Route path="/mes-notifications" element={
           <RouteProtegee>
-            <NotificationProvider>
-              <MesNotificationsPage />
-            </NotificationProvider>
+            <MesNotificationsPage />
           </RouteProtegee>
         } />
         <Route path="/parametres-notifications" element={
@@ -179,7 +179,8 @@ function App() {
             <StatistiquesPage />
           </RouteAdmin>
         } />
-      </Routes>
+        </Routes>
+      </NotificationProvider>
     </Router>
   );
 }

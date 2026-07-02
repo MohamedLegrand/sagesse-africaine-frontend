@@ -48,8 +48,8 @@ const MentionsLegalesPage = () => {
                 <div><span className="font-semibold text-amber-700">Siège social :</span> Yaoundé, Cameroun</div>
                 <div>
                   <span className="font-semibold text-amber-700">Email :</span>{' '}
-                  <a href="mailto:contact@sagesseafricaine.com" className="text-amber-600 hover:underline">
-                    contact@sagesseafricaine.com
+                  <a href="mailto:contact@sagesseafricaine.org" className="text-amber-600 hover:underline">
+                    contact@sagesseafricaine.org
                   </a>
                 </div>
                 <div><span className="font-semibold text-amber-700">Téléphone :</span> (+237) 677 31 44 12 / (+237) 693 21 54 31</div>
@@ -135,8 +135,8 @@ const MentionsLegalesPage = () => {
                 <p className="font-semibold text-amber-800 text-sm">Nous contacter</p>
                 <p className="text-gray-500 text-sm mt-1">
                   Pour toute question relative aux mentions légales :{' '}
-                  <a href="mailto:contact@sagesseafricaine.com" className="text-amber-600 hover:underline">
-                    contact@sagesseafricaine.com
+                  <a href="mailto:contact@sagesseafricaine.org" className="text-amber-600 hover:underline">
+                    contact@sagesseafricaine.org
                   </a>
                 </p>
               </div>

@@ -141,8 +141,8 @@ const ContactPage = () => {
                     <FaEnvelope className="text-amber-600 text-xl mt-1" />
                     <div>
                       <p className="font-semibold text-amber-800">Email</p>
-                      <a href="mailto:contact@sagesseafricaine.com" className="text-gray-600 hover:text-amber-600 transition">
-                        contact@sagesseafricaine.com
+                      <a href="mailto:contact@sagesseafricaine.org" className="text-gray-600 hover:text-amber-600 transition">
+                        contact@sagesseafricaine.org
                       </a>
                     </div>
                   </div>

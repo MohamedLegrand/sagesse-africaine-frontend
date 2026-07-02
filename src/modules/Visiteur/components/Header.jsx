@@ -1,16 +1,16 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Search, ShoppingBag, Bell, User, LogOut, Menu, X, ChevronDown, BookOpen } from 'lucide-react';
+import { Search, ShoppingBag, User, LogOut, Menu, X, ChevronDown, BookOpen } from 'lucide-react';
 import api from '../../../services/api';
 import authService from '../../../services/authService';
 import guestCart from '../../../services/guestCart';
+import ClocheNotification from '../../notification/components/ClocheNotification';
 
 const Header = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [cartItemCount, setCartItemCount] = useState(0);
-  const [notificationCount, setNotificationCount] = useState(0);
   const [collections, setCollections] = useState([]);
   const [showBoutiqueMenu, setShowBoutiqueMenu] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
@@ -78,26 +78,11 @@ const Header = () => {
     }
   };
 
-  const fetchNotificationCount = async () => {
-    const token = localStorage.getItem('access_token');
-    if (!token) { setNotificationCount(0); return; }
-    try {
-      const r = await api.get('/notifications/');
-      setNotificationCount((r.data.notifications || []).filter(n => !n.est_lu).length);
-    } catch {}
-  };
-
   useEffect(() => {
     fetchCartCount();
-    if (isAuthenticated) fetchNotificationCount();
     const onCart = () => fetchCartCount();
-    const onNotif = () => fetchNotificationCount();
     window.addEventListener('cartUpdated', onCart);
-    window.addEventListener('notificationUpdated', onNotif);
-    return () => {
-      window.removeEventListener('cartUpdated', onCart);
-      window.removeEventListener('notificationUpdated', onNotif);
-    };
+    return () => window.removeEventListener('cartUpdated', onCart);
   }, [isAuthenticated]);
 
   const handleLogout = async () => {
@@ -305,20 +290,7 @@ const Header = () => {
           </Link>
 
           {/* NOTIFICATIONS */}
-          {isAuthenticated && (
-            <Link
-              to="/mes-notifications"
-              className="relative p-2 rounded-lg text-brown-600 hover:text-brown-900 hover:bg-cream-100 transition-colors"
-              aria-label="Notifications"
-            >
-              <Bell className="w-5 h-5" />
-              {notificationCount > 0 && (
-                <span className="absolute -top-0.5 -right-0.5 bg-red-500 text-white text-[10px] w-4 h-4 flex items-center justify-center rounded-full font-bold">
-                  {notificationCount > 9 ? '9+' : notificationCount}
-                </span>
-              )}
-            </Link>
-          )}
+          {isAuthenticated && <ClocheNotification />}
 
           {/* AUTH */}
           {isAuthenticated ? (

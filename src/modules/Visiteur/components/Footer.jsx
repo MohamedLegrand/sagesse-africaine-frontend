@@ -96,8 +96,8 @@ const Footer = () => {
               </li>
               <li className="flex items-center gap-3">
                 <Mail className="w-4 h-4 text-terra-400 flex-shrink-0" />
-                <a href="mailto:contact@sagesseafricaine.com" className="text-brown-400 hover:text-white text-sm transition-colors">
-                  contact@sagesseafricaine.com
+                <a href="mailto:contact@sagesseafricaine.org" className="text-brown-400 hover:text-white text-sm transition-colors">
+                  contact@sagesseafricaine.org
                 </a>
               </li>
               <li className="flex items-start gap-3">

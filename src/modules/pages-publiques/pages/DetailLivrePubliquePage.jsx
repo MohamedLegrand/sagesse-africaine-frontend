@@ -1,39 +1,33 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { FaBook, FaShoppingCart, FaArrowLeft, FaStar, FaCheck, FaLock } from 'react-icons/fa';
+import { FaBook, FaShoppingCart, FaArrowLeft, FaStar, FaCheck, FaLock, FaTimes, FaExpand } from 'react-icons/fa';
 import Header from '../../visiteur/components/Header';
 import Footer from '../../visiteur/components/Footer';
 import api from '../../../services/api';
 import guestCart from '../../../services/guestCart';
 import toast from 'react-hot-toast';
+import { getLivreSiteById } from '../../../data/livresSite';
 
 const DetailLivrePubliquePage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
 
   const [livre, setLivre] = useState(null);
-  const [avis, setAvis] = useState([]);
+  const [avis] = useState([]);
   const [loading, setLoading] = useState(true);
   const [adding, setAdding] = useState(false);
   const [added, setAdded] = useState(false);
+  const [imageAgrandie, setImageAgrandie] = useState(null);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const [livreRes, avisRes] = await Promise.all([
-          api.get(`/livres/${id}`),
-          api.get(`/avis/livre/${id}`).catch(() => ({ data: { avis: [] } })),
-        ]);
-        setLivre(livreRes.data);
-        setAvis(avisRes.data?.avis?.filter(a => a.est_approuve) || []);
-      } catch {
-        toast.error('Livre introuvable');
-        navigate('/livres');
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchData();
+    const livreTrouve = getLivreSiteById(id);
+    if (!livreTrouve) {
+      toast.error('Livre introuvable');
+      navigate('/livres');
+    } else {
+      setLivre(livreTrouve);
+    }
+    setLoading(false);
   }, [id, navigate]);
 
   const handleAddToCart = async () => {
@@ -212,6 +206,64 @@ const DetailLivrePubliquePage = () => {
               )}
             </div>
           </div>
+
+          {/* Galerie : couverture, sommaire, 4e de couverture */}
+          <div className="bg-white rounded-2xl shadow-lg p-6 md:p-8 mb-8">
+            <h2 className="text-xl font-playfair font-bold text-amber-800 mb-5">
+              Aperçu du livre
+            </h2>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+              {[
+                { url: livre.couverture_url, label: 'Couverture' },
+                ...livre.sommaire_urls.map((url, i) => ({
+                  url,
+                  label: livre.sommaire_urls.length > 1 ? `Sommaire (${i + 1}/${livre.sommaire_urls.length})` : 'Sommaire',
+                })),
+                { url: livre.quatrieme_couverture_url, label: '4e de couverture' },
+              ].map((img) => (
+                <button
+                  key={img.label}
+                  type="button"
+                  onClick={() => setImageAgrandie(img)}
+                  className="group relative rounded-xl overflow-hidden border border-amber-100 bg-amber-50"
+                >
+                  <img
+                    src={img.url}
+                    alt={`${livre.titre} — ${img.label}`}
+                    className="w-full h-56 object-cover object-top group-hover:scale-105 transition-transform duration-500"
+                  />
+                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors flex items-center justify-center">
+                    <FaExpand className="text-white opacity-0 group-hover:opacity-100 transition-opacity" />
+                  </div>
+                  <span className="absolute bottom-0 inset-x-0 bg-black/60 text-white text-xs py-1.5 text-center">
+                    {img.label}
+                  </span>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Modal image agrandie */}
+          {imageAgrandie && (
+            <div
+              className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4"
+              onClick={() => setImageAgrandie(null)}
+            >
+              <button
+                type="button"
+                onClick={() => setImageAgrandie(null)}
+                className="absolute top-4 right-4 text-white/80 hover:text-white"
+              >
+                <FaTimes className="text-2xl" />
+              </button>
+              <img
+                src={imageAgrandie.url}
+                alt={imageAgrandie.label}
+                className="max-h-[85vh] max-w-full rounded-xl shadow-2xl"
+                onClick={(e) => e.stopPropagation()}
+              />
+            </div>
+          )}
 
           {/* Section avis */}
           <div className="bg-white rounded-2xl shadow-lg p-6">

@@ -4,6 +4,7 @@ import { ShoppingBag, BookOpen, Check, ArrowRight, Star } from 'lucide-react';
 import api from '../../../services/api';
 import guestCart from '../../../services/guestCart';
 import toast from 'react-hot-toast';
+import livresSite from '../../../data/livresSite';
 
 const BookCard = ({ livre, onAddToCart, addingId, addedIds, prefix = '' }) => {
   const isAdding = addingId === livre.id;
@@ -43,6 +44,9 @@ const BookCard = ({ livre, onAddToCart, addingId, addedIds, prefix = '' }) => {
           </h3>
         </Link>
         <p className="text-xs text-brown-400">{livre.auteur}</p>
+        <p className="text-sm font-bold text-terra-600">
+          {livre.est_gratuit ? 'Gratuit' : `${livre.prix?.toLocaleString()} FCFA`}
+        </p>
 
         <div className="flex flex-col gap-1.5 mt-auto pt-2">
           <Link
@@ -85,16 +89,8 @@ const CatalogueSection = () => {
   const [collections, setCollections] = useState([]);
 
   useEffect(() => {
-    Promise.all([
-      api.get('/livres/', { params: { page: 1, taille: 100 } }),
-      api.get('/collections/'),
-    ])
-      .then(([livresRes, colRes]) => {
-        setLivres((livresRes.data.livres || []).filter(l => l.est_publie));
-        setCollections(colRes.data.collections || []);
-      })
-      .catch(() => {})
-      .finally(() => setLoading(false));
+    setLivres(livresSite);
+    setLoading(false);
   }, []);
 
   const handleAddToCart = async (livre) => {
@@ -143,8 +139,8 @@ const CatalogueSection = () => {
 
   const tabs = [{ id: 'all', label: 'Tous les livres' }, ...collections.map(c => ({ id: c.id, label: c.nom }))];
   const filteredLivres = activeTab === 'all'
-    ? livres.slice(0, 12)
-    : livres.filter(l => l.collection_id === activeTab).slice(0, 12);
+    ? livres
+    : livres.filter(l => l.collection_id === activeTab);
 
   return (
     <section className="py-20 bg-white border-t border-cream-100" id="catalogue">

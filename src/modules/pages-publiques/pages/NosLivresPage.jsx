@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { FaBook, FaSearch, FaStar, FaStarHalfAlt, FaShoppingCart } from 'react-icons/fa';
 import Header from '../../visiteur/components/Header';
@@ -6,32 +6,18 @@ import Footer from '../../visiteur/components/Footer';
 import api from '../../../services/api';
 import guestCart from '../../../services/guestCart';
 import toast from 'react-hot-toast';
+import livresSite from '../../../data/livresSite';
 
 const NosLivresPage = () => {
   const [livres, setLivres] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
-  const [page, setPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
   const [addingToCart, setAddingToCart] = useState(null);
 
-  const fetchLivres = useCallback(async () => {
-    setLoading(true);
-    try {
-      const response = await api.get('/livres/', { params: { page, taille: 12 } });
-      setLivres(response.data.livres || []);
-      setTotalPages(Math.ceil((response.data.total || 0) / 12));
-    } catch (error) {
-      console.error('Erreur chargement livres:', error);
-      toast.error('Erreur lors du chargement des livres');
-    } finally {
-      setLoading(false);
-    }
-  }, [page]);
-
   useEffect(() => {
-    fetchLivres();
-  }, [fetchLivres]);
+    setLivres(livresSite);
+    setLoading(false);
+  }, []);
 
   const handleAddToCart = async (livre) => {
     const token = localStorage.getItem('access_token');
@@ -200,28 +186,6 @@ const NosLivresPage = () => {
             </div>
           )}
 
-          {/* Pagination */}
-          {totalPages > 1 && (
-            <div className="flex justify-center gap-2 mt-8">
-              <button
-                onClick={() => setPage(p => Math.max(1, p - 1))}
-                disabled={page === 1}
-                className="px-4 py-2 border border-amber-200 rounded-xl text-amber-600 disabled:opacity-50 hover:bg-amber-50 transition"
-              >
-                Précédent
-              </button>
-              <span className="px-4 py-2 bg-amber-600 text-white rounded-xl">
-                {page} / {totalPages}
-              </span>
-              <button
-                onClick={() => setPage(p => Math.min(totalPages, p + 1))}
-                disabled={page === totalPages}
-                className="px-4 py-2 border border-amber-200 rounded-xl text-amber-600 disabled:opacity-50 hover:bg-amber-50 transition"
-              >
-                Suivant
-              </button>
-            </div>
-          )}
         </div>
       </main>
 

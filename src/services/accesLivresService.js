@@ -6,6 +6,11 @@ const accesLivresService = {
     return response.data;
   },
 
+  getMesAcces: async (page = 1, taille = 10) => {
+    const response = await api.get('/acces-livres/mes-acces', { params: { page, taille } });
+    return response.data;
+  },
+
   getTousAcces: async (page = 1, taille = 10) => {
     const response = await api.get('/acces-livres/', { params: { page, taille } });
     return response.data;

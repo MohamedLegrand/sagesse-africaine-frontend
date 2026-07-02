@@ -5,6 +5,7 @@ export { default as ParametresNotificationPage } from './pages/ParametresNotific
 // Composants
 export { default as BadgeNotification } from './components/BadgeNotification';
 export { default as CarteNotification } from './components/CarteNotification';
+export { default as ClocheNotification } from './components/ClocheNotification';
 
 // Services
 export { default as notificationService } from './services/notificationService';

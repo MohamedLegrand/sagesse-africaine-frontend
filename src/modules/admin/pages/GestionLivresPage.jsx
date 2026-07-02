@@ -3,6 +3,7 @@ import { BookOpen, Plus, Edit2, Trash2, Eye, EyeOff, Search, Check, X, FileText,
 import api from '../../../services/api';
 import toast from 'react-hot-toast';
 import AdminLayout from '../components/AdminLayout';
+import livresSite from '../../../data/livresSite';
 
 const GestionLivresPage = () => {
   const [livres, setLivres] = useState([]);
@@ -25,10 +26,9 @@ const GestionLivresPage = () => {
 
   const fetchLivres = async () => {
     setLoading(true);
-    try {
-      const r = await api.get('/livres/', { params: { page, taille: 20 } });
-      setLivres(r.data.livres || []); setTotal(r.data.total || 0);
-    } catch { toast.error('Erreur chargement des livres'); } finally { setLoading(false); }
+    setLivres(livresSite);
+    setTotal(livresSite.length);
+    setLoading(false);
   };
 
   const fetchCollections = async () => {
@@ -100,7 +100,7 @@ const GestionLivresPage = () => {
     l.titre?.toLowerCase().includes(searchTerm.toLowerCase()) ||
     l.auteur?.toLowerCase().includes(searchTerm.toLowerCase())
   );
-  const totalPages = Math.ceil(total / 20);
+  const totalPages = 1;
 
   return (
     <AdminLayout>

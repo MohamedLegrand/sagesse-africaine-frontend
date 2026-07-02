@@ -8,8 +8,5 @@ export { default as FormulaireCarte } from './components/FormulaireCarte';
 export { default as FormulaireOrangeMoney } from './components/FormulaireOrangeMoney';
 export { default as FormulaireMTN } from './components/FormulaireMTN';
 
-// Services
-export { default as paiementService } from './services/paiementService';
-
 // Hooks
 export { default as usePaiement } from './hooks/usePaiement';

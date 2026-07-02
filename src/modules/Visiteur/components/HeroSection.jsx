@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, BookOpen, Users, Library, Award } from 'lucide-react';
+import { getLivreSiteById } from '../../../data/livresSite';
 
 const stats = [
   { icon: BookOpen, value: '100+', label: 'Ouvrages publiés' },
@@ -8,6 +9,14 @@ const stats = [
   { icon: Library,  value: '10k+', label: 'Lecteurs actifs' },
   { icon: Award,    value: '15+',  label: 'Collections' },
 ];
+
+const [heroBook1, heroBook2, heroBook3, heroBook4, heroBook5] = [
+  'ange-ou-demon',
+  'la-puissance-spirituelle-du-sexe',
+  'la-guerre-des-spiritualites-en-afrique',
+  'la-vie-spirituelle-du-sorcier',
+  'la-transmission-de-la-sorcellerie-au-sein-de-la-famille',
+].map(getLivreSiteById);
 
 const HeroSection = () => {
   return (
@@ -66,9 +75,9 @@ const HeroSection = () => {
               {/* Livre principal */}
               <div className="absolute left-12 top-8 w-44 h-60 bg-brown-950 rounded-lg shadow-2xl overflow-hidden book-shadow">
                 <img
-                  src="/images/livres/ange-ou-demon.png"
-                  alt="Livre phare"
-                  className="w-full h-full object-cover" 
+                  src={heroBook1.couverture_url}
+                  alt={heroBook1.titre}
+                  className="w-full h-full object-cover"
                   onError={(e) => {
                     e.target.style.display = 'none';
                     e.target.parentElement.classList.add('flex', 'items-center', 'justify-center', 'bg-gradient-to-b', 'from-brown-800', 'to-brown-950');
@@ -82,8 +91,8 @@ const HeroSection = () => {
               {/* Livre 2 */}
               <div className="absolute left-60 top-20 w-36 h-48 rounded-lg shadow-xl overflow-hidden book-shadow bg-terra-800">
                 <img
-                  src="/images/livres/guerre-spiritualites.png"
-                  alt="Livre 2"
+                  src={heroBook2.couverture_url}
+                  alt={heroBook2.titre}
                   className="w-full h-full object-cover"
                   onError={(e) => { e.target.style.display = 'none'; }}
                 />
@@ -92,8 +101,8 @@ const HeroSection = () => {
               {/* Livre 3 */}
               <div className="absolute left-4 top-72 w-40 h-52 rounded-lg shadow-xl overflow-hidden book-shadow bg-gold-800">
                 <img
-                  src="/images/livres/protocole-mths.png"
-                  alt="Livre 3"
+                  src={heroBook3.couverture_url}
+                  alt={heroBook3.titre}
                   className="w-full h-full object-cover"
                   onError={(e) => { e.target.style.display = 'none'; }}
                 />
@@ -102,8 +111,18 @@ const HeroSection = () => {
               {/* Livre 4 */}
               <div className="absolute left-52 top-72 w-36 h-48 rounded-lg shadow-xl overflow-hidden book-shadow bg-brown-700">
                 <img
-                  src="/images/livres/vie-apres-mort.png"
-                  alt="Livre 4"
+                  src={heroBook4.couverture_url}
+                  alt={heroBook4.titre}
+                  className="w-full h-full object-cover"
+                  onError={(e) => { e.target.style.display = 'none'; }}
+                />
+              </div>
+
+              {/* Livre 5 */}
+              <div className="absolute right-8 top-52 w-32 h-44 rounded-lg shadow-xl overflow-hidden book-shadow bg-brown-900 z-10">
+                <img
+                  src={heroBook5.couverture_url}
+                  alt={heroBook5.titre}
                   className="w-full h-full object-cover"
                   onError={(e) => { e.target.style.display = 'none'; }}
                 />
@@ -147,15 +166,15 @@ const HeroSection = () => {
             <div className="h-px flex-1 bg-cream-200" />
           </div>
 
-          {/* Rangée principale : 1 grand livre + 2 empilés */}
-          <div className="flex gap-3 h-56">
+          {/* Rangée principale : 1 grand livre + 3 empilés */}
+          <div className="flex gap-3 h-64">
 
             {/* Livre phare */}
             <div className="w-[42%] flex-shrink-0 relative">
               <div className="h-full bg-brown-950 rounded-xl overflow-hidden shadow-xl relative">
                 <img
-                  src="/images/livres/ange-ou-demon.png"
-                  alt="Ange ou Démon"
+                  src={heroBook1.couverture_url}
+                  alt={heroBook1.titre}
                   className="w-full h-full object-cover"
                   onError={(e) => { e.target.style.display = 'none'; }}
                 />
@@ -165,20 +184,28 @@ const HeroSection = () => {
               </div>
             </div>
 
-            {/* 2 livres empilés */}
+            {/* 3 livres empilés */}
             <div className="flex flex-col gap-2 flex-1">
               <div className="flex-1 bg-terra-800 rounded-xl overflow-hidden shadow-lg">
                 <img
-                  src="/images/livres/guerre-spiritualites.png"
-                  alt="Guerre des Spiritualités"
+                  src={heroBook2.couverture_url}
+                  alt={heroBook2.titre}
                   className="w-full h-full object-cover"
                   onError={(e) => { e.target.style.display = 'none'; }}
                 />
               </div>
               <div className="flex-1 bg-gold-800 rounded-xl overflow-hidden shadow-lg">
                 <img
-                  src="/images/livres/protocole-mths.png"
-                  alt="Protocole MTHS"
+                  src={heroBook3.couverture_url}
+                  alt={heroBook3.titre}
+                  className="w-full h-full object-cover"
+                  onError={(e) => { e.target.style.display = 'none'; }}
+                />
+              </div>
+              <div className="flex-1 bg-brown-900 rounded-xl overflow-hidden shadow-lg">
+                <img
+                  src={heroBook5.couverture_url}
+                  alt={heroBook5.titre}
                   className="w-full h-full object-cover"
                   onError={(e) => { e.target.style.display = 'none'; }}
                 />
@@ -191,8 +218,8 @@ const HeroSection = () => {
             <div className="w-[28%] flex-shrink-0 min-h-[80px]">
               <div className="h-full bg-brown-700 rounded-xl overflow-hidden shadow-lg">
                 <img
-                  src="/images/livres/vie-apres-mort.png"
-                  alt="Vie après la mort"
+                  src={heroBook4.couverture_url}
+                  alt={heroBook4.titre}
                   className="w-full h-full object-cover"
                   onError={(e) => { e.target.style.display = 'none'; }}
                 />

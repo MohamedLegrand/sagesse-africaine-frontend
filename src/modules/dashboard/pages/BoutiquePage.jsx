@@ -4,6 +4,7 @@ import { BookOpen, Search, ShoppingBag, Package } from 'lucide-react';
 import api from '../../../services/api';
 import toast from 'react-hot-toast';
 import DashboardLayout from '../components/DashboardLayout';
+import livresSite from '../../../data/livresSite';
 
 const BoutiquePage = () => {
   const [livres, setLivres] = useState([]);
@@ -25,12 +26,10 @@ const BoutiquePage = () => {
   }, []);
 
   useEffect(() => {
-    setLoading(true);
-    api.get('/livres/', { params: { page, taille: 20 } })
-      .then(r => { setLivres(r.data.livres || []); setTotal(r.data.total || 0); })
-      .catch(() => toast.error('Erreur chargement du catalogue'))
-      .finally(() => setLoading(false));
-  }, [page]);
+    setLivres(livresSite);
+    setTotal(livresSite.length);
+    setLoading(false);
+  }, []);
 
   const ajouterAuPanier = async (livreId) => {
     setAddingToCart(livreId);
@@ -51,7 +50,7 @@ const BoutiquePage = () => {
     l.auteur?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const totalPages = Math.ceil(total / 20);
+  const totalPages = 1;
 
   return (
     <DashboardLayout>

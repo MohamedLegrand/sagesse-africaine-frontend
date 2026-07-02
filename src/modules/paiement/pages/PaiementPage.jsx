@@ -16,7 +16,7 @@ const PaiementPage = () => {
   const [panier, setPanier] = useState(null);
   const [loading, setLoading] = useState(true);
   const [selectedMethod, setSelectedMethod] = useState('carte');
-  const { loading: paiementLoading, initierStripe, initierOrangeMoney, initierMTN } = usePaiement();
+  const { loading: paiementLoading, payer } = usePaiement();
 
   useEffect(() => {
     fetchPanier();
@@ -41,31 +41,44 @@ const PaiementPage = () => {
   };
 
   const handlePaiementCarte = async (formData) => {
-    // Simulation de paiement (à remplacer par l'intégration Stripe réelle)
-    toast.loading('Traitement du paiement...');
-    setTimeout(() => {
-      toast.dismiss();
-      toast.success('Paiement réussi !');
-      navigate('/confirmation-paiement');
-    }, 2000);
+    const toastId = toast.loading('Traitement du paiement...');
+    try {
+      const { commande } = await payer('stripe', {
+        metadonnees: { nom: formData.nom, cardNumberSuffix: formData.cardNumber.slice(-4) },
+      });
+      toast.success('Paiement réussi !', { id: toastId });
+      navigate(`/confirmation-paiement/${commande.id}`);
+    } catch (error) {
+      toast.error(error.response?.data?.detail || 'Le paiement a échoué', { id: toastId });
+    }
   };
 
   const handlePaiementOrangeMoney = async (telephone) => {
-    toast.loading('Envoi de la demande...');
-    setTimeout(() => {
-      toast.dismiss();
-      toast.success('Une notification a été envoyée sur votre téléphone');
-      navigate('/confirmation-paiement');
-    }, 2000);
+    const toastId = toast.loading('Envoi de la demande...');
+    try {
+      const { commande } = await payer('orange_money', {
+        fournisseurPaiementId: telephone,
+        metadonnees: { telephone },
+      });
+      toast.success('Paiement confirmé !', { id: toastId });
+      navigate(`/confirmation-paiement/${commande.id}`);
+    } catch (error) {
+      toast.error(error.response?.data?.detail || 'Le paiement a échoué', { id: toastId });
+    }
   };
 
   const handlePaiementMTN = async (telephone) => {
-    toast.loading('Envoi de la demande...');
-    setTimeout(() => {
-      toast.dismiss();
-      toast.success('Une notification a été envoyée sur votre téléphone');
-      navigate('/confirmation-paiement');
-    }, 2000);
+    const toastId = toast.loading('Envoi de la demande...');
+    try {
+      const { commande } = await payer('mtn', {
+        fournisseurPaiementId: telephone,
+        metadonnees: { telephone },
+      });
+      toast.success('Paiement confirmé !', { id: toastId });
+      navigate(`/confirmation-paiement/${commande.id}`);
+    } catch (error) {
+      toast.error(error.response?.data?.detail || 'Le paiement a échoué', { id: toastId });
+    }
   };
 
   const methodes = [

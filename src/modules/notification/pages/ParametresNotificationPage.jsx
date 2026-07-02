@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { FaBell, FaEnvelope, FaShoppingCart, FaBook, FaUserCheck } from 'react-icons/fa';
-import Header from '../../visiteur/components/Header';
-import Footer from '../../visiteur/components/Footer';
+import Header from '../../Visiteur/components/Header';
+import Footer from '../../Visiteur/components/Footer';
 import toast from 'react-hot-toast';
 
 const ParametresNotificationPage = () => {

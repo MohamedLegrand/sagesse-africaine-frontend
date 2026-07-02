@@ -6,6 +6,16 @@ const commandesService = {
     return response.data;
   },
 
+  getMesCommandes: async (page = 1, taille = 10) => {
+    const response = await api.get('/commandes/mes-commandes', { params: { page, taille } });
+    return response.data;
+  },
+
+  telechargerFacture: async (id) => {
+    const response = await api.get(`/commandes/${id}/facture`, { responseType: 'blob' });
+    return response.data;
+  },
+
   annulerCommande: async (id) => {
     const response = await api.patch(`/commandes/${id}/annuler`);
     return response.data;

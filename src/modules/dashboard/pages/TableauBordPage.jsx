@@ -4,6 +4,7 @@ import { BookOpen, ShoppingBag, Heart, ArrowRight, Package } from 'lucide-react'
 import api from '../../../services/api';
 import toast from 'react-hot-toast';
 import DashboardLayout from '../components/DashboardLayout';
+import livresSite from '../../../data/livresSite';
 
 const BookCard = ({ livre, onAddToCart, adding }) => (
   <div className="book-card group">
@@ -64,16 +65,8 @@ const TableauBordPage = () => {
   const [activeCol, setActiveCol] = useState('all');
 
   useEffect(() => {
-    Promise.all([
-      api.get('/collections/'),
-      api.get('/livres/'),
-    ])
-      .then(([colRes, livresRes]) => {
-        setCollections(colRes.data.collections || []);
-        setLivres(livresRes.data.livres || []);
-      })
-      .catch(() => toast.error('Erreur de chargement'))
-      .finally(() => setLoading(false));
+    setLivres(livresSite);
+    setLoading(false);
   }, []);
 
   const handleAddToCart = async (livreId) => {
