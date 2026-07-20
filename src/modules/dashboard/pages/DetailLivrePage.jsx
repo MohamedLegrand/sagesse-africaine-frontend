@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import {
-  FaBook, FaDownload, FaArrowLeft, FaStar, FaBookmark,
+  FaBook, FaBookOpen, FaDownload, FaArrowLeft, FaStar, FaBookmark,
   FaTrash, FaPlus, FaCheckCircle, FaTimesCircle, FaSpinner
 } from 'react-icons/fa';
 import api from '../../../services/api';
@@ -95,23 +95,6 @@ const DetailLivrePage = () => {
       toast.success('Téléchargement commencé');
     } catch {
       toast.error('Erreur lors du téléchargement');
-    }
-  };
-
-  const handleSauvegarderProgression = async (page, totalPages) => {
-    try {
-      const pourcentage = totalPages > 0 ? Math.round((page / totalPages) * 100) : 0;
-      const updated = await progressionService.sauvegarderProgression({
-        livre_id: id,
-        format: fichiers[0]?.format || 'pdf',
-        page_actuelle: page,
-        total_pages: totalPages,
-        pourcentage,
-      });
-      setProgression(updated);
-      toast.success('Progression sauvegardée');
-    } catch {
-      toast.error('Erreur sauvegarde progression');
     }
   };
 
@@ -237,13 +220,22 @@ const DetailLivrePage = () => {
                     <span>Vous avez accès à ce livre</span>
                   </div>
                   {fichiers.length > 0 && (
-                    <button
-                      onClick={telecharger}
-                      className="flex items-center gap-2 bg-gradient-to-r from-amber-600 to-amber-700 text-white px-4 py-2 rounded-xl text-sm hover:shadow-lg transition"
-                    >
-                      <FaDownload />
-                      Télécharger
-                    </button>
+                    <>
+                      <Link
+                        to={`/dashboard/livre/${id}/lire`}
+                        className="flex items-center gap-2 bg-gradient-to-r from-amber-600 to-amber-700 text-white px-4 py-2 rounded-xl text-sm hover:shadow-lg transition"
+                      >
+                        <FaBookOpen />
+                        {progression ? 'Continuer la lecture' : 'Commencer la lecture'}
+                      </Link>
+                      <button
+                        onClick={telecharger}
+                        className="flex items-center gap-2 border border-amber-300 text-amber-700 px-4 py-2 rounded-xl text-sm hover:bg-amber-50 transition"
+                      >
+                        <FaDownload />
+                        Télécharger
+                      </button>
+                    </>
                   )}
                 </div>
               ) : (
@@ -325,57 +317,24 @@ const DetailLivrePage = () => {
                         Dernière lecture : {new Date(progression.derniere_lecture_le).toLocaleDateString('fr-FR')}
                       </p>
                     </div>
-                    <div className="flex gap-3 items-center">
-                      <input
-                        type="number"
-                        min={1}
-                        max={progression.total_pages || 9999}
-                        defaultValue={progression.page_actuelle}
-                        className="w-24 px-3 py-2 border border-amber-200 rounded-lg text-center focus:border-amber-500 outline-none"
-                        id="pageInput"
-                      />
-                      <span className="text-gray-500 text-sm">/ {progression.total_pages || '?'} pages</span>
-                      <button
-                        onClick={() => {
-                          const val = parseInt(document.getElementById('pageInput').value);
-                          if (val > 0) handleSauvegarderProgression(val, progression.total_pages);
-                        }}
-                        className="bg-amber-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-amber-700 transition"
-                      >
-                        Mettre à jour
-                      </button>
-                    </div>
+                    <Link
+                      to={`/dashboard/livre/${id}/lire`}
+                      className="inline-flex items-center gap-2 bg-gradient-to-r from-amber-600 to-amber-700 text-white px-4 py-2 rounded-xl text-sm hover:shadow-lg transition"
+                    >
+                      <FaBookOpen />
+                      Continuer la lecture
+                    </Link>
                   </div>
                 ) : (
                   <div className="text-center py-8">
-                    <p className="text-gray-500 mb-4">Aucune progression enregistrée pour ce livre.</p>
-                    <div className="flex gap-3 items-center justify-center">
-                      <input
-                        type="number"
-                        min={1}
-                        defaultValue={1}
-                        className="w-24 px-3 py-2 border border-amber-200 rounded-lg text-center focus:border-amber-500 outline-none"
-                        id="pageInputNew"
-                      />
-                      <span className="text-gray-500 text-sm">/ </span>
-                      <input
-                        type="number"
-                        min={1}
-                        defaultValue={100}
-                        className="w-24 px-3 py-2 border border-amber-200 rounded-lg text-center focus:border-amber-500 outline-none"
-                        id="totalPagesInput"
-                      />
-                      <button
-                        onClick={() => {
-                          const page = parseInt(document.getElementById('pageInputNew').value);
-                          const total = parseInt(document.getElementById('totalPagesInput').value);
-                          if (page > 0 && total > 0) handleSauvegarderProgression(page, total);
-                        }}
-                        className="bg-amber-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-amber-700 transition"
-                      >
-                        Démarrer le suivi
-                      </button>
-                    </div>
+                    <p className="text-gray-500 mb-4">Vous n'avez pas encore commencé ce livre.</p>
+                    <Link
+                      to={`/dashboard/livre/${id}/lire`}
+                      className="inline-flex items-center gap-2 bg-gradient-to-r from-amber-600 to-amber-700 text-white px-4 py-2 rounded-xl text-sm hover:shadow-lg transition"
+                    >
+                      <FaBookOpen />
+                      Commencer la lecture
+                    </Link>
                   </div>
                 )}
               </div>

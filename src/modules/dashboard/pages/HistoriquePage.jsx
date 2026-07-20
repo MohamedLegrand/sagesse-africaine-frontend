@@ -2,11 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import {
   FaBook, FaShoppingCart, FaDownload, FaEye,
-  FaChevronDown, FaChevronUp, FaSearch
+  FaChevronDown, FaChevronUp, FaSearch, FaFileInvoice, FaSpinner
 } from 'react-icons/fa';
 import api from '../../../services/api';
 import toast from 'react-hot-toast';
 import DashboardLayout from '../components/DashboardLayout';
+import useTelechargerFacture from '../../../hooks/useTelechargerFacture';
 
 const HistoriquePage = () => {
   const [commandes, setCommandes] = useState([]);
@@ -15,6 +16,7 @@ const HistoriquePage = () => {
   const [activeTab, setActiveTab] = useState('commandes');
   const [expandedCommande, setExpandedCommande] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
+  const { telecharger, commandeEnCours } = useTelechargerFacture();
 
   useEffect(() => {
     fetchHistorique();
@@ -149,7 +151,7 @@ const HistoriquePage = () => {
                           </div>
                         </div>
                         <div className="text-right">
-                          <p className="text-2xl font-bold text-amber-700">{commande.montant_total} FCFA</p>
+                          <p className="text-2xl font-bold text-amber-700">{commande.montant_total} XAF</p>
                           <span className="text-amber-500 mt-1 inline-block">
                             {expandedCommande === commande.id ? <FaChevronUp /> : <FaChevronDown />}
                           </span>
@@ -158,7 +160,7 @@ const HistoriquePage = () => {
                       {expandedCommande === commande.id && (
                         <div className="border-t border-amber-100 p-6 bg-amber-50/30">
                           <h4 className="font-semibold text-amber-800 mb-3">Détails de la commande</h4>
-                          <div className="space-y-3">
+                          <div className="space-y-3 mb-4">
                             {commande.lignes?.map((ligne) => (
                               <div key={ligne.id} className="flex justify-between items-center">
                                 <div className="flex items-center gap-3">
@@ -170,10 +172,24 @@ const HistoriquePage = () => {
                                     <p className="text-sm text-gray-500">Quantité : {ligne.quantite}</p>
                                   </div>
                                 </div>
-                                <p className="font-medium text-amber-700">{ligne.prix_unitaire * ligne.quantite} FCFA</p>
+                                <p className="font-medium text-amber-700">{ligne.prix_unitaire * ligne.quantite} XAF</p>
                               </div>
                             ))}
                           </div>
+                          {commande.statut === 'payee' && (
+                            <button
+                              onClick={(e) => { e.stopPropagation(); telecharger(commande.id); }}
+                              disabled={commandeEnCours === commande.id}
+                              className="flex items-center gap-2 text-sm font-semibold text-amber-700 border border-amber-300 rounded-xl px-4 py-2 hover:bg-amber-100 transition disabled:opacity-50"
+                            >
+                              {commandeEnCours === commande.id ? (
+                                <FaSpinner className="animate-spin" />
+                              ) : (
+                                <FaFileInvoice />
+                              )}
+                              Télécharger la facture
+                            </button>
+                          )}
                         </div>
                       )}
                     </div>

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { ShoppingBag, Search, Eye, X, RefreshCw, Printer, BookOpen, Clock, Truck, CheckCircle, XCircle, Loader } from 'lucide-react';
+import { ShoppingBag, Search, Eye, X, RefreshCw, Printer, BookOpen, Clock, Truck, CheckCircle, XCircle, Loader, Trash2 } from 'lucide-react';
 import api from '../../../services/api';
+import commandesService from '../../../services/commandesService';
 import toast from 'react-hot-toast';
 import AdminLayout from '../components/AdminLayout';
 
@@ -37,6 +38,7 @@ const GestionCommandesPage = () => {
   const [showModal, setShowModal] = useState(false);
   const [selectedCommande, setSelectedCommande] = useState(null);
   const [updating, setUpdating] = useState(false);
+  const [deleting, setDeleting] = useState(false);
 
   useEffect(() => { fetchCommandes(); }, [page]);
 
@@ -56,6 +58,17 @@ const GestionCommandesPage = () => {
       fetchCommandes();
       if (selectedCommande?.id === commandeId) setSelectedCommande(p => ({ ...p, statut: newStatus }));
     } catch { toast.error('Erreur mise à jour'); } finally { setUpdating(false); }
+  };
+
+  const handleDelete = async (commandeId) => {
+    if (!window.confirm('Supprimer définitivement cette commande ?')) return;
+    setDeleting(true);
+    try {
+      await commandesService.supprimerCommande(commandeId);
+      toast.success('Commande supprimée');
+      if (selectedCommande?.id === commandeId) setShowModal(false);
+      fetchCommandes();
+    } catch { toast.error('Erreur lors de la suppression'); } finally { setDeleting(false); }
   };
 
   const filtered = commandes.filter(c =>
@@ -115,9 +128,12 @@ const GestionCommandesPage = () => {
                       <td className="px-4 py-3"><StatusBadge statut={c.statut} /></td>
                       <td className="px-4 py-3 text-brown-400 text-sm">{new Date(c.cree_le).toLocaleDateString('fr-FR')}</td>
                       <td className="px-4 py-3">
-                        <div className="flex justify-center">
+                        <div className="flex justify-center gap-1">
                           <button onClick={() => { setSelectedCommande(c); setShowModal(true); }} className="p-1.5 rounded-lg hover:bg-cream-100 transition-colors" title="Voir détails">
                             <Eye className="w-4 h-4 text-blue-600" />
+                          </button>
+                          <button onClick={() => handleDelete(c.id)} disabled={deleting} className="p-1.5 rounded-lg hover:bg-red-50 transition-colors disabled:opacity-50" title="Supprimer">
+                            <Trash2 className="w-4 h-4 text-red-600" />
                           </button>
                         </div>
                       </td>
@@ -196,6 +212,9 @@ const GestionCommandesPage = () => {
               </div>
 
               <div className="flex justify-end gap-3">
+                <button onClick={() => handleDelete(selectedCommande.id)} disabled={deleting} className="btn-outline text-sm text-red-600 border-red-200 hover:bg-red-50 disabled:opacity-50">
+                  <Trash2 className="w-4 h-4" /> Supprimer
+                </button>
                 <button onClick={() => window.print()} className="btn-outline text-sm"><Printer className="w-4 h-4" /> Imprimer</button>
                 <button onClick={() => setShowModal(false)} className="btn-primary text-sm">Fermer</button>
               </div>

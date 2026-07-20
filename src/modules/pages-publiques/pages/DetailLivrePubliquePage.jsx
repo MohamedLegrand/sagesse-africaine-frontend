@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { FaBook, FaShoppingCart, FaArrowLeft, FaStar, FaCheck, FaLock, FaTimes, FaExpand } from 'react-icons/fa';
+import { FaBook, FaShoppingCart, FaArrowLeft, FaStar, FaCheck, FaLock, FaTimes, FaExpand, FaBookOpen } from 'react-icons/fa';
 import Header from '../../visiteur/components/Header';
 import Footer from '../../visiteur/components/Footer';
 import api from '../../../services/api';
 import guestCart from '../../../services/guestCart';
 import toast from 'react-hot-toast';
 import { getLivreSiteById } from '../../../data/livresSite';
+import ExtraitModal from '../../../components/ExtraitModal';
 
 const DetailLivrePubliquePage = () => {
   const { id } = useParams();
@@ -18,6 +19,7 @@ const DetailLivrePubliquePage = () => {
   const [adding, setAdding] = useState(false);
   const [added, setAdded] = useState(false);
   const [imageAgrandie, setImageAgrandie] = useState(null);
+  const [extraitOuvert, setExtraitOuvert] = useState(false);
 
   useEffect(() => {
     const livreTrouve = getLivreSiteById(id);
@@ -149,7 +151,7 @@ const DetailLivrePubliquePage = () => {
                 <span className={`text-xs px-3 py-1 rounded-full font-medium ${
                   livre.est_gratuit ? 'bg-green-100 text-green-700' : 'bg-amber-100 text-amber-700'
                 }`}>
-                  {livre.est_gratuit ? 'Gratuit' : `${livre.prix?.toLocaleString()} FCFA`}
+                  {livre.est_gratuit ? 'Gratuit' : `${livre.prix?.toLocaleString()} XAF`}
                 </span>
               </div>
 
@@ -163,7 +165,7 @@ const DetailLivrePubliquePage = () => {
               {/* Prix + actions */}
               <div className="border-t border-amber-100 pt-5 flex flex-col sm:flex-row gap-3 items-start sm:items-center">
                 <span className="text-3xl font-bold text-amber-700">
-                  {livre.est_gratuit ? 'Gratuit' : `${livre.prix?.toLocaleString()} FCFA`}
+                  {livre.est_gratuit ? 'Gratuit' : `${livre.prix?.toLocaleString()} XAF`}
                 </span>
                 <div className="flex gap-3 flex-wrap">
                   <button
@@ -192,6 +194,17 @@ const DetailLivrePubliquePage = () => {
                     >
                       <FaLock className="text-sm" />
                       Acheter maintenant
+                    </button>
+                  )}
+
+                  {livre.extrait_url && (
+                    <button
+                      type="button"
+                      onClick={() => setExtraitOuvert(true)}
+                      className="flex items-center gap-2 px-5 py-2.5 rounded-xl font-semibold border-2 border-amber-300 text-amber-700 hover:bg-amber-50 transition"
+                    >
+                      <FaBookOpen className="text-sm" />
+                      Lire un extrait
                     </button>
                   )}
                 </div>
@@ -263,6 +276,11 @@ const DetailLivrePubliquePage = () => {
                 onClick={(e) => e.stopPropagation()}
               />
             </div>
+          )}
+
+          {/* Modal lecture de l'extrait */}
+          {extraitOuvert && (
+            <ExtraitModal livre={livre} onClose={() => setExtraitOuvert(false)} />
           )}
 
           {/* Section avis */}

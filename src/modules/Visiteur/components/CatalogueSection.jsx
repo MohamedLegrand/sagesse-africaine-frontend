@@ -45,7 +45,7 @@ const BookCard = ({ livre, onAddToCart, addingId, addedIds, prefix = '' }) => {
         </Link>
         <p className="text-xs text-brown-400">{livre.auteur}</p>
         <p className="text-sm font-bold text-terra-600">
-          {livre.est_gratuit ? 'Gratuit' : `${livre.prix?.toLocaleString()} FCFA`}
+          {livre.est_gratuit ? 'Gratuit' : `${livre.prix?.toLocaleString()} XAF`}
         </p>
 
         <div className="flex flex-col gap-1.5 mt-auto pt-2">

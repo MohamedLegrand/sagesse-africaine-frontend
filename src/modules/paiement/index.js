@@ -7,6 +7,7 @@ export { default as RecapitulatifPaiement } from './components/RecapitulatifPaie
 export { default as FormulaireCarte } from './components/FormulaireCarte';
 export { default as FormulaireOrangeMoney } from './components/FormulaireOrangeMoney';
 export { default as FormulaireMTN } from './components/FormulaireMTN';
+export { default as FormulaireMobileMoney } from './components/FormulaireMobileMoney';
 
 // Hooks
 export { default as usePaiement } from './hooks/usePaiement';

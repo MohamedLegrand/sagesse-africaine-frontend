@@ -12,8 +12,7 @@ const commandesService = {
   },
 
   telechargerFacture: async (id) => {
-    const response = await api.get(`/commandes/${id}/facture`, { responseType: 'blob' });
-    return response.data;
+    return api.get(`/commandes/${id}/facture`, { responseType: 'blob' });
   },
 
   annulerCommande: async (id) => {

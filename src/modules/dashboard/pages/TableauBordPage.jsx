@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { BookOpen, ShoppingBag, Heart, ArrowRight, Package } from 'lucide-react';
+import { BookOpen, ShoppingBag, Heart, ArrowRight, Package, BookOpenText } from 'lucide-react';
 import api from '../../../services/api';
 import toast from 'react-hot-toast';
 import DashboardLayout from '../components/DashboardLayout';
 import livresSite from '../../../data/livresSite';
+import ExtraitModal from '../../../components/ExtraitModal';
 
-const BookCard = ({ livre, onAddToCart, adding }) => (
+const BookCard = ({ livre, onAddToCart, adding, onLireExtrait }) => (
   <div className="book-card group">
     <Link to={`/dashboard/livre/${livre.id}`} className="block flex-shrink-0">
       <div className="relative aspect-[2/3] bg-cream-100 overflow-hidden">
@@ -36,14 +37,29 @@ const BookCard = ({ livre, onAddToCart, adding }) => (
         </h3>
       </Link>
       <p className="text-xs text-brown-400">{livre.auteur}</p>
-      <div className="flex items-center justify-between mt-auto pt-2">
-        <span className="font-bold text-brown-900 text-sm">
-          {livre.est_gratuit ? <span className="text-green-600">Gratuit</span> : `${livre.prix?.toLocaleString()} F`}
-        </span>
+      <span className="font-bold text-brown-900 text-sm">
+        {livre.est_gratuit ? <span className="text-green-600">Gratuit</span> : `${livre.prix?.toLocaleString()} XAF`}
+      </span>
+      <div className="flex items-center justify-between mt-auto pt-2 gap-1">
+        <Link
+          to={`/dashboard/livre/${livre.id}`}
+          className="flex items-center gap-1 px-2 py-1.5 text-xs font-semibold rounded-lg bg-cream-100 text-brown-700 hover:bg-cream-200 transition-colors flex-shrink-0"
+        >
+          Détail
+        </Link>
+        {livre.extrait_url && (
+          <button
+            onClick={() => onLireExtrait(livre)}
+            className="flex items-center gap-1 px-2 py-1.5 text-xs font-semibold rounded-lg border border-amber-300 text-amber-700 hover:bg-amber-50 transition-colors flex-shrink-0"
+            title="Lire un extrait"
+          >
+            <BookOpenText className="w-3 h-3" />
+          </button>
+        )}
         <button
           onClick={() => onAddToCart(livre.id)}
           disabled={adding === livre.id}
-          className="flex items-center gap-1 px-2.5 py-1.5 bg-terra-500 hover:bg-terra-600 text-white text-xs font-semibold rounded-lg transition-colors disabled:opacity-50"
+          className="flex items-center gap-1 px-2.5 py-1.5 bg-terra-500 hover:bg-terra-600 text-white text-xs font-semibold rounded-lg transition-colors disabled:opacity-50 ml-auto"
         >
           {adding === livre.id ? (
             <div className="w-3 h-3 border-2 border-white border-t-transparent rounded-full animate-spin" />
@@ -63,6 +79,7 @@ const TableauBordPage = () => {
   const [loading, setLoading] = useState(true);
   const [addingToCart, setAddingToCart] = useState(null);
   const [activeCol, setActiveCol] = useState('all');
+  const [extraitLivre, setExtraitLivre] = useState(null);
 
   useEffect(() => {
     setLivres(livresSite);
@@ -170,6 +187,7 @@ const TableauBordPage = () => {
                           livre={livre}
                           onAddToCart={handleAddToCart}
                           adding={addingToCart}
+                          onLireExtrait={setExtraitLivre}
                         />
                       ))}
                     </div>
@@ -188,7 +206,7 @@ const TableauBordPage = () => {
                     <h2 className="font-playfair text-xl font-bold text-brown-900 mb-5">Autres ouvrages</h2>
                     <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
                       {sans.map(livre => (
-                        <BookCard key={livre.id} livre={livre} onAddToCart={handleAddToCart} adding={addingToCart} />
+                        <BookCard key={livre.id} livre={livre} onAddToCart={handleAddToCart} adding={addingToCart} onLireExtrait={setExtraitLivre} />
                       ))}
                     </div>
                   </div>
@@ -200,7 +218,7 @@ const TableauBordPage = () => {
               {filteredLivres.length > 0 ? (
                 <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
                   {filteredLivres.map(livre => (
-                    <BookCard key={livre.id} livre={livre} onAddToCart={handleAddToCart} adding={addingToCart} />
+                    <BookCard key={livre.id} livre={livre} onAddToCart={handleAddToCart} adding={addingToCart} onLireExtrait={setExtraitLivre} />
                   ))}
                 </div>
               ) : (
@@ -220,6 +238,10 @@ const TableauBordPage = () => {
             </div>
           )}
         </>
+      )}
+
+      {extraitLivre && (
+        <ExtraitModal livre={extraitLivre} onClose={() => setExtraitLivre(null)} />
       )}
     </DashboardLayout>
   );

@@ -232,14 +232,14 @@ const PanierPage = () => {
                         <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1">
                           {prixUnitaire > 0 ? (
                             <span className="text-amber-600 text-sm">
-                              Prix unitaire : <strong>{prixUnitaire.toLocaleString()} FCFA</strong>
+                              Prix unitaire : <strong>{prixUnitaire.toLocaleString()} XAF</strong>
                             </span>
                           ) : (
                             <span className="inline-block text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full">Gratuit</span>
                           )}
                           {ligne.quantite > 1 && prixUnitaire > 0 && (
                             <span className="text-amber-700 text-sm font-bold">
-                              Sous-total : {sousTotal.toLocaleString()} FCFA
+                              Sous-total : {sousTotal.toLocaleString()} XAF
                             </span>
                           )}
                         </div>
@@ -294,7 +294,7 @@ const PanierPage = () => {
                   <div className="space-y-3 border-b border-amber-100 pb-4 mb-4">
                     <div className="flex justify-between">
                       <span className="text-gray-600">Sous-total</span>
-                      <span className="text-amber-800 font-medium">{total.toLocaleString()} FCFA</span>
+                      <span className="text-amber-800 font-medium">{total.toLocaleString()} XAF</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-gray-600">Frais de livraison</span>
@@ -303,7 +303,7 @@ const PanierPage = () => {
                   </div>
                   <div className="flex justify-between mb-6">
                     <span className="text-lg font-bold text-amber-800">Total</span>
-                    <span className="text-2xl font-bold text-amber-700">{total.toLocaleString()} FCFA</span>
+                    <span className="text-2xl font-bold text-amber-700">{total.toLocaleString()} XAF</span>
                   </div>
                   <button
                     onClick={procederAuPaiement}

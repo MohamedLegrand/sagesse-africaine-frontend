@@ -6,9 +6,9 @@ import {
   NosLivresPage, QuiSommesNousPage, ContactPage, PanierPage, DetailLivrePubliquePage,
   EtreEditePage, ConfidentialitePage, MentionsLegalesPage, CGVPage
 } from './modules/pages-publiques';
-import { 
-  TableauBordPage, BoutiquePage, DetailLivrePage, PanierPage as DashboardPanierPage, 
-  PaiementPage as DashboardPaiementPage, BibliothequePage, HistoriquePage, ProfilPage, ParametresPage 
+import {
+  TableauBordPage, BoutiquePage, DetailLivrePage, LecteurLivrePage, PanierPage as DashboardPanierPage,
+  PaiementPage as DashboardPaiementPage, BibliothequePage, HistoriquePage, ProfilPage, ParametresPage
 } from './modules/dashboard';
 import { 
   DashboardAdminPage,
@@ -98,6 +98,11 @@ function App() {
         <Route path="/dashboard/livre/:id" element={
           <RouteProtegee>
             <DetailLivrePage />
+          </RouteProtegee>
+        } />
+        <Route path="/dashboard/livre/:id/lire" element={
+          <RouteProtegee>
+            <LecteurLivrePage />
           </RouteProtegee>
         } />
         <Route path="/dashboard/panier" element={

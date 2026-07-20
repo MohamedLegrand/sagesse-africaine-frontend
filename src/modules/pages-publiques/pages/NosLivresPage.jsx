@@ -165,7 +165,7 @@ const NosLivresPage = () => {
                     
                     <div className="flex justify-between items-center">
                       <span className="text-2xl font-bold text-amber-700">
-                        {livre.est_gratuit ? 'Gratuit' : `${livre.prix.toLocaleString()} FCFA`}
+                        {livre.est_gratuit ? 'Gratuit' : `${livre.prix.toLocaleString()} XAF`}
                       </span>
                       <button
                         onClick={() => handleAddToCart(livre)}

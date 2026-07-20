@@ -76,7 +76,7 @@ const CGVPage = () => {
 
             <Section titre="3. Prix">
               <p>
-                Les prix sont indiqués en Francs CFA (FCFA) toutes taxes comprises.
+                Les prix sont indiqués en Francs CFA (XAF) toutes taxes comprises.
                 SAGESSE AFRICAINE se réserve le droit de modifier ses prix à tout moment.
                 Les produits sont facturés au prix en vigueur au moment de la validation de la commande.
               </p>

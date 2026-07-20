@@ -6,6 +6,7 @@ const AUTEUR = 'SIDA ABENA Jean Paul Sylvain';
 const COLLECTION = 'Lumière et Vérité sur le Monde des Ténèbres';
 const PRIX_DEFAUT = 6500;
 const BASE_DIR = '/images/livres-site';
+const EXTRAIT_DIR = '/images/extrait';
 
 const slugify = (str) =>
   str
@@ -31,6 +32,41 @@ const sommaireUrls = (dossier) =>
   DOSSIERS_SOMMAIRE_DOUBLE.has(dossier)
     ? [imagePath(dossier, 'sommaire1.png'), imagePath(dossier, 'sommaire2.png')]
     : [imagePath(dossier, 'sommaire.png')];
+
+// Les fichiers d'extrait (.docx) dans public/images/extrait/ ne suivent pas une
+// convention de nommage cohérente avec le nom du dossier (fautes de frappe,
+// troncatures, espace au lieu d'un tiret...), d'où cette table de correspondance.
+const EXTRAIT_FICHIERS = {
+  'Ange ou demon': 'ange-ou-demon.docx',
+  'Chrétien Africain et la Maladie': 'CHRÉTIEN-AFRICAIN-ET-LA-MALADIE.docx',
+  'CHRÉTIEN AFRICAIN FACE  À LA SORCELLERIE': 'CHRÉTIEN-AFRICAIN-FACE-A-LA-SORCELLERIE.docx',
+  'Comment Comprendre et interpreter le Rêve': 'COMMENT-COMPRENDRE-ET-INTERPRÉTER-LE-RÊVE.docx',
+  'Comment obtenir ta Délivrance et ta Victoire contre le Diable les Démons et les Sorciers':
+    'Comment-obtenir-ta-Délivrance-et-ta-Victoire-sur-le-Diable.docx',
+  'Comment se soigner des persécutions spirituelles': 'COMMENT-TE-SOIGNER-DES-PERSÉCUTIONS-SPIRITUELLES.docx',
+  'Comment vivre-ensemble avec les Sorciers': 'COMMENT-VIVRE-ENSEMBLE-AVEC-LES-SORCIERS.docx',
+  'CONSEQUENCES SPIRITUELLES DE LA MASTURBATION ET DE LA PORNOGRAPHIE DANS TA VIE':
+    'CONSÉQUENCES-SPIRITUELLES-DE-LA-MASTURBATION-ET DE-LA-PORNOGRAPHIE-DANS-TA-VIE.docx',
+  'CULTURE DE LA PAIX ET LUTTE CONTRE LA DÉVIANCE SPIRITUELLE':
+    'CULTURE-DE-LA-PAIX-ET-LUTTE-CONTRE-LA-DÉVIANCE-SPIRITUELLE-DANS-LE-MONDE.docx',
+  'La Guerre des Spiritualités en Afrique': 'LA-GUERRE-DES-SPIRITUALITÉS-EN-AFRIQUE.docx',
+  'la puissance spirituelle du sexe': 'LA-PUISSANCE-SPIRITUELLE-DU-SEXE.docx',
+  'la Sorcellerie au Dessus de la foi': 'LA-SORCELLERIE-AU-DESSUS-DE-LA-FOI.docx',
+  'La Vie après la Mort': 'LA-VIE-APRES-LA-MORT.docx',
+  'La Vie spirituelle du Sorcier -Univers Astral de la Sorcellerie': 'LA-VIE-SPIRITUELLE-DU-SORCIER.docx',
+  'LE MUSULMAN FACE A LA SORCELLERIE': 'LE-MUSULMAN-FACE-A-LA-SORCELLERIE.docx',
+  'Le Remède Traditionnel Amélioré': 'LE-REMÈDE-TRADITIONNEL-AMÉLIORÉ-POST.docx',
+  "L'Hygiène de l'âme": 'HYGENE-DE-AME.docx',
+  'MARIS ET FEMMES DE NUIT': 'LES-CONSÉQUENCES-DU-PHÉNOMÈNE-DE-MARIS-ET-FEMMES-DE-NUIT.docx',
+  'Sectes et Sociétés Secrètes africaines': 'ENJEUX-ET-DÉFIS-DU-CONTROLE-SPIRITUEL-DE-HOMME.docx',
+  'Traditions africaines et Christianisme': 'AVENIR-DES-TRADITION-ANCESTRAL-AFRICAINE-CHRITIANISME.docx',
+  'Transmission de la Sorcellerie au sein de la famille': 'LA-TRANSMISSION-DE-LA-SORCELLERIE-AU-SEIN-DE-LA-FAMILLE.docx',
+};
+
+const extraitUrl = (dossier) => {
+  const fichier = EXTRAIT_FICHIERS[dossier];
+  return fichier ? `${EXTRAIT_DIR}/${encodeURIComponent(fichier)}` : null;
+};
 
 const LIVRES_BRUTS = [
   {
@@ -202,6 +238,7 @@ export const livresSite = LIVRES_BRUTS.map((livre) => ({
   couverture_url: imagePath(livre.dossier, 'premiere_couverture.png'),
   sommaire_urls: sommaireUrls(livre.dossier),
   quatrieme_couverture_url: imagePath(livre.dossier, 'quatrieme_couverture.png'),
+  extrait_url: extraitUrl(livre.dossier),
 }));
 
 export const getLivreSiteById = (id) => livresSite.find((livre) => livre.id === id);

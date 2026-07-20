@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { BookOpen, Search, ShoppingBag, Package } from 'lucide-react';
+import { BookOpen, Search, ShoppingBag, Package, BookOpenText } from 'lucide-react';
 import api from '../../../services/api';
 import toast from 'react-hot-toast';
 import DashboardLayout from '../components/DashboardLayout';
 import livresSite from '../../../data/livresSite';
+import ExtraitModal from '../../../components/ExtraitModal';
 
 const BoutiquePage = () => {
   const [livres, setLivres] = useState([]);
@@ -14,6 +15,7 @@ const BoutiquePage = () => {
   const [total, setTotal] = useState(0);
   const [panier, setPanier] = useState({});
   const [addingToCart, setAddingToCart] = useState(null);
+  const [extraitLivre, setExtraitLivre] = useState(null);
 
   useEffect(() => {
     api.get('/panier/')
@@ -132,17 +134,26 @@ const BoutiquePage = () => {
                     </h3>
                   </Link>
                   <p className="text-xs text-brown-400">{livre.auteur}</p>
-                  <div className="flex items-center justify-between mt-auto pt-2 gap-2">
+                  <div className="flex items-center gap-2 mt-auto pt-2">
                     <Link
                       to={`/dashboard/livre/${livre.id}`}
                       className="flex items-center gap-1 px-2.5 py-1.5 text-xs font-semibold rounded-lg bg-cream-100 text-brown-700 hover:bg-cream-200 transition-colors flex-shrink-0"
                     >
                       Voir plus
                     </Link>
+                    {livre.extrait_url && (
+                      <button
+                        onClick={() => setExtraitLivre(livre)}
+                        className="flex items-center gap-1 px-2.5 py-1.5 text-xs font-semibold rounded-lg border border-amber-300 text-amber-700 hover:bg-amber-50 transition-colors flex-shrink-0"
+                        title="Lire un extrait"
+                      >
+                        <BookOpenText className="w-3 h-3" />
+                      </button>
+                    )}
                     <button
                       onClick={() => ajouterAuPanier(livre.id)}
                       disabled={addingToCart === livre.id}
-                      className={`flex items-center gap-1 px-2.5 py-1.5 text-xs font-semibold rounded-lg transition-colors disabled:opacity-50 ${
+                      className={`flex items-center gap-1 px-2.5 py-1.5 text-xs font-semibold rounded-lg transition-colors disabled:opacity-50 ml-auto ${
                         panier[livre.id]
                           ? 'bg-green-100 text-green-700'
                           : 'bg-terra-500 hover:bg-terra-600 text-white'
@@ -160,6 +171,10 @@ const BoutiquePage = () => {
               </div>
             ))}
           </div>
+
+          {extraitLivre && (
+            <ExtraitModal livre={extraitLivre} onClose={() => setExtraitLivre(null)} />
+          )}
 
           {/* Pagination */}
           {totalPages > 1 && (

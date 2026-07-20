@@ -169,7 +169,7 @@ const GestionLivresPage = () => {
                       </td>
                       <td className="px-4 py-3">
                         <span className={`font-semibold text-sm ${livre.est_gratuit ? 'text-green-600' : 'text-brown-800'}`}>
-                          {livre.est_gratuit ? 'Gratuit' : `${livre.prix?.toLocaleString()} FCFA`}
+                          {livre.est_gratuit ? 'Gratuit' : `${livre.prix?.toLocaleString()} XAF`}
                         </span>
                       </td>
                       <td className="px-4 py-3">
@@ -244,7 +244,7 @@ const GestionLivresPage = () => {
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="input-label">Prix (FCFA)</label>
+                  <label className="input-label">Prix (XAF)</label>
                   <input type="number" name="prix" value={formData.prix} onChange={handleInputChange} step="100" className="input-field" />
                 </div>
                 <div>

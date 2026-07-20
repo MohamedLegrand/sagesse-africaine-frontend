@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { 
-  FaBook, FaCreditCard, FaMoneyBillWave, FaMobileAlt, 
-  FaCheckCircle, FaArrowLeft, FaLock 
+import {
+  FaBook, FaCreditCard, FaMoneyBillWave, FaMobileAlt, FaWallet,
+  FaCheckCircle, FaArrowLeft, FaLock
 } from 'react-icons/fa';
 import api from '../../../services/api';
 import toast from 'react-hot-toast';
@@ -70,6 +70,7 @@ const PaiementPage = () => {
   const methodes = [
     { id: 'carte', nom: 'Carte bancaire', icon: FaCreditCard },
     { id: 'mobile', nom: 'Orange Money', icon: FaMobileAlt },
+    { id: 'mobile_money', nom: 'Mobile Money', icon: FaWallet },
     { id: 'especes', nom: 'Paiement à la livraison', icon: FaMoneyBillWave },
   ];
 
@@ -137,7 +138,7 @@ const PaiementPage = () => {
                 </h2>
 
                 {/* Méthodes de paiement */}
-                <div className="grid grid-cols-3 gap-3 mb-8">
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-8">
                   {methodes.map((methode) => (
                     <button
                       key={methode.id}
@@ -265,6 +266,43 @@ const PaiementPage = () => {
                       ) : (
                         <>
                           <FaMobileAlt />
+                          Payer {panier?.total} €
+                        </>
+                      )}
+                    </button>
+                  </form>
+                )}
+
+                {/* Formulaire Mobile Money */}
+                {selectedMethod === 'mobile_money' && (
+                  <form onSubmit={handleSubmit} className="space-y-5">
+                    <div className="bg-amber-50 rounded-xl p-4 mb-4">
+                      <p className="text-amber-700 text-sm">
+                        Vous allez recevoir une notification sur votre téléphone Mobile Money pour confirmer le paiement.
+                      </p>
+                    </div>
+                    <div>
+                      <label className="block text-amber-700 text-sm font-medium mb-2">
+                        Numéro Mobile Money
+                      </label>
+                      <input
+                        type="tel"
+                        required
+                        pattern="[0-9]{9}"
+                        className="w-full px-4 py-3 border border-amber-200 rounded-xl focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 outline-none"
+                        placeholder="6X XX XX XX"
+                      />
+                    </div>
+                    <button
+                      type="submit"
+                      disabled={processing}
+                      className="w-full bg-gradient-to-r from-amber-600 to-amber-700 text-white py-3 rounded-xl font-semibold hover:shadow-lg transition flex items-center justify-center gap-2 disabled:opacity-50"
+                    >
+                      {processing ? (
+                        <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                      ) : (
+                        <>
+                          <FaWallet />
                           Payer {panier?.total} €
                         </>
                       )}

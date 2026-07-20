@@ -5,13 +5,14 @@ import toast from 'react-hot-toast';
 import Header from '../../visiteur/components/Header';
 import Footer from '../../visiteur/components/Footer';
 import commandesService from '../../../services/commandesService';
+import useTelechargerFacture from '../../../hooks/useTelechargerFacture';
 
 const ConfirmationPaiementPage = () => {
   const { commandeId } = useParams();
   const navigate = useNavigate();
   const [commande, setCommande] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [telechargementFacture, setTelechargementFacture] = useState(false);
+  const { telecharger, commandeEnCours } = useTelechargerFacture();
 
   useEffect(() => {
     if (!commandeId) {
@@ -24,26 +25,8 @@ const ConfirmationPaiementPage = () => {
       .finally(() => setLoading(false));
   }, [commandeId, navigate]);
 
-  const telechargerFacture = async () => {
-    setTelechargementFacture(true);
-    try {
-      const blob = await commandesService.telechargerFacture(commandeId);
-      const url = window.URL.createObjectURL(new Blob([blob], { type: 'application/pdf' }));
-      const link = document.createElement('a');
-      link.href = url;
-      link.setAttribute('download', `facture-${commandeId}.pdf`);
-      document.body.appendChild(link);
-      link.click();
-      link.remove();
-      window.URL.revokeObjectURL(url);
-    } catch {
-      toast.error('Erreur lors du téléchargement de la facture');
-    } finally {
-      setTelechargementFacture(false);
-    }
-  };
-
   const estPayee = commande?.statut === 'payee';
+  const telechargementFacture = commandeEnCours === commandeId;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-amber-50 via-white to-amber-100">
@@ -105,7 +88,7 @@ const ConfirmationPaiementPage = () => {
                     Voir ma bibliothèque
                   </Link>
                   <button
-                    onClick={telechargerFacture}
+                    onClick={() => telecharger(commande.id)}
                     disabled={!estPayee || telechargementFacture}
                     className="border border-amber-600 text-amber-700 px-6 py-3 rounded-xl font-semibold hover:bg-amber-600 hover:text-white transition flex items-center justify-center gap-2 disabled:opacity-50 disabled:hover:bg-transparent disabled:hover:text-amber-700"
                   >

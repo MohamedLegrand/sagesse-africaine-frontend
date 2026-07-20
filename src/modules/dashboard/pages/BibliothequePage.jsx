@@ -119,7 +119,7 @@ const BibliothequePage = () => {
                 if (!livre) return null;
                 return (
                   <div key={item.id} className="book-card group">
-                    <Link to={`/dashboard/livre/${livre.id}`} className="block flex-shrink-0">
+                    <Link to={`/dashboard/livre/${livre.id}/lire`} className="block flex-shrink-0">
                       <div className="relative aspect-[2/3] bg-cream-100 overflow-hidden">
                         {livre.couverture_url ? (
                           <img
@@ -151,7 +151,7 @@ const BibliothequePage = () => {
                       </p>
                       <div className="flex gap-1.5 mt-auto pt-2">
                         <Link
-                          to={`/dashboard/livre/${livre.id}`}
+                          to={`/dashboard/livre/${livre.id}/lire`}
                           className="flex-1 flex items-center justify-center gap-1 py-1.5 bg-cream-100 hover:bg-cream-200 text-brown-700 text-xs font-semibold rounded-lg transition-colors"
                         >
                           <Eye className="w-3 h-3" /> Lire

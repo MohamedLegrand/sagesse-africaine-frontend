@@ -7,6 +7,7 @@ import RecapitulatifPaiement from '../components/RecapitulatifPaiement';
 import FormulaireCarte from '../components/FormulaireCarte';
 import FormulaireOrangeMoney from '../components/FormulaireOrangeMoney';
 import FormulaireMTN from '../components/FormulaireMTN';
+import FormulaireMobileMoney from '../components/FormulaireMobileMoney';
 import usePaiement from '../hooks/usePaiement';
 import api from '../../../services/api';
 import toast from 'react-hot-toast';
@@ -81,10 +82,25 @@ const PaiementPage = () => {
     }
   };
 
+  const handlePaiementMobileMoney = async (telephone) => {
+    const toastId = toast.loading('Envoi de la demande...');
+    try {
+      const { commande } = await payer('mobile_money', {
+        fournisseurPaiementId: telephone,
+        metadonnees: { telephone },
+      });
+      toast.success('Paiement confirmé !', { id: toastId });
+      navigate(`/confirmation-paiement/${commande.id}`);
+    } catch (error) {
+      toast.error(error.response?.data?.detail || 'Le paiement a échoué', { id: toastId });
+    }
+  };
+
   const methodes = [
     { id: 'carte', nom: 'Carte bancaire', icon: FaCreditCard, description: 'Visa, Mastercard' },
     { id: 'orange', nom: 'Orange Money', icon: FaMobileAlt, description: 'Paiement mobile' },
     { id: 'mtn', nom: 'MTN Mobile Money', icon: FaMobileAlt, description: 'Paiement mobile' },
+    { id: 'mobile_money', nom: 'Mobile Money', icon: FaMoneyBillWave, description: 'Autres opérateurs' },
   ];
 
   if (loading) {
@@ -138,7 +154,7 @@ const PaiementPage = () => {
                 </h2>
                 
                 {/* Méthodes de paiement */}
-                <div className="grid grid-cols-3 gap-3 mb-6">
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
                   {methodes.map((methode) => (
                     <button
                       key={methode.id}
@@ -171,6 +187,9 @@ const PaiementPage = () => {
                 )}
                 {selectedMethod === 'mtn' && (
                   <FormulaireMTN onSubmit={handlePaiementMTN} loading={paiementLoading} />
+                )}
+                {selectedMethod === 'mobile_money' && (
+                  <FormulaireMobileMoney onSubmit={handlePaiementMobileMoney} loading={paiementLoading} />
                 )}
               </div>
 

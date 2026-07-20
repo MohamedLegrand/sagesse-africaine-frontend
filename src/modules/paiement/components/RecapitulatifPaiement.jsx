@@ -21,7 +21,7 @@ const RecapitulatifPaiement = ({ panier, total }) => {
               </span>
             </div>
             <span className="text-amber-700 font-medium">
-              {(ligne.livre?.prix * ligne.quantite).toLocaleString()} FCFA
+              {(ligne.livre?.prix * ligne.quantite).toLocaleString()} XAF
             </span>
           </div>
         ))}
@@ -30,7 +30,7 @@ const RecapitulatifPaiement = ({ panier, total }) => {
       <div className="border-t border-amber-100 pt-4 mb-4">
         <div className="flex justify-between mb-2">
           <span className="text-gray-600">Sous-total</span>
-          <span className="text-amber-700">{total?.toLocaleString()} FCFA</span>
+          <span className="text-amber-700">{total?.toLocaleString()} XAF</span>
         </div>
         <div className="flex justify-between mb-2">
           <span className="text-gray-600">Frais de livraison</span>
@@ -42,7 +42,7 @@ const RecapitulatifPaiement = ({ panier, total }) => {
         <div className="flex justify-between">
           <span className="text-lg font-bold text-amber-800">Total à payer</span>
           <span className="text-2xl font-bold text-amber-700">
-            {total?.toLocaleString()} FCFA
+            {total?.toLocaleString()} XAF
           </span>
         </div>
       </div>

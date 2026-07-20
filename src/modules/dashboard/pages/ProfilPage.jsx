@@ -267,7 +267,7 @@ const CommandesContent = ({ commandes }) => {
               <p className="text-xs text-gray-400">{new Date(commande.cree_le).toLocaleDateString('fr-FR')}</p>
             </div>
             <div className="text-right">
-              <p className="text-xl font-bold text-amber-700">{commande.montant_total?.toLocaleString()} FCFA</p>
+              <p className="text-xl font-bold text-amber-700">{commande.montant_total?.toLocaleString()} XAF</p>
               <span className={`text-xs px-2 py-1 rounded-full ${getStatusColor(commande.statut)}`}>
                 {commande.statut || 'En cours'}
               </span>
@@ -279,7 +279,7 @@ const CommandesContent = ({ commandes }) => {
               {commande.lignes?.map((ligne) => (
                 <div key={ligne.id} className="flex justify-between text-sm">
                   <span className="text-gray-600">{ligne.livre?.titre} x{ligne.quantite}</span>
-                  <span className="text-amber-600">{(ligne.prix_unitaire * ligne.quantite)?.toLocaleString()} FCFA</span>
+                  <span className="text-amber-600">{(ligne.prix_unitaire * ligne.quantite)?.toLocaleString()} XAF</span>
                 </div>
               ))}
             </div>
