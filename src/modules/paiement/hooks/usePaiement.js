@@ -6,17 +6,18 @@ const usePaiement = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const payer = async (fournisseur, { fournisseurPaiementId, metadonnees } = {}) => {
+  const payer = async ({ operator, phoneNumber, country, metadonnees } = {}) => {
     setLoading(true);
     setError(null);
     try {
       const commande = await panierService.commander();
-      const paiement = await paiementsService.initierPaiement(commande.id, fournisseur);
-      const paiementConfirme = await paiementsService.confirmerPaiement(paiement.id, {
-        fournisseurPaiementId,
+      const paiement = await paiementsService.initierPaiement(commande.id, {
+        operator,
+        phoneNumber,
+        country,
         metadonnees,
       });
-      return { commande, paiement: paiementConfirme };
+      return { commande, paiement };
     } catch (err) {
       setError(err.response?.data?.detail || 'Erreur lors du paiement');
       throw err;
@@ -38,7 +39,20 @@ const usePaiement = () => {
     }
   };
 
-  return { loading, error, payer, getPaiementParCommande };
+  /**
+   * Vérification ponctuelle du statut d'un paiement par commande.
+   * Contrairement à getPaiementParCommande, ne passe pas loading à true
+   * pour ne pas interférer avec les composants qui affichent leur propre état.
+   */
+  const verifierStatutPaiement = async (commandeId) => {
+    try {
+      return await paiementsService.getPaiementParCommande(commandeId);
+    } catch (err) {
+      throw err;
+    }
+  };
+
+  return { loading, error, payer, getPaiementParCommande, verifierStatutPaiement };
 };
 
 export default usePaiement;

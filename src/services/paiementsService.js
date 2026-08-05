@@ -1,14 +1,16 @@
 import api from './api';
 
 const paiementsService = {
-  initierPaiement: async (commandeId, fournisseur) => {
-    const response = await api.post('/paiements/', { commande_id: commandeId, fournisseur });
+  getPaysOperateurs: async () => {
+    const response = await api.get('/paiements/pays-operateurs');
     return response.data;
   },
 
-  confirmerPaiement: async (paiementId, { fournisseurPaiementId, metadonnees } = {}) => {
-    const response = await api.post(`/paiements/${paiementId}/confirmer`, {
-      fournisseur_paiement_id: fournisseurPaiementId,
+  initierPaiement: async (commandeId, { operator, phoneNumber, country, metadonnees } = {}) => {
+    const response = await api.post(`/paiements/${commandeId}/initier`, {
+      operator,
+      phone_number: phoneNumber,
+      country,
       metadonnees,
     });
     return response.data;

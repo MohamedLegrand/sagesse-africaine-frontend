@@ -4,10 +4,8 @@ export { default as ConfirmationPaiementPage } from './pages/ConfirmationPaiemen
 
 // Composants
 export { default as RecapitulatifPaiement } from './components/RecapitulatifPaiement';
-export { default as FormulaireCarte } from './components/FormulaireCarte';
-export { default as FormulaireOrangeMoney } from './components/FormulaireOrangeMoney';
-export { default as FormulaireMTN } from './components/FormulaireMTN';
 export { default as FormulaireMobileMoney } from './components/FormulaireMobileMoney';
+export { default as SelecteurPaysOperateur } from './components/SelecteurPaysOperateur';
 
 // Hooks
 export { default as usePaiement } from './hooks/usePaiement';

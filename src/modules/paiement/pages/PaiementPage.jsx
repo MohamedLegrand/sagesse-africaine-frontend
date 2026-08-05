@@ -1,12 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FaCreditCard, FaMobileAlt, FaMoneyBillWave, FaArrowLeft, FaCheckCircle } from 'react-icons/fa';
+import { FaArrowLeft, FaCheckCircle } from 'react-icons/fa';
 import Header from '../../visiteur/components/Header';
 import Footer from '../../visiteur/components/Footer';
 import RecapitulatifPaiement from '../components/RecapitulatifPaiement';
-import FormulaireCarte from '../components/FormulaireCarte';
-import FormulaireOrangeMoney from '../components/FormulaireOrangeMoney';
-import FormulaireMTN from '../components/FormulaireMTN';
 import FormulaireMobileMoney from '../components/FormulaireMobileMoney';
 import usePaiement from '../hooks/usePaiement';
 import api from '../../../services/api';
@@ -16,7 +13,6 @@ const PaiementPage = () => {
   const navigate = useNavigate();
   const [panier, setPanier] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [selectedMethod, setSelectedMethod] = useState('carte');
   const { loading: paiementLoading, payer } = usePaiement();
 
   useEffect(() => {
@@ -41,67 +37,16 @@ const PaiementPage = () => {
     }
   };
 
-  const handlePaiementCarte = async (formData) => {
-    const toastId = toast.loading('Traitement du paiement...');
-    try {
-      const { commande } = await payer('stripe', {
-        metadonnees: { nom: formData.nom, cardNumberSuffix: formData.cardNumber.slice(-4) },
-      });
-      toast.success('Paiement réussi !', { id: toastId });
-      navigate(`/confirmation-paiement/${commande.id}`);
-    } catch (error) {
-      toast.error(error.response?.data?.detail || 'Le paiement a échoué', { id: toastId });
-    }
-  };
-
-  const handlePaiementOrangeMoney = async (telephone) => {
+  const handlePaiementMobileMoney = async ({ operator, phoneNumber, country }) => {
     const toastId = toast.loading('Envoi de la demande...');
     try {
-      const { commande } = await payer('orange_money', {
-        fournisseurPaiementId: telephone,
-        metadonnees: { telephone },
-      });
-      toast.success('Paiement confirmé !', { id: toastId });
+      const { commande } = await payer({ operator, phoneNumber, country });
+      toast.success('Demande envoyée ! Confirmez sur votre téléphone.', { id: toastId });
       navigate(`/confirmation-paiement/${commande.id}`);
     } catch (error) {
       toast.error(error.response?.data?.detail || 'Le paiement a échoué', { id: toastId });
     }
   };
-
-  const handlePaiementMTN = async (telephone) => {
-    const toastId = toast.loading('Envoi de la demande...');
-    try {
-      const { commande } = await payer('mtn', {
-        fournisseurPaiementId: telephone,
-        metadonnees: { telephone },
-      });
-      toast.success('Paiement confirmé !', { id: toastId });
-      navigate(`/confirmation-paiement/${commande.id}`);
-    } catch (error) {
-      toast.error(error.response?.data?.detail || 'Le paiement a échoué', { id: toastId });
-    }
-  };
-
-  const handlePaiementMobileMoney = async (telephone) => {
-    const toastId = toast.loading('Envoi de la demande...');
-    try {
-      const { commande } = await payer('mobile_money', {
-        fournisseurPaiementId: telephone,
-        metadonnees: { telephone },
-      });
-      toast.success('Paiement confirmé !', { id: toastId });
-      navigate(`/confirmation-paiement/${commande.id}`);
-    } catch (error) {
-      toast.error(error.response?.data?.detail || 'Le paiement a échoué', { id: toastId });
-    }
-  };
-
-  const methodes = [
-    { id: 'carte', nom: 'Carte bancaire', icon: FaCreditCard, description: 'Visa, Mastercard' },
-    { id: 'orange', nom: 'Orange Money', icon: FaMobileAlt, description: 'Paiement mobile' },
-    { id: 'mtn', nom: 'MTN Mobile Money', icon: FaMobileAlt, description: 'Paiement mobile' },
-    { id: 'mobile_money', nom: 'Mobile Money', icon: FaMoneyBillWave, description: 'Autres opérateurs' },
-  ];
 
   if (loading) {
     return (
@@ -120,10 +65,10 @@ const PaiementPage = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-amber-50 via-white to-amber-100">
       <Header />
-      
+
       <main className="pt-32 pb-20">
         <div className="container mx-auto px-4">
-          <button 
+          <button
             onClick={() => navigate('/panier')}
             className="flex items-center gap-2 text-amber-600 hover:text-amber-700 mb-6 transition"
           >
@@ -136,7 +81,7 @@ const PaiementPage = () => {
               Paiement
             </h1>
             <p className="text-amber-500 text-lg">
-              Choisissez votre mode de paiement
+              Choisissez votre pays et votre opérateur Mobile Money
             </p>
             <div className="flex items-center justify-center gap-2 mt-4">
               <div className="w-16 h-px bg-amber-300"></div>
@@ -150,47 +95,13 @@ const PaiementPage = () => {
             <div className="lg:col-span-2">
               <div className="bg-white rounded-2xl shadow-lg p-6 mb-6">
                 <h2 className="text-xl font-playfair font-bold text-amber-800 mb-4">
-                  Mode de paiement
+                  Mobile Money
                 </h2>
-                
-                {/* Méthodes de paiement */}
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
-                  {methodes.map((methode) => (
-                    <button
-                      key={methode.id}
-                      onClick={() => setSelectedMethod(methode.id)}
-                      className={`p-4 rounded-xl border-2 transition-all duration-300 text-center ${
-                        selectedMethod === methode.id
-                          ? 'border-amber-500 bg-amber-50'
-                          : 'border-amber-200 hover:border-amber-300'
-                      }`}
-                    >
-                      <methode.icon className={`text-2xl mx-auto mb-2 ${
-                        selectedMethod === methode.id ? 'text-amber-600' : 'text-amber-400'
-                      }`} />
-                      <p className={`text-sm font-medium ${
-                        selectedMethod === methode.id ? 'text-amber-700' : 'text-gray-600'
-                      }`}>
-                        {methode.nom}
-                      </p>
-                      <p className="text-xs text-gray-400">{methode.description}</p>
-                    </button>
-                  ))}
-                </div>
-
-                {/* Formulaires */}
-                {selectedMethod === 'carte' && (
-                  <FormulaireCarte onSubmit={handlePaiementCarte} loading={paiementLoading} />
-                )}
-                {selectedMethod === 'orange' && (
-                  <FormulaireOrangeMoney onSubmit={handlePaiementOrangeMoney} loading={paiementLoading} />
-                )}
-                {selectedMethod === 'mtn' && (
-                  <FormulaireMTN onSubmit={handlePaiementMTN} loading={paiementLoading} />
-                )}
-                {selectedMethod === 'mobile_money' && (
-                  <FormulaireMobileMoney onSubmit={handlePaiementMobileMoney} loading={paiementLoading} />
-                )}
+                <FormulaireMobileMoney
+                  onSubmit={handlePaiementMobileMoney}
+                  loading={paiementLoading}
+                  montantXaf={total}
+                />
               </div>
 
               {/* Sécurité */}
@@ -200,7 +111,7 @@ const PaiementPage = () => {
                 </div>
                 <div>
                   <p className="text-sm font-medium text-gray-700">Paiement 100% sécurisé</p>
-                  <p className="text-xs text-gray-500">Vos informations bancaires sont cryptées</p>
+                  <p className="text-xs text-gray-500">Confirmation directement sur votre téléphone</p>
                 </div>
               </div>
             </div>
