@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { User, Mail, Lock, Eye, EyeOff, ArrowRight, Check, X } from 'lucide-react';
 
 const PasswordStrength = ({ password }) => {
+  const { t } = useTranslation('auth');
   const checks = [
-    { label: '8 caractères minimum', ok: password.length >= 8 },
-    { label: 'Une majuscule', ok: /[A-Z]/.test(password) },
-    { label: 'Un chiffre', ok: /\d/.test(password) },
+    { label: t('formulaire.forceMotDePasse.longueur'), ok: password.length >= 8 },
+    { label: t('formulaire.forceMotDePasse.majuscule'), ok: /[A-Z]/.test(password) },
+    { label: t('formulaire.forceMotDePasse.chiffre'), ok: /\d/.test(password) },
   ];
   if (!password) return null;
   return (
@@ -22,6 +24,7 @@ const PasswordStrength = ({ password }) => {
 };
 
 const FormulaireInscription = ({ onSubmit, isLoading }) => {
+  const { t } = useTranslation('auth');
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const [formData, setFormData] = useState({
@@ -57,7 +60,7 @@ const FormulaireInscription = ({ onSubmit, isLoading }) => {
       {/* Prénom / Nom */}
       <div className="grid grid-cols-2 gap-3">
         <div>
-          <label htmlFor="prenom" className="input-label">Prénom</label>
+          <label htmlFor="prenom" className="input-label">{t('formulaire.prenom')}</label>
           <div className="relative">
             <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-brown-300" />
             <input
@@ -74,7 +77,7 @@ const FormulaireInscription = ({ onSubmit, isLoading }) => {
           </div>
         </div>
         <div>
-          <label htmlFor="nom" className="input-label">Nom</label>
+          <label htmlFor="nom" className="input-label">{t('formulaire.nom')}</label>
           <div className="relative">
             <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-brown-300" />
             <input
@@ -94,7 +97,7 @@ const FormulaireInscription = ({ onSubmit, isLoading }) => {
 
       {/* Email */}
       <div>
-        <label htmlFor="reg-email" className="input-label">Adresse e-mail</label>
+        <label htmlFor="reg-email" className="input-label">{t('formulaire.email')}</label>
         <div className="relative">
           <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-brown-300" />
           <input
@@ -113,7 +116,7 @@ const FormulaireInscription = ({ onSubmit, isLoading }) => {
 
       {/* Mot de passe */}
       <div>
-        <label htmlFor="reg-password" className="input-label">Mot de passe</label>
+        <label htmlFor="reg-password" className="input-label">{t('formulaire.motDePasse')}</label>
         <div className="relative">
           <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-brown-300" />
           <input
@@ -140,7 +143,7 @@ const FormulaireInscription = ({ onSubmit, isLoading }) => {
 
       {/* Confirmation */}
       <div>
-        <label htmlFor="confirm-password" className="input-label">Confirmer le mot de passe</label>
+        <label htmlFor="confirm-password" className="input-label">{t('formulaire.confirmerMotDePasse')}</label>
         <div className="relative">
           <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-brown-300" />
           <input
@@ -165,7 +168,7 @@ const FormulaireInscription = ({ onSubmit, isLoading }) => {
           </button>
         </div>
         {!passwordMatch && (
-          <p className="text-red-500 text-xs mt-1">Les mots de passe ne correspondent pas.</p>
+          <p className="text-red-500 text-xs mt-1">{t('formulaire.motsDePasseDifferents')}</p>
         )}
       </div>
 
@@ -179,7 +182,7 @@ const FormulaireInscription = ({ onSubmit, isLoading }) => {
           <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
         ) : (
           <>
-            Créer mon compte
+            {t('formulaire.creerMonCompte')}
             <ArrowRight className="w-4 h-4" />
           </>
         )}
@@ -191,15 +194,15 @@ const FormulaireInscription = ({ onSubmit, isLoading }) => {
           <div className="w-full border-t border-cream-200" />
         </div>
         <div className="relative flex justify-center">
-          <span className="px-3 bg-white text-xs text-brown-400">ou</span>
+          <span className="px-3 bg-white text-xs text-brown-400">{t('formulaire.ou')}</span>
         </div>
       </div>
 
       {/* Lien connexion */}
       <p className="text-center text-sm text-brown-600">
-        Déjà membre ?{' '}
+        {t('formulaire.dejaMembre')}{' '}
         <Link to="/connexion" className="font-semibold text-terra-600 hover:text-terra-800 transition-colors">
-          Se connecter
+          {t('formulaire.seConnecterLien')}
         </Link>
       </p>
     </form>

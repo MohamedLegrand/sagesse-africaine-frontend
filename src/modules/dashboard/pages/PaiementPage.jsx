@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { FaLock } from 'react-icons/fa';
 import api from '../../../services/api';
 import toast from 'react-hot-toast';
+import { traduireErreurApi } from '../../../services/erreurApi';
 import DashboardLayout from '../components/DashboardLayout';
 import FormulaireMobileMoney from '../../paiement/components/FormulaireMobileMoney';
 import usePaiement from '../../paiement/hooks/usePaiement';
 
 const PaiementPage = () => {
+  const { t } = useTranslation('paiement');
   const navigate = useNavigate();
   const [panier, setPanier] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -21,14 +24,14 @@ const PaiementPage = () => {
     try {
       const response = await api.get('/panier/');
       if (!response.data.lignes || response.data.lignes.length === 0) {
-        toast.error('Votre panier est vide');
+        toast.error(t('messages.panierVide'));
         navigate('/dashboard/panier');
         return;
       }
       setPanier(response.data);
     } catch (error) {
       console.error('Erreur chargement panier:', error);
-      toast.error('Erreur chargement du panier');
+      toast.error(t('messages.erreurChargementPanier'));
       navigate('/dashboard/panier');
     } finally {
       setLoading(false);
@@ -36,13 +39,13 @@ const PaiementPage = () => {
   };
 
   const handlePaiementMobileMoney = async ({ operator, phoneNumber, country }) => {
-    const toastId = toast.loading('Envoi de la demande...');
+    const toastId = toast.loading(t('messages.envoiDemande'));
     try {
       const { commande } = await payer({ operator, phoneNumber, country });
-      toast.success('Demande envoyée ! Confirmez sur votre téléphone.', { id: toastId });
+      toast.success(t('messages.demandeEnvoyeeConfirmez'), { id: toastId });
       navigate(`/confirmation-paiement/${commande.id}`);
     } catch (error) {
-      toast.error(error.response?.data?.detail || 'Le paiement a échoué', { id: toastId });
+      toast.error(traduireErreurApi(error, 'messages.paiementEchoue', 'paiement'), { id: toastId });
     }
   };
 
@@ -66,7 +69,7 @@ const PaiementPage = () => {
     <DashboardLayout>
       <div className="container mx-auto max-w-5xl">
         <h1 className="text-2xl font-playfair font-bold text-amber-800 mb-6">
-          Paiement
+          {t('titre')}
         </h1>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -74,7 +77,7 @@ const PaiementPage = () => {
           <div className="lg:col-span-2">
             <div className="bg-white rounded-2xl shadow-lg p-6 sm:p-8 mb-6">
               <h2 className="text-xl font-playfair font-bold text-amber-800 mb-6">
-                Mobile Money
+                {t('mobileMoney')}
               </h2>
               <FormulaireMobileMoney
                 onSubmit={handlePaiementMobileMoney}
@@ -87,8 +90,8 @@ const PaiementPage = () => {
             <div className="bg-white rounded-2xl shadow-lg p-6 flex items-center gap-3">
               <FaLock className="text-green-500 text-xl" />
               <div>
-                <p className="text-sm font-medium text-gray-700">Paiement sécurisé</p>
-                <p className="text-xs text-gray-500">Confirmation directement sur votre téléphone</p>
+                <p className="text-sm font-medium text-gray-700">{t('paiementSecurise')}</p>
+                <p className="text-xs text-gray-500">{t('confirmationTelephone')}</p>
               </div>
             </div>
           </div>
@@ -97,7 +100,7 @@ const PaiementPage = () => {
           <div className="lg:col-span-1">
             <div className="bg-white rounded-2xl shadow-lg p-6 sticky top-24">
               <h3 className="text-xl font-playfair font-bold text-amber-800 mb-4">
-                Résumé de la commande
+                {t('resumeCommande')}
               </h3>
 
               <div className="space-y-3 max-h-64 overflow-y-auto mb-4">
@@ -115,18 +118,18 @@ const PaiementPage = () => {
 
               <div className="border-t border-amber-100 pt-4 mb-4">
                 <div className="flex justify-between mb-2">
-                  <span className="text-gray-600">Sous-total</span>
+                  <span className="text-gray-600">{t('sousTotal')}</span>
                   <span className="text-amber-700">{total.toLocaleString()} XAF</span>
                 </div>
                 <div className="flex justify-between mb-2">
-                  <span className="text-gray-600">Frais de livraison</span>
-                  <span className="text-green-600">Gratuit</span>
+                  <span className="text-gray-600">{t('fraisLivraison')}</span>
+                  <span className="text-green-600">{t('gratuit')}</span>
                 </div>
               </div>
 
               <div className="border-t border-amber-200 pt-4">
                 <div className="flex justify-between">
-                  <span className="text-lg font-bold text-amber-800">Total</span>
+                  <span className="text-lg font-bold text-amber-800">{t('totalAPayer')}</span>
                   <span className="text-2xl font-bold text-amber-700">{total.toLocaleString()} XAF</span>
                 </div>
               </div>

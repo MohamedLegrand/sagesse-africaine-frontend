@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import {
   LayoutDashboard, BookOpen, Users, ShoppingBag, Library,
   Star, BarChart2, Eye, LogOut, Menu, X, ChevronRight
@@ -9,16 +10,17 @@ import authService from '../../../services/authService';
 import toast from 'react-hot-toast';
 
 const navItems = [
-  { path: '/admin',               label: 'Tableau de bord',  icon: LayoutDashboard, exact: true },
-  { path: '/admin/livres',        label: 'Livres',            icon: BookOpen },
-  { path: '/admin/utilisateurs',  label: 'Utilisateurs',      icon: Users },
-  { path: '/admin/commandes',     label: 'Commandes',         icon: ShoppingBag },
-  { path: '/admin/collections',   label: 'Collections',       icon: Library },
-  { path: '/admin/avis',          label: 'Avis',              icon: Star },
-  { path: '/admin/statistiques',  label: 'Statistiques',      icon: BarChart2 },
+  { path: '/admin',               key: 'tableauDeBord', icon: LayoutDashboard, exact: true },
+  { path: '/admin/livres',        key: 'livres',         icon: BookOpen },
+  { path: '/admin/utilisateurs',  key: 'utilisateurs',   icon: Users },
+  { path: '/admin/commandes',     key: 'achats',         icon: ShoppingBag },
+  { path: '/admin/collections',   key: 'collections',    icon: Library },
+  { path: '/admin/avis',          key: 'avis',           icon: Star },
+  { path: '/admin/statistiques',  key: 'statistiques',   icon: BarChart2 },
 ];
 
 const AdminLayout = ({ children }) => {
+  const { t } = useTranslation('admin');
   const navigate = useNavigate();
   const location = useLocation();
   const [user, setUser] = useState(null);
@@ -32,7 +34,7 @@ const AdminLayout = ({ children }) => {
 
   const handleLogout = async () => {
     await authService.logout();
-    toast.success('Déconnexion réussie');
+    toast.success(t('layout.messages.deconnexionReussie'));
     navigate('/connexion');
   };
 
@@ -67,7 +69,7 @@ const AdminLayout = ({ children }) => {
             <p className="font-semibold text-brown-900 text-sm truncate">
               {user ? `${user.prenom} ${user.nom}` : '—'}
             </p>
-            <span className="text-[10px] font-bold text-terra-500 uppercase tracking-wider">Administrateur</span>
+            <span className="text-[10px] font-bold text-terra-500 uppercase tracking-wider">{t('layout.administrateur')}</span>
           </div>
         </div>
       </div>
@@ -84,7 +86,7 @@ const AdminLayout = ({ children }) => {
               className={active ? 'nav-item-active' : 'nav-item'}
             >
               <Icon style={{ width: '18px', height: '18px' }} className="flex-shrink-0" />
-              <span className="flex-1">{item.label}</span>
+              <span className="flex-1">{t(`layout.nav.${item.key}`)}</span>
               {active && <ChevronRight className="w-3.5 h-3.5 opacity-60" />}
             </Link>
           );
@@ -95,14 +97,14 @@ const AdminLayout = ({ children }) => {
       <div className="px-3 py-4 border-t border-cream-100 space-y-0.5">
         <Link to="/dashboard" className="nav-item">
           <Eye style={{ width: '18px', height: '18px' }} className="flex-shrink-0" />
-          <span>Voir le site</span>
+          <span>{t('layout.voirLeSite')}</span>
         </Link>
         <button
           onClick={handleLogout}
           className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-red-600 hover:bg-red-50 transition-colors"
         >
           <LogOut style={{ width: '18px', height: '18px' }} className="flex-shrink-0" />
-          Déconnexion
+          {t('layout.deconnexion')}
         </button>
       </div>
     </div>
@@ -131,18 +133,18 @@ const AdminLayout = ({ children }) => {
               />
               <div className="hidden sm:flex flex-col leading-none">
                 <span className="font-playfair text-sm font-bold text-brown-950">SAGESSE AFRICAINE</span>
-                <span className="text-[10px] text-terra-500 tracking-widest uppercase font-medium">Administration</span>
+                <span className="text-[10px] text-terra-500 tracking-widest uppercase font-medium">{t('layout.administrateur')}</span>
               </div>
             </Link>
           </div>
 
           {/* Fil d'Ariane */}
           <div className="hidden md:flex items-center gap-1 text-xs text-brown-400">
-            <Link to="/admin" className="hover:text-brown-700">Admin</Link>
+            <Link to="/admin" className="hover:text-brown-700">{t('layout.admin')}</Link>
             {location.pathname !== '/admin' && (
               <>
                 <ChevronRight className="w-3 h-3" />
-                <span className="text-brown-600 font-medium">{currentNav?.label}</span>
+                <span className="text-brown-600 font-medium">{currentNav ? t(`layout.nav.${currentNav.key}`) : ''}</span>
               </>
             )}
           </div>
@@ -154,7 +156,7 @@ const AdminLayout = ({ children }) => {
               className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium text-brown-600 hover:bg-cream-100 transition-colors"
             >
               <Eye className="w-4 h-4" />
-              Voir le site
+              {t('layout.voirLeSite')}
             </Link>
             <Link to="/dashboard/profil" className="flex items-center gap-2 px-2 py-1.5 rounded-lg hover:bg-cream-100 transition-colors">
               {user?.avatar_url ? (

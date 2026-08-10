@@ -3,12 +3,12 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import { AccueilPage, ConnexionPage, InscriptionPage, OublierMotDePassePage, ReinitialiserMotDePassePage } from './modules/visiteur';
 import {
-  NosLivresPage, QuiSommesNousPage, ContactPage, PanierPage, DetailLivrePubliquePage,
+  NosLivresPage, RecherchePage, QuiSommesNousPage, ContactPage, PanierPage, DetailLivrePubliquePage,
   EtreEditePage, ConfidentialitePage, MentionsLegalesPage, CGVPage
 } from './modules/pages-publiques';
 import {
   TableauBordPage, BoutiquePage, DetailLivrePage, LecteurLivrePage, PanierPage as DashboardPanierPage,
-  PaiementPage as DashboardPaiementPage, BibliothequePage, HistoriquePage, ProfilPage, ParametresPage
+  BibliothequePage, HistoriquePage, ProfilPage, ParametresPage
 } from './modules/dashboard';
 import { 
   DashboardAdminPage,
@@ -63,6 +63,7 @@ function App() {
         <Route path="/mot-de-passe-oublie" element={<OublierMotDePassePage />} />
         <Route path="/reinitialiser-mot-de-passe" element={<ReinitialiserMotDePassePage />} />
         <Route path="/livres" element={<NosLivresPage />} />
+        <Route path="/recherche" element={<RecherchePage />} />
         <Route path="/qui-sommes-nous" element={<QuiSommesNousPage />} />
         <Route path="/contact" element={<ContactPage />} />
         <Route path="/panier" element={<PanierPage />} />
@@ -74,6 +75,11 @@ function App() {
 
         {/* Paiement public (protégé) */}
         <Route path="/paiement" element={
+          <RouteProtegee>
+            <PaiementPage />
+          </RouteProtegee>
+        } />
+        <Route path="/paiement/:commandeId" element={
           <RouteProtegee>
             <PaiementPage />
           </RouteProtegee>
@@ -112,7 +118,7 @@ function App() {
         } />
         <Route path="/dashboard/paiement" element={
           <RouteProtegee>
-            <DashboardPaiementPage />
+            <PaiementPage />
           </RouteProtegee>
         } />
         <Route path="/dashboard/bibliotheque" element={

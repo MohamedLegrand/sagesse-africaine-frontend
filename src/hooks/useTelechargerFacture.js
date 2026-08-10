@@ -2,23 +2,26 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import commandesService from '../services/commandesService';
+import i18n from '../i18n';
+import { traduireErreurApi } from '../services/erreurApi';
 
 const extraireNomFichier = (contentDisposition, commandeId) => {
   const match = /filename="?([^"]+)"?/i.exec(contentDisposition || '');
   return match?.[1] || `facture-${commandeId}.pdf`;
 };
 
-const lireDetailErreur = async (error) => {
+// Le detail JSON arrive dans un Blob (la requête est faite en responseType
+// blob pour recevoir le PDF) : il faut le reconstituer avant de le passer à
+// traduireErreurApi, qui attend error.response.data.detail directement.
+const reconstituerErreurAvecDetailJson = async (error) => {
   const data = error.response?.data;
-  if (data instanceof Blob) {
-    try {
-      const json = JSON.parse(await data.text());
-      return json.detail;
-    } catch {
-      return null;
-    }
+  if (!(data instanceof Blob)) return error;
+  try {
+    const detail = JSON.parse(await data.text()).detail;
+    return { ...error, response: { ...error.response, data: { detail } } };
+  } catch {
+    return error;
   }
-  return error.response?.data?.detail;
 };
 
 const useTelechargerFacture = () => {
@@ -41,19 +44,19 @@ const useTelechargerFacture = () => {
       window.URL.revokeObjectURL(url);
     } catch (error) {
       const statut = error.response?.status;
-      const detail = await lireDetailErreur(error);
+      const erreurReconstituee = await reconstituerErreurAvecDetailJson(error);
 
       if (statut === 400) {
-        toast.error(detail || 'Facture indisponible : commande non payée');
+        toast.error(traduireErreurApi(erreurReconstituee, 'FACTURE_ACHAT_NON_PAYE'));
       } else if (statut === 401) {
-        toast.error('Votre session a expiré, veuillez vous reconnecter');
+        toast.error(i18n.t('facture.sessionExpiree', { ns: 'commun' }));
         navigate('/connexion');
       } else if (statut === 403) {
-        toast.error("Vous n'êtes pas autorisé à télécharger cette facture");
+        toast.error(i18n.t('facture.nonAutorise', { ns: 'commun' }));
       } else if (statut === 404) {
-        toast.error('Commande introuvable');
+        toast.error(i18n.t('facture.achatIntrouvable', { ns: 'commun' }));
       } else {
-        toast.error(detail || 'Erreur lors du téléchargement de la facture');
+        toast.error(traduireErreurApi(erreurReconstituee, 'facture.erreurTelechargement', 'commun'));
       }
     } finally {
       setCommandeEnCours(null);

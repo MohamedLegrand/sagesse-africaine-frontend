@@ -1,14 +1,16 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { FaBook, FaMoneyBillWave } from 'react-icons/fa';
 
 const RecapitulatifPaiement = ({ panier, total }) => {
+  const { t } = useTranslation('paiement');
   const lignes = panier?.lignes || [];
   const nombreLivres = panier?.nombre_livres || 0;
 
   return (
     <div className="bg-white rounded-2xl shadow-lg p-6 sticky top-32">
       <h3 className="text-xl font-playfair font-bold text-amber-800 mb-4">
-        Récapitulatif
+        {t('recapitulatif')}
       </h3>
       
       <div className="space-y-3 max-h-64 overflow-y-auto mb-4">
@@ -21,7 +23,7 @@ const RecapitulatifPaiement = ({ panier, total }) => {
               </span>
             </div>
             <span className="text-amber-700 font-medium">
-              {(ligne.livre?.prix * ligne.quantite).toLocaleString()} XAF
+              {(ligne.livre?.prix * ligne.quantite).toLocaleString('fr-FR')} XAF
             </span>
           </div>
         ))}
@@ -29,31 +31,31 @@ const RecapitulatifPaiement = ({ panier, total }) => {
       
       <div className="border-t border-amber-100 pt-4 mb-4">
         <div className="flex justify-between mb-2">
-          <span className="text-gray-600">Sous-total</span>
-          <span className="text-amber-700">{total?.toLocaleString()} XAF</span>
+          <span className="text-gray-600">{t('sousTotal')}</span>
+          <span className="text-amber-700">{total?.toLocaleString('fr-FR')} XAF</span>
         </div>
         <div className="flex justify-between mb-2">
-          <span className="text-gray-600">Frais de livraison</span>
-          <span className="text-green-600">Gratuit</span>
+          <span className="text-gray-600">{t('fraisLivraison')}</span>
+          <span className="text-green-600">{t('gratuit')}</span>
         </div>
       </div>
-      
+
       <div className="border-t border-amber-200 pt-4">
         <div className="flex justify-between">
-          <span className="text-lg font-bold text-amber-800">Total à payer</span>
+          <span className="text-lg font-bold text-amber-800">{t('totalAPayer')}</span>
           <span className="text-2xl font-bold text-amber-700">
-            {total?.toLocaleString()} XAF
+            {total?.toLocaleString('fr-FR')} XAF
           </span>
         </div>
       </div>
-      
+
       <div className="mt-4 p-3 bg-amber-50 rounded-xl">
         <div className="flex items-center gap-2 text-sm text-amber-700">
           <FaMoneyBillWave />
-          <span>Paiement 100% sécurisé</span>
+          <span>{t('paiementMobileMoneySecurise')}</span>
         </div>
         <p className="text-xs text-gray-500 mt-1">
-          Vos informations bancaires sont cryptées
+          {t('confirmationTelephone')}
         </p>
       </div>
     </div>

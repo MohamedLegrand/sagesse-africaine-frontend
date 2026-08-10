@@ -44,7 +44,7 @@ const CGVPage = () => {
             <div className="bg-amber-50 border border-amber-200 rounded-xl p-5 mb-10 text-sm text-amber-700 leading-relaxed">
               Les présentes Conditions Générales de Vente (CGV) régissent l'ensemble des ventes
               de produits numériques (livres électroniques) et physiques effectuées via la plateforme
-              SAGESSE AFRICAINE. Toute commande implique l'acceptation sans réserve de ces CGV.
+              SAGESSE AFRICAINE. Tout achat implique l'acceptation sans réserve de ces CGV.
             </div>
 
             <Section titre="1. Identité du vendeur">
@@ -78,7 +78,7 @@ const CGVPage = () => {
               <p>
                 Les prix sont indiqués en Francs CFA (XAF) toutes taxes comprises.
                 SAGESSE AFRICAINE se réserve le droit de modifier ses prix à tout moment.
-                Les produits sont facturés au prix en vigueur au moment de la validation de la commande.
+                Les produits sont facturés au prix en vigueur au moment de la validation de l'achat.
               </p>
               <p>
                 Certains ouvrages peuvent être proposés gratuitement dans le cadre d'actions
@@ -87,10 +87,10 @@ const CGVPage = () => {
               </p>
             </Section>
 
-            <Section titre="4. Commande et paiement">
+            <Section titre="4. Achat et paiement">
               <p>
-                Pour passer une commande, vous devez disposer d'un compte utilisateur valide.
-                La commande est considérée comme ferme et définitive après validation du paiement.
+                Pour effectuer un achat, vous devez disposer d'un compte utilisateur valide.
+                L'achat est considéré comme ferme et définitif après validation du paiement.
               </p>
               <p><strong>Moyens de paiement acceptés :</strong></p>
               <ul className="list-disc pl-5 space-y-1 mt-2">
@@ -126,7 +126,7 @@ const CGVPage = () => {
               </p>
               <p>
                 Pour les livres physiques non encore expédiés, vous disposez d'un délai de 14 jours
-                à compter de la validation de votre commande pour exercer votre droit de rétractation,
+                à compter de la validation de votre achat pour exercer votre droit de rétractation,
                 sans avoir à justifier de motifs, en nous contactant à l'adresse email indiquée.
               </p>
             </Section>
@@ -155,7 +155,7 @@ const CGVPage = () => {
 
             <Section titre="9. Service après-vente et réclamations">
               <p>
-                Pour tout problème lié à votre commande ou à l'accès à vos contenus,
+                Pour tout problème lié à votre achat ou à l'accès à vos contenus,
                 contactez notre service client :
               </p>
               <ul className="list-none space-y-2 mt-2">

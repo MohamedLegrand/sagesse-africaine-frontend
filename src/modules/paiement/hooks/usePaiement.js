@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import panierService from '../../../services/panierService';
 import paiementsService from '../../../services/paiementsService';
+import { traduireErreurApi } from '../../../services/erreurApi';
 
 const usePaiement = () => {
   const [loading, setLoading] = useState(false);
@@ -19,7 +20,7 @@ const usePaiement = () => {
       });
       return { commande, paiement };
     } catch (err) {
-      setError(err.response?.data?.detail || 'Erreur lors du paiement');
+      setError(traduireErreurApi(err));
       throw err;
     } finally {
       setLoading(false);
@@ -32,7 +33,7 @@ const usePaiement = () => {
     try {
       return await paiementsService.getPaiementParCommande(commandeId);
     } catch (err) {
-      setError(err.response?.data?.detail || 'Erreur lors de la récupération du paiement');
+      setError(traduireErreurApi(err));
       throw err;
     } finally {
       setLoading(false);

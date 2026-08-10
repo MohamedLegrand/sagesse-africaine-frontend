@@ -79,7 +79,7 @@ const ConfidentialitePage = () => {
               <p>Vos données sont collectées pour les finalités suivantes :</p>
               <ul className="list-disc pl-5 space-y-1 mt-2">
                 <li>Gestion de votre compte utilisateur et authentification</li>
-                <li>Traitement de vos commandes et paiements</li>
+                <li>Traitement de vos achats et paiements</li>
                 <li>Envoi d'informations sur nos publications et services (avec votre consentement)</li>
                 <li>Amélioration de nos services et de l'expérience utilisateur</li>
                 <li>Respect de nos obligations légales et comptables</li>
@@ -90,7 +90,7 @@ const ConfidentialitePage = () => {
             <Section titre="4. Base légale du traitement">
               <p>Le traitement de vos données repose sur :</p>
               <ul className="list-disc pl-5 space-y-1 mt-2">
-                <li><strong>L'exécution du contrat</strong> : traitement des commandes, gestion de compte</li>
+                <li><strong>L'exécution du contrat</strong> : traitement des achats, gestion de compte</li>
                 <li><strong>Votre consentement</strong> : newsletters et communications marketing</li>
                 <li><strong>L'intérêt légitime</strong> : amélioration des services, sécurité</li>
                 <li><strong>L'obligation légale</strong> : facturation, archivage comptable</li>

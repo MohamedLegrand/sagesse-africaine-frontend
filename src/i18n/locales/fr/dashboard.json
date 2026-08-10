@@ -1,0 +1,331 @@
+{
+  "layout": {
+    "monEspace": "Mon espace",
+    "tableauDeBord": "Tableau de bord",
+    "deconnexion": "Déconnexion",
+    "nav": {
+      "accueil": "Accueil",
+      "boutique": "Boutique",
+      "bibliotheque": "Ma bibliothèque",
+      "panier": "Mon panier",
+      "historique": "Historique",
+      "profil": "Mon profil",
+      "parametres": "Paramètres"
+    },
+    "messages": {
+      "deconnexionReussie": "Déconnexion réussie"
+    }
+  },
+
+  "carteLivre": {
+    "gratuitBadge": "GRATUIT",
+    "gratuit": "Gratuit",
+    "detail": "Détail",
+    "voirPlus": "Voir plus",
+    "lireUnExtrait": "Lire un extrait",
+    "lire": "Lire",
+    "ajouter": "Ajouter"
+  },
+
+  "accueil": {
+    "eyebrow": "Boutique",
+    "titre": "Notre catalogue",
+    "ouvrageDisponible_one": "{{count}} ouvrage disponible",
+    "ouvrageDisponible_other": "{{count}} ouvrages disponibles",
+    "monPanier": "Mon panier",
+    "tousOnglet": "Tous",
+    "autresOuvrages": "Autres ouvrages",
+    "ouvrage_one": "{{count}} ouvrage",
+    "ouvrage_other": "{{count}} ouvrages",
+    "aucunLivreCollection": "Aucun livre dans cette collection pour l'instant.",
+    "aucunLivreDisponible": "Aucun livre disponible pour le moment.",
+    "revenezBientot": "Revenez bientôt pour découvrir nos parutions.",
+    "messages": {
+      "impossibleChargerCatalogue": "Impossible de charger le catalogue",
+      "livreAjoutePanier": "Livre ajouté au panier",
+      "erreurAjout": "Erreur lors de l'ajout"
+    }
+  },
+
+  "boutique": {
+    "eyebrow": "Boutique",
+    "titre": "Catalogue complet",
+    "monPanier": "Mon panier",
+    "rechercherPlaceholder": "Rechercher un titre ou un auteur...",
+    "aucunLivreTrouve": "Aucun livre trouvé.",
+    "resultat_one": "{{count}} résultat",
+    "resultat_other": "{{count}} résultats",
+    "precedent": "← Précédent",
+    "suivant": "Suivant →",
+    "messages": {
+      "impossibleChargerCatalogue": "Impossible de charger le catalogue",
+      "livreAjoutePanier": "Livre ajouté au panier",
+      "erreurAjout": "Erreur lors de l'ajout"
+    }
+  },
+
+  "bibliotheque": {
+    "eyebrow": "Bibliothèque",
+    "titre": "Mes livres",
+    "ouvrageCollection_one": "{{count}} ouvrage dans votre collection",
+    "ouvrageCollection_other": "{{count}} ouvrages dans votre collection",
+    "bibliothequeVide": "Votre bibliothèque est vide",
+    "achetezLivresBoutique": "Achetez des livres dans la boutique pour les retrouver ici.",
+    "decouvrirBoutique": "Découvrir la boutique",
+    "rechercherPlaceholder": "Rechercher dans ma bibliothèque...",
+    "aucunResultatPour": "Aucun résultat pour « {{terme}} »",
+    "ajouteLe": "Ajouté le {{date}}",
+    "lire": "Lire",
+    "messages": {
+      "erreurChargement": "Erreur chargement de votre bibliothèque"
+    }
+  },
+
+  "detailLivre": {
+    "retour": "Retour",
+    "avis": "avis",
+    "isbn": "ISBN:",
+    "gratuit": "Gratuit",
+    "vousAvezAcces": "Vous avez accès à ce livre",
+    "continuerLecture": "Continuer la lecture",
+    "commencerLecture": "Commencer la lecture",
+    "devezAcheter": "Vous devez acheter ce livre avant de pouvoir le lire.",
+    "acheter": "Acheter",
+    "lireUnExtrait": "Lire un extrait",
+    "onglets": {
+      "details": "Détails",
+      "progression": "Progression",
+      "signets": "Signets",
+      "avis": "Avis"
+    },
+    "details": {
+      "descriptionComplete": "Description complète",
+      "aucuneDescription": "Aucune description disponible.",
+      "formatsDisponibles": "Formats disponibles",
+      "taille": "{{taille}} Mo"
+    },
+    "progression": {
+      "titre": "Ma progression de lecture",
+      "achetezPourSuivre": "Achetez ce livre pour suivre votre progression.",
+      "page": "Page {{page}} / {{total}}",
+      "derniereLecture": "Dernière lecture : {{date}}",
+      "pasEncoreCommence": "Vous n'avez pas encore commencé ce livre."
+    },
+    "signets": {
+      "titre": "Mes signets",
+      "ajouterALaPage": "Ajouter à la page {{page}}",
+      "achetezPourAjouter": "Achetez ce livre pour ajouter des signets.",
+      "aucunSignet": "Aucun signet pour ce livre.",
+      "notePlaceholder": "Note pour le prochain signet (optionnel)...",
+      "notePlaceholderSeul": "Note pour le signet (optionnel)...",
+      "page": "Page {{page}}",
+      "messages": {
+        "signetAjoute": "Signet ajouté",
+        "erreurAjout": "Erreur ajout signet",
+        "signetSupprime": "Signet supprimé",
+        "erreurSuppression": "Erreur suppression signet"
+      }
+    },
+    "avis": {
+      "titreAvecMoyenne": "Avis ({{count}}) — Moyenne {{note}}/5",
+      "laisserUnAvis": "Laisser un avis",
+      "note": "Note",
+      "partagezAvis": "Partagez votre avis sur ce livre...",
+      "envoiEnCours": "Envoi...",
+      "soumettreAvis": "Soumettre l'avis",
+      "aucunAvisSoyezPremier": "Aucun avis pour ce livre. Soyez le premier !",
+      "messages": {
+        "avisSoumis": "Avis soumis, en attente de modération",
+        "avisDejaSoumis": "Vous avez déjà soumis un avis pour ce livre",
+        "erreurSoumission": "Erreur lors de la soumission"
+      }
+    },
+    "messages": {
+      "livreIntrouvable": "Livre introuvable"
+    }
+  },
+
+  "lecteur": {
+    "chargementLivre": "Chargement du livre...",
+    "devezAcheter": "Vous devez acheter ce livre avant de pouvoir le lire.",
+    "acheterCeLivre": "Acheter ce livre",
+    "lireUnExtrait": "Lire un extrait",
+    "aucunFichier": "Aucun fichier n'est disponible pour ce livre.",
+    "erreurChargement": "Une erreur est survenue lors du chargement du livre.",
+    "retourFiche": "Retour à la fiche du livre",
+    "retour": "Retour",
+    "reduire": "Réduire",
+    "agrandir": "Agrandir",
+    "ajouterSignetPage": "Ajouter un signet à cette page",
+    "page": "Page {{page}}",
+    "impossibleAfficherPdf": "Impossible d'afficher ce PDF.",
+    "messages": {
+      "signetAjoutePage": "Signet ajouté à la page {{page}}",
+      "erreurAjoutSignet": "Erreur lors de l'ajout du signet",
+      "pasAcces": "Vous n'avez pas accès à ce livre"
+    }
+  },
+
+  "profil": {
+    "titre": "Mon espace",
+    "onglets": {
+      "profil": "Mon profil",
+      "bibliotheque": "Mes livres",
+      "favoris": "Mes favoris",
+      "commandes": "Mes achats",
+      "telechargements": "Téléchargements",
+      "parametres": "Paramètres"
+    },
+    "membreDepuis": "Membre depuis {{date}}",
+    "administrateur": "Administrateur",
+    "membre": "Membre",
+    "bibliothequeContent": {
+      "aucunLivre": "Aucun livre",
+      "pasEncoreAchete": "Vous n'avez pas encore acheté de livres",
+      "decouvrirBoutique": "Découvrir la boutique",
+      "titreInconnu": "Titre inconnu",
+      "auteurInconnu": "Auteur inconnu",
+      "ajouteLe": "Ajouté le {{date}}",
+      "lire": "Lire",
+      "telecharger": "Télécharger",
+      "messages": {
+        "telechargementCommence": "Téléchargement commencé",
+        "limiteAtteinte": "Limite de téléchargements atteinte pour ce livre. Vous pouvez toujours le lire en ligne.",
+        "erreurTelechargement": "Erreur lors du téléchargement"
+      }
+    },
+    "favorisContent": {
+      "titre": "Mes favoris",
+      "fonctionnaliteAVenir": "Fonctionnalité à venir"
+    },
+    "commandesContent": {
+      "aucunAchat": "Aucun achat",
+      "pasEncoreAchat": "Vous n'avez pas encore effectué d'achat",
+      "acheterMaintenant": "Acheter maintenant",
+      "articlesCommandes": "Articles commandés :",
+      "enCours": "En cours"
+    },
+    "telechargementsContent": {
+      "aucunTelechargement": "Aucun téléchargement",
+      "pasEncoreTelecharge": "Vous n'avez pas encore téléchargé de livres",
+      "entetes": {
+        "livre": "Livre",
+        "format": "Format",
+        "date": "Date",
+        "appareil": "Appareil",
+        "action": "Action"
+      },
+      "inconnu": "Inconnu",
+      "voir": "Voir"
+    },
+    "parametresContent": {
+      "photoDeProfil": "Photo de profil",
+      "avatarUrlPlaceholder": "URL de votre avatar...",
+      "mettreAJour": "Mettre à jour",
+      "informationsPersonnelles": "Informations personnelles",
+      "prenom": "Prénom",
+      "nom": "Nom",
+      "enregistrer": "Enregistrer",
+      "enregistrementEnCours": "Enregistrement...",
+      "changerMotDePasse": "Changer mon mot de passe",
+      "ancienMotDePasse": "Ancien mot de passe",
+      "nouveauMotDePasse": "Nouveau mot de passe",
+      "confirmerMotDePasse": "Confirmer le mot de passe",
+      "modifierMotDePasse": "Modifier le mot de passe",
+      "modificationEnCours": "Modification...",
+      "messages": {
+        "avatarMisAJour": "Avatar mis à jour",
+        "erreurAvatar": "Erreur lors de la mise à jour de l'avatar",
+        "profilMisAJour": "Profil mis à jour",
+        "erreurMiseAJour": "Erreur lors de la mise à jour",
+        "motsDePasseDifferents": "Les mots de passe ne correspondent pas",
+        "motDePasseModifie": "Mot de passe modifié",
+        "ancienMotDePasseIncorrect": "Ancien mot de passe incorrect"
+      }
+    },
+    "messages": {
+      "erreurChargementDonnees": "Erreur chargement des données"
+    }
+  },
+
+  "historique": {
+    "titre": "Historique",
+    "achatEffectue_one": "{{count}} achat effectué",
+    "achatEffectue_other": "{{count}} achats effectués",
+    "telechargement_one": "{{count}} téléchargement",
+    "telechargement_other": "{{count}} téléchargements",
+    "onglets": {
+      "achats": "Achats",
+      "telechargements": "Téléchargements"
+    },
+    "rechercherAchats": "Rechercher dans les achats...",
+    "rechercherTelechargements": "Rechercher dans les téléchargements...",
+    "statuts": {
+      "payee": "Payée",
+      "livree": "Livrée",
+      "completee": "Complétée",
+      "enAttente": "En attente",
+      "annulee": "Annulée",
+      "enCours": "En cours"
+    },
+    "aucunAchat": "Aucun achat",
+    "pasEncoreAchat": "Vous n'avez pas encore effectué d'achat",
+    "decouvrirBoutique": "Découvrir la boutique",
+    "detailsAchat": "Détails de l'achat",
+    "quantite": "Quantité : {{n}}",
+    "telechargerFacture": "Télécharger la facture",
+    "accederBibliotheque": "Accéder à ma bibliothèque",
+    "verifierStatutPaiement": "Vérifier le statut du paiement",
+    "reessayerPaiement": "Réessayer le paiement",
+    "paiementEchoueOuAnnule": "Le paiement a échoué ou a été annulé.",
+    "aucunTelechargement": "Aucun téléchargement",
+    "pasEncoreTelecharge": "Vous n'avez pas encore téléchargé de livre",
+    "voirBibliotheque": "Voir ma bibliothèque",
+    "entetes": {
+      "livre": "Livre",
+      "format": "Format",
+      "date": "Date",
+      "appareil": "Appareil",
+      "action": "Action"
+    },
+    "voir": "Voir",
+    "article_one": "{{count}} article",
+    "article_other": "{{count}} articles",
+    "livreFallback": "Livre",
+    "inconnu": "Inconnu",
+    "messages": {
+      "verificationEnCours": "Vérification du statut du paiement...",
+      "paiementReussiDebloque": "Paiement réussi ! Vos accès ont été débloqués.",
+      "paiementEchoue": "Le paiement a échoué.",
+      "operateurPasEncoreValide": "L'opérateur n'a pas encore validé le débit. Veuillez réessayer dans quelques instants.",
+      "impossibleVerifier": "Impossible de vérifier le statut pour le moment. Veuillez réessayer.",
+      "erreurChargement": "Erreur chargement de l'historique"
+    }
+  },
+
+  "parametres": {
+    "titre": "Paramètres",
+    "sousTitre": "Gérez vos préférences",
+    "notifications": {
+      "titre": "Notifications",
+      "email": { "label": "Notifications par email", "desc": "Recevez des notifications par email" },
+      "commandes": { "label": "Achats", "desc": "Suivi de vos achats" },
+      "promotions": { "label": "Promotions", "desc": "Offres et réductions" },
+      "newsletter": { "label": "Newsletter", "desc": "Actualités de SAGESSE AFRICAINE" }
+    },
+    "apparence": {
+      "titre": "Apparence",
+      "clair": "Clair",
+      "sombre": "Sombre"
+    },
+    "langue": {
+      "titre": "Langue"
+    },
+    "enregistrerParametres": "Enregistrer les paramètres",
+    "messages": {
+      "erreurChargement": "Erreur lors du chargement des paramètres",
+      "enregistreAvecSucces": "Paramètres enregistrés avec succès",
+      "erreurSauvegarde": "Erreur lors de la sauvegarde"
+    }
+  }
+}

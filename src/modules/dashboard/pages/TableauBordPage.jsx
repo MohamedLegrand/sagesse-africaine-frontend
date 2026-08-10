@@ -1,13 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { BookOpen, ShoppingBag, Heart, ArrowRight, Package, BookOpenText } from 'lucide-react';
 import api from '../../../services/api';
 import toast from 'react-hot-toast';
 import DashboardLayout from '../components/DashboardLayout';
-import livresSite from '../../../data/livresSite';
+import livresService from '../../../services/livresService';
+import { avecExtrait } from '../../../data/extraitsLivres';
 import ExtraitModal from '../../../components/ExtraitModal';
 
-const BookCard = ({ livre, onAddToCart, adding, onLireExtrait }) => (
+const BookCard = ({ livre, onAddToCart, adding, onLireExtrait, isOwned }) => {
+  const { t } = useTranslation('dashboard');
+  return (
   <div className="book-card group">
     <Link to={`/dashboard/livre/${livre.id}`} className="block flex-shrink-0">
       <div className="relative aspect-[2/3] bg-cream-100 overflow-hidden">
@@ -25,7 +29,7 @@ const BookCard = ({ livre, onAddToCart, adding, onLireExtrait }) => (
         )}
         {livre.est_gratuit && (
           <span className="absolute top-2 left-2 bg-green-600 text-white text-[10px] font-bold px-2 py-0.5 rounded">
-            GRATUIT
+            {t('carteLivre.gratuitBadge')}
           </span>
         )}
       </div>
@@ -38,62 +42,85 @@ const BookCard = ({ livre, onAddToCart, adding, onLireExtrait }) => (
       </Link>
       <p className="text-xs text-brown-400">{livre.auteur}</p>
       <span className="font-bold text-brown-900 text-sm">
-        {livre.est_gratuit ? <span className="text-green-600">Gratuit</span> : `${livre.prix?.toLocaleString()} XAF`}
+        {livre.est_gratuit ? <span className="text-green-600">{t('carteLivre.gratuit')}</span> : `${livre.prix?.toLocaleString('fr-FR')} XAF`}
       </span>
       <div className="flex items-center justify-between mt-auto pt-2 gap-1">
         <Link
           to={`/dashboard/livre/${livre.id}`}
           className="flex items-center gap-1 px-2 py-1.5 text-xs font-semibold rounded-lg bg-cream-100 text-brown-700 hover:bg-cream-200 transition-colors flex-shrink-0"
         >
-          Détail
+          {t('carteLivre.detail')}
         </Link>
         {livre.extrait_url && (
           <button
             onClick={() => onLireExtrait(livre)}
             className="flex items-center gap-1 px-2 py-1.5 text-xs font-semibold rounded-lg border border-amber-300 text-amber-700 hover:bg-amber-50 transition-colors flex-shrink-0"
-            title="Lire un extrait"
+            title={t('carteLivre.lireUnExtrait')}
           >
             <BookOpenText className="w-3 h-3" />
           </button>
         )}
-        <button
-          onClick={() => onAddToCart(livre.id)}
-          disabled={adding === livre.id}
-          className="flex items-center gap-1 px-2.5 py-1.5 bg-terra-500 hover:bg-terra-600 text-white text-xs font-semibold rounded-lg transition-colors disabled:opacity-50 ml-auto"
-        >
-          {adding === livre.id ? (
-            <div className="w-3 h-3 border-2 border-white border-t-transparent rounded-full animate-spin" />
-          ) : (
-            <ShoppingBag className="w-3 h-3" />
-          )}
-          Ajouter
-        </button>
+        {isOwned ? (
+          <Link
+            to="/dashboard/bibliotheque"
+            className="flex items-center gap-1 px-2.5 py-1.5 bg-green-600 hover:bg-green-700 text-white text-xs font-semibold rounded-lg transition-colors ml-auto flex-shrink-0"
+          >
+            <BookOpen className="w-3 h-3" />
+            {t('carteLivre.lire')}
+          </Link>
+        ) : (
+          <button
+            onClick={() => onAddToCart(livre.id)}
+            disabled={adding === livre.id}
+            className="flex items-center gap-1 px-2.5 py-1.5 bg-terra-500 hover:bg-terra-600 text-white text-xs font-semibold rounded-lg transition-colors disabled:opacity-50 ml-auto"
+          >
+            {adding === livre.id ? (
+              <div className="w-3 h-3 border-2 border-white border-t-transparent rounded-full animate-spin" />
+            ) : (
+              <ShoppingBag className="w-3 h-3" />
+            )}
+            {t('carteLivre.ajouter')}
+          </button>
+        )}
       </div>
     </div>
   </div>
-);
+  );
+};
 
 const TableauBordPage = () => {
+  const { t } = useTranslation('dashboard');
   const [collections, setCollections] = useState([]);
   const [livres, setLivres] = useState([]);
   const [loading, setLoading] = useState(true);
   const [addingToCart, setAddingToCart] = useState(null);
   const [activeCol, setActiveCol] = useState('all');
   const [extraitLivre, setExtraitLivre] = useState(null);
+  const [ownedBookIds, setOwnedBookIds] = useState(new Set());
 
   useEffect(() => {
-    setLivres(livresSite);
-    setLoading(false);
-  }, []);
+    Promise.all([
+      livresService.getLivres(1, 100),
+      api.get('/collections/', { params: { page: 1, taille: 100 } }),
+      api.get('/acces-livres/mes-acces').then(r => r.data.acces || []).catch(() => []),
+    ])
+      .then(([livresData, collectionsRes, accesData]) => {
+        setLivres((livresData.livres || []).map(avecExtrait));
+        setCollections(collectionsRes.data.collections || []);
+        setOwnedBookIds(new Set(accesData.map(a => a.livre_id)));
+      })
+      .catch(() => toast.error(t('accueil.messages.impossibleChargerCatalogue')))
+      .finally(() => setLoading(false));
+  }, [t]);
 
   const handleAddToCart = async (livreId) => {
     setAddingToCart(livreId);
     try {
       await api.post('/panier/ajouter', { livre_id: livreId, quantite: 1 });
-      toast.success('Livre ajouté au panier');
+      toast.success(t('accueil.messages.livreAjoutePanier'));
       window.dispatchEvent(new Event('cartUpdated'));
     } catch {
-      toast.error("Erreur lors de l'ajout");
+      toast.error(t('accueil.messages.erreurAjout'));
     } finally {
       setAddingToCart(null);
     }
@@ -104,22 +131,22 @@ const TableauBordPage = () => {
     ? publishedLivres
     : publishedLivres.filter(l => l.collection_id === activeCol);
 
-  const tabs = [{ id: 'all', label: 'Tous' }, ...collections.map(c => ({ id: c.id, label: c.nom }))];
+  const tabs = [{ id: 'all', label: t('accueil.tousOnglet') }, ...collections.map(c => ({ id: c.id, label: c.nom }))];
 
   return (
     <DashboardLayout>
       {/* En-tête */}
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
         <div>
-          <span className="section-eyebrow">Boutique</span>
-          <h1 className="section-title mt-1">Notre catalogue</h1>
+          <span className="section-eyebrow">{t('accueil.eyebrow')}</span>
+          <h1 className="section-title mt-1">{t('accueil.titre')}</h1>
           <p className="text-brown-500 text-sm mt-1">
-            {publishedLivres.length} ouvrages disponibles
+            {t('accueil.ouvrageDisponible', { count: publishedLivres.length })}
           </p>
         </div>
         <Link to="/dashboard/panier" className="btn-outline text-sm flex-shrink-0">
           <ShoppingBag className="w-4 h-4" />
-          Mon panier
+          {t('accueil.monPanier')}
         </Link>
       </div>
 
@@ -176,7 +203,7 @@ const TableauBordPage = () => {
                         )}
                       </div>
                       <span className="text-xs text-brown-400 bg-cream-100 px-3 py-1 rounded-full">
-                        {livresCol.length} ouvrage{livresCol.length > 1 ? 's' : ''}
+                        {t('accueil.ouvrage', { count: livresCol.length })}
                       </span>
                     </div>
 
@@ -188,6 +215,7 @@ const TableauBordPage = () => {
                           onAddToCart={handleAddToCart}
                           adding={addingToCart}
                           onLireExtrait={setExtraitLivre}
+                          isOwned={ownedBookIds.has(livre.id) || livre.est_gratuit}
                         />
                       ))}
                     </div>
@@ -203,10 +231,10 @@ const TableauBordPage = () => {
                 if (sans.length === 0) return null;
                 return (
                   <div>
-                    <h2 className="font-playfair text-xl font-bold text-brown-900 mb-5">Autres ouvrages</h2>
+                    <h2 className="font-playfair text-xl font-bold text-brown-900 mb-5">{t('accueil.autresOuvrages')}</h2>
                     <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
                       {sans.map(livre => (
-                        <BookCard key={livre.id} livre={livre} onAddToCart={handleAddToCart} adding={addingToCart} onLireExtrait={setExtraitLivre} />
+                        <BookCard key={livre.id} livre={livre} onAddToCart={handleAddToCart} adding={addingToCart} onLireExtrait={setExtraitLivre} isOwned={ownedBookIds.has(livre.id) || livre.est_gratuit} />
                       ))}
                     </div>
                   </div>
@@ -218,13 +246,13 @@ const TableauBordPage = () => {
               {filteredLivres.length > 0 ? (
                 <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
                   {filteredLivres.map(livre => (
-                    <BookCard key={livre.id} livre={livre} onAddToCart={handleAddToCart} adding={addingToCart} onLireExtrait={setExtraitLivre} />
+                    <BookCard key={livre.id} livre={livre} onAddToCart={handleAddToCart} adding={addingToCart} onLireExtrait={setExtraitLivre} isOwned={ownedBookIds.has(livre.id) || livre.est_gratuit} />
                   ))}
                 </div>
               ) : (
                 <div className="text-center py-20 text-brown-400">
                   <Package className="w-12 h-12 mx-auto mb-3 opacity-40" />
-                  <p className="font-medium">Aucun livre dans cette collection pour l'instant.</p>
+                  <p className="font-medium">{t('accueil.aucunLivreCollection')}</p>
                 </div>
               )}
             </div>
@@ -233,8 +261,8 @@ const TableauBordPage = () => {
           {publishedLivres.length === 0 && (
             <div className="text-center py-20 text-brown-400">
               <BookOpen className="w-12 h-12 mx-auto mb-3 opacity-40" />
-              <p className="font-medium">Aucun livre disponible pour le moment.</p>
-              <p className="text-sm mt-1">Revenez bientôt pour découvrir nos parutions.</p>
+              <p className="font-medium">{t('accueil.aucunLivreDisponible')}</p>
+              <p className="text-sm mt-1">{t('accueil.revenezBientot')}</p>
             </div>
           )}
         </>

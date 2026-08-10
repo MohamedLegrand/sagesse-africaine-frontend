@@ -1,0 +1,88 @@
+{
+  "footer": {
+    "description": "Groupe panafricain de presses, d'édition et de diffusion culturelle. Un peuple qui maîtrise ses savoirs maîtrise aussi son destin.",
+    "navigation": "Navigation",
+    "contact": "Contact",
+    "ville": "Yaoundé, Cameroun",
+    "restezInforme": "Restez informé",
+    "newsletterTexte": "Recevez nos nouvelles parutions et actualités culturelles.",
+    "newsletterPlaceholder": "Votre adresse e-mail",
+    "sabonner": "S'abonner",
+    "droitsReserves": "Tous droits réservés",
+    "retourHaut": "Retour en haut",
+    "liens": {
+      "accueil": "Accueil",
+      "catalogue": "Catalogue",
+      "quiSommesNous": "Qui sommes-nous",
+      "etreEdite": "Être édité chez nous",
+      "contact": "Contact",
+      "confidentialite": "Confidentialité",
+      "mentionsLegales": "Mentions légales",
+      "cgv": "CGV"
+    }
+  },
+  "hero": {
+    "eyebrow": "Groupe panafricain d'édition",
+    "titrePart1": "La sagesse",
+    "titrePart2": "africaine",
+    "titrePart3": "votre héritage",
+    "sousTitre": "Plateforme panafricaine de production intellectuelle, scientifique, culturelle et éducative. Découvrez les savoirs qui honorent notre continent.",
+    "explorerCatalogue": "Explorer le catalogue",
+    "rejoindreCommunaute": "Rejoindre la communauté",
+    "citation": "« Un peuple qui maîtrise ses savoirs maîtrise aussi son destin »",
+    "stats": {
+      "ouvrages": "Ouvrages publiés",
+      "auteurs": "Auteurs africains",
+      "lecteurs": "Lecteurs actifs",
+      "collections": "Collections"
+    }
+  },
+  "catalogue": {
+    "eyebrow": "Catalogue",
+    "titre": "Notre catalogue",
+    "voirTout": "Voir tout",
+    "tousLesLivres": "Tous les livres",
+    "voirPlus": "Voir plus",
+    "ajouter": "Ajouter",
+    "ajoute": "Ajouté",
+    "aucunLivreCollection": "Aucun livre dans cette collection pour l'instant."
+  },
+  "parcours": {
+    "eyebrow": "Parcours de lecture",
+    "titre": "Choisissez votre chemin",
+    "sousTitre": "Nos collections organisent les savoirs africains par grands thèmes. Suivez un parcours ou construisez le vôtre.",
+    "voirTout": "Voir tout",
+    "ouvrage_one": "{{count}} ouvrage",
+    "ouvrage_other": "{{count}} ouvrages",
+    "commencerParcours": "Commencer ce parcours"
+  },
+  "onboarding": {
+    "eyebrow": "Comment ça marche",
+    "titreLigne1": "Commencez votre voyage",
+    "titreLigne2": "en 4 étapes",
+    "sousTitre": "Rejoindre la communauté Sagesse Africaine est simple, rapide et gratuit.",
+    "etapes": {
+      "compte": { "titre": "Créez votre compte", "desc": "Inscription gratuite en 2 minutes. Accédez à votre espace personnel et suivez vos lectures." },
+      "explorer": { "titre": "Explorez nos collections", "desc": "Parcourez plus de 15 collections thématiques et trouvez les ouvrages qui vous correspondent." },
+      "acheter": { "titre": "Achetez simplement", "desc": "Paiement sécurisé par carte, Orange Money ou MTN Mobile Money. Livraison immédiate." },
+      "lire": { "titre": "Lisez & progressez", "desc": "Accédez à vos livres depuis n'importe quel appareil. Suivez votre avancement et vos notes." }
+    },
+    "creerCompteGratuit": "Créer mon compte gratuitement",
+    "dejaMembre": "Déjà membre ?",
+    "seConnecter": "Se connecter"
+  },
+  "valeur": {
+    "eyebrow": "Pourquoi nous choisir",
+    "titreLigne1": "Une bibliothèque",
+    "titreLigne2": "taillée pour l'Afrique",
+    "texte": "Sagesse Africaine n'est pas une librairie ordinaire. C'est un projet éditorial qui place la culture et l'intelligence africaines au centre. Chaque livre publié est un acte de souveraineté intellectuelle.",
+    "citation": "« La culture est l'arme la plus puissante pour changer le monde »",
+    "citationAuteur": "— Nelson Mandela",
+    "items": {
+      "authenticite": { "titre": "Authenticité africaine", "desc": "Des ouvrages écrits par et pour les Africains. Une curation rigoureuse qui valorise nos savoirs ancestraux et contemporains.", "statLabel": "auteurs africains" },
+      "portee": { "titre": "Portée panafricaine", "desc": "De Dakar à Nairobi, de Lagos à Yaoundé — nos auteurs viennent de tout le continent et de la diaspora.", "statLabel": "pays représentés" },
+      "acces": { "titre": "Accès instantané", "desc": "Achetez et lisez immédiatement. Nos livres numériques sont disponibles sur tous vos appareils, en ligne et hors ligne.", "statLabel": "délai d'accès" },
+      "paiement": { "titre": "Paiement local sécurisé", "desc": "Orange Money, MTN Mobile Money, carte bancaire — payez avec les méthodes que vous connaissez et en toute sécurité.", "statLabel": "modes de paiement" }
+    }
+  }
+}

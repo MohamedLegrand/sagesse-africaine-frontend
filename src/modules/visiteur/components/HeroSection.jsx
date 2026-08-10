@@ -1,74 +1,112 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { ArrowRight, BookOpen, Users, Library, Award } from 'lucide-react';
+import livresService from '../../../services/livresService';
 
-const stats = [
-  { icon: BookOpen, value: '100+', label: 'Ouvrages publiés' },
-  { icon: Users,    value: '50+',  label: 'Auteurs africains' },
-  { icon: Library,  value: '10k+', label: 'Lecteurs actifs' },
-  { icon: Award,    value: '15+',  label: 'Collections' },
+const STATS_CLES = [
+  { icon: BookOpen, value: '100+', cle: 'ouvrages' },
+  { icon: Users,    value: '50+',  cle: 'auteurs' },
+  { icon: Library,  value: '10k+', cle: 'lecteurs' },
+  { icon: Award,    value: '15+',  cle: 'collections' },
 ];
 
+const LIVRE_VIDE = { titre: '', couverture_url: null };
+
+// Aligné sur le breakpoint Tailwind `lg` : la mosaïque de livres n'existe que
+// sur desktop. En dessous, ni la requête ni les images ne doivent être
+// chargées (pas juste masquées en CSS, pour ne pas gaspiller de bande passante
+// sur mobile/tablette).
+const useEstDesktop = (breakpoint = 1024) => {
+  const [estDesktop, setEstDesktop] = useState(
+    typeof window !== 'undefined' ? window.innerWidth >= breakpoint : false
+  );
+
+  useEffect(() => {
+    const gererRedimensionnement = () => setEstDesktop(window.innerWidth >= breakpoint);
+    window.addEventListener('resize', gererRedimensionnement);
+    return () => window.removeEventListener('resize', gererRedimensionnement);
+  }, [breakpoint]);
+
+  return estDesktop;
+};
+
 const HeroSection = () => {
+  const { t } = useTranslation('accueil');
+  const [heroBooks, setHeroBooks] = useState([]);
+  const estDesktop = useEstDesktop();
+
+  useEffect(() => {
+    if (!estDesktop) return;
+    livresService.getLivres(1, 5)
+      .then((data) => setHeroBooks(data.livres || []))
+      .catch(() => {});
+  }, [estDesktop]);
+
+  const [heroBook1, heroBook2, heroBook3, heroBook4, heroBook5] = [0, 1, 2, 3, 4].map(
+    (i) => heroBooks[i] || LIVRE_VIDE
+  );
+
   return (
-    <section className="bg-cream-50 pt-28 pb-0 md:pt-32 overflow-hidden">
+    <section className="bg-cream-50 pt-24 pb-10 sm:pt-28 md:pt-32 lg:pb-0 overflow-hidden">
       <div className="container-editorial">
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
 
-          {/* Colonne gauche — Texte */}
-          <div className="max-w-xl">
+          {/* Colonne gauche — Texte (centré sur mobile/tablette, aligné à gauche dès le desktop) */}
+          <div className="max-w-xl mx-auto lg:mx-0 text-center lg:text-left">
 
             {/* Eyebrow */}
-            <div className="flex items-center gap-2 mb-6">
+            <div className="flex items-center justify-center lg:justify-start gap-2 mb-6">
               <div className="h-0.5 w-8 bg-terra-500" />
               <span className="text-terra-500 text-xs font-bold tracking-[0.2em] uppercase">
-                Groupe panafricain d'édition
+                {t('hero.eyebrow')}
               </span>
             </div>
 
             {/* Titre principal */}
-            <h1 className="font-playfair text-5xl sm:text-6xl lg:text-7xl font-bold text-brown-950 leading-[1.05] mb-6">
-              La sagesse<br />
-              <span className="text-terra-500">africaine</span>,<br />
-              votre héritage
+            <h1 className="font-playfair text-4xl xs:text-5xl sm:text-6xl lg:text-7xl font-bold text-brown-950 leading-[1.05] mb-6">
+              {t('hero.titrePart1')}<br />
+              <span className="text-terra-500">{t('hero.titrePart2')}</span>,<br />
+              {t('hero.titrePart3')}
             </h1>
 
             {/* Sous-titre */}
-            <p className="text-brown-600 text-lg leading-relaxed mb-8 max-w-md">
-              Plateforme panafricaine de production intellectuelle, scientifique,
-              culturelle et éducative. Découvrez les savoirs qui honorent notre continent.
+            <p className="text-brown-600 text-base sm:text-lg leading-relaxed mb-8 max-w-md mx-auto lg:mx-0">
+              {t('hero.sousTitre')}
             </p>
 
             {/* CTA */}
-            <div className="flex flex-col xs:flex-row gap-3 mb-12">
-              <Link to="/livres" className="btn-primary text-base px-7 py-3.5">
-                Explorer le catalogue
+            <div className="flex flex-col xs:flex-row justify-center lg:justify-start gap-3 mb-10 lg:mb-12">
+              <Link to="/livres" className="btn-primary text-base px-7 py-3.5 justify-center">
+                {t('hero.explorerCatalogue')}
                 <ArrowRight className="w-4 h-4" />
               </Link>
-              <Link to="/inscription" className="btn-outline text-base px-7 py-3.5">
-                Rejoindre la communauté
+              <Link to="/inscription" className="btn-outline text-base px-7 py-3.5 justify-center">
+                {t('hero.rejoindreCommunaute')}
               </Link>
             </div>
 
             {/* Citation */}
-            <blockquote className="border-l-4 border-gold-400 pl-4">
-              <p className="font-playfair italic text-brown-700 text-base leading-relaxed">
-                « Un peuple qui maîtrise ses savoirs maîtrise aussi son destin »
+            <blockquote className="border-l-4 border-gold-400 pl-4 text-left">
+              <p className="font-playfair italic text-brown-700 text-sm sm:text-base leading-relaxed">
+                {t('hero.citation')}
               </p>
             </blockquote>
           </div>
 
-          {/* Colonne droite — Visuel livres en mosaïque */}
-          <div className="relative hidden lg:block">
+          {/* Colonne droite — Visuel livres en mosaïque (desktop uniquement : ni
+              chargée ni rendue sur mobile/tablette, cf. useEstDesktop) */}
+          {estDesktop && (
+          <div className="relative">
             <div className="relative h-[520px]">
 
               {/* Livre principal */}
               <div className="absolute left-12 top-8 w-44 h-60 bg-brown-950 rounded-lg shadow-2xl overflow-hidden book-shadow">
                 <img
-                  src="/images/livres/ange-ou-demon.png"
-                  alt="Livre phare"
-                  className="w-full h-full object-cover" 
+                  src={heroBook1.couverture_url}
+                  alt={heroBook1.titre}
+                  className="w-full h-full object-cover"
                   onError={(e) => {
                     e.target.style.display = 'none';
                     e.target.parentElement.classList.add('flex', 'items-center', 'justify-center', 'bg-gradient-to-b', 'from-brown-800', 'to-brown-950');
@@ -82,8 +120,8 @@ const HeroSection = () => {
               {/* Livre 2 */}
               <div className="absolute left-60 top-20 w-36 h-48 rounded-lg shadow-xl overflow-hidden book-shadow bg-terra-800">
                 <img
-                  src="/images/livres/guerre-spiritualites.png"
-                  alt="Livre 2"
+                  src={heroBook2.couverture_url}
+                  alt={heroBook2.titre}
                   className="w-full h-full object-cover"
                   onError={(e) => { e.target.style.display = 'none'; }}
                 />
@@ -92,8 +130,8 @@ const HeroSection = () => {
               {/* Livre 3 */}
               <div className="absolute left-4 top-72 w-40 h-52 rounded-lg shadow-xl overflow-hidden book-shadow bg-gold-800">
                 <img
-                  src="/images/livres/protocole-mths.png"
-                  alt="Livre 3"
+                  src={heroBook3.couverture_url}
+                  alt={heroBook3.titre}
                   className="w-full h-full object-cover"
                   onError={(e) => { e.target.style.display = 'none'; }}
                 />
@@ -102,8 +140,18 @@ const HeroSection = () => {
               {/* Livre 4 */}
               <div className="absolute left-52 top-72 w-36 h-48 rounded-lg shadow-xl overflow-hidden book-shadow bg-brown-700">
                 <img
-                  src="/images/livres/vie-apres-mort.png"
-                  alt="Livre 4"
+                  src={heroBook4.couverture_url}
+                  alt={heroBook4.titre}
+                  className="w-full h-full object-cover"
+                  onError={(e) => { e.target.style.display = 'none'; }}
+                />
+              </div>
+
+              {/* Livre 5 */}
+              <div className="absolute right-8 top-52 w-32 h-44 rounded-lg shadow-xl overflow-hidden book-shadow bg-brown-900 z-10">
+                <img
+                  src={heroBook5.couverture_url}
+                  alt={heroBook5.titre}
                   className="w-full h-full object-cover"
                   onError={(e) => { e.target.style.display = 'none'; }}
                 />
@@ -135,18 +183,19 @@ const HeroSection = () => {
               </div>
             </div>
           </div>
+          )}
         </div>
 
         {/* Stats bar */}
         <div className="border-t border-cream-200 mt-8 py-8 grid grid-cols-2 md:grid-cols-4 gap-6">
-          {stats.map(({ icon: Icon, value, label }) => (
-            <div key={label} className="flex items-center gap-3">
+          {STATS_CLES.map(({ icon: Icon, value, cle }) => (
+            <div key={cle} className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-lg bg-terra-50 flex items-center justify-center flex-shrink-0">
                 <Icon className="w-5 h-5 text-terra-500" />
               </div>
               <div>
                 <div className="font-playfair text-2xl font-bold text-brown-950">{value}</div>
-                <div className="text-xs text-brown-500 font-medium">{label}</div>
+                <div className="text-xs text-brown-500 font-medium">{t(`hero.stats.${cle}`)}</div>
               </div>
             </div>
           ))}

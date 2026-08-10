@@ -1,0 +1,103 @@
+{
+  "contenu": {
+    "ACHAT_EFFECTUE": {
+      "titre": "Achat effectué avec succès",
+      "message": "Votre achat a été enregistré. Total : {{montant}} {{devise}}."
+    },
+    "ACHAT_ANNULE": {
+      "titre": "Achat annulé",
+      "message": "Votre achat a été annulé."
+    },
+    "ACHAT_ANNULE_ADMIN": {
+      "titre": "Achat annulé",
+      "message": "Votre achat a été annulé par notre équipe."
+    },
+    "REMBOURSEMENT_EFFECTUE": {
+      "titre": "Remboursement effectué",
+      "message": "Votre achat a été remboursé. Le montant sera crédité sous 3 à 5 jours ouvrés."
+    },
+    "PAIEMENT_CONFIRME": {
+      "titre": "Paiement confirmé !",
+      "message": "Votre paiement a été confirmé. Vos livres sont maintenant disponibles dans votre bibliothèque."
+    },
+    "LIVRE_AJOUTE": {
+      "titre": "Livre ajouté",
+      "message": "Le livre « {{titre}} » a été ajouté au catalogue avec succès."
+    },
+    "LIVRE_MODIFIE": {
+      "titre": "Livre modifié",
+      "message": "Le livre « {{titre}} » a été mis à jour avec succès."
+    },
+    "LIVRE_SUPPRIME": {
+      "titre": "Livre supprimé",
+      "message": "Le livre « {{titre}} » a été supprimé du catalogue."
+    }
+  },
+  "cloche": {
+    "ariaLabel": "Notifications",
+    "titre": "Notifications",
+    "nonLue_one": "{{count}} non lue",
+    "nonLue_other": "{{count}} non lues",
+    "aucuneNotification": "Aucune notification pour le moment",
+    "voirToutes": "Voir toutes les notifications →"
+  },
+  "carte": {
+    "marquerCommeLu": "Marquer comme lu",
+    "supprimer": "Supprimer",
+    "voir": "Voir →"
+  },
+  "mesNotifications": {
+    "titre": "Mes notifications",
+    "nonLue_one": "{{count}} non lue",
+    "nonLue_other": "{{count}} non lues",
+    "aJour": "Vous êtes à jour !",
+    "filtres": {
+      "toutes": "Toutes",
+      "nonLues": "Non lues",
+      "lues": "Lues"
+    },
+    "toutMarquerLu": "Tout marquer lu",
+    "toutSupprimer": "Tout supprimer",
+    "aucuneNotification": "Aucune notification",
+    "toutesLues": "Toutes vos notifications sont lues.",
+    "aucuneLue": "Aucune notification lue pour le moment.",
+    "pasEncore": "Vous n'avez pas encore de notifications.",
+    "type": {
+      "livre": "Livre",
+      "paiement": "Paiement",
+      "notification": "Notification"
+    },
+    "voirLeContenu": "Voir le contenu",
+    "fermer": "Fermer",
+    "supprimerToutesTitre": "Supprimer toutes les notifications ?",
+    "actionIrreversible": "Cette action est irréversible.",
+    "annuler": "Annuler",
+    "supprimerTout": "Supprimer tout",
+    "messages": {
+      "toutesSupprimees": "Toutes les notifications ont été supprimées"
+    }
+  },
+  "parametres": {
+    "titre": "Préférences de notification",
+    "sousTitre": "Gérez comment vous souhaitez être notifié",
+    "email": {
+      "titre": "Notifications par email",
+      "achats": { "label": "Achats", "desc": "Confirmation et suivi de vos achats" },
+      "promotions": { "label": "Promotions", "desc": "Offres spéciales et réductions" },
+      "newsletter": { "label": "Newsletter", "desc": "Actualités de SAGESSE AFRICAINE" },
+      "publications": { "label": "Nouvelles publications", "desc": "Nouveaux livres ajoutés" }
+    },
+    "inapp": {
+      "titre": "Notifications in-app",
+      "achats": { "label": "Achats", "desc": "Mises à jour de vos achats" },
+      "messages": { "label": "Messages", "desc": "Messages de l'équipe" },
+      "publications": { "label": "Publications", "desc": "Nouveautés éditoriales" }
+    },
+    "enregistrer": "Enregistrer les préférences",
+    "enregistrementEnCours": "Enregistrement...",
+    "messages": {
+      "enregistre": "Préférences enregistrées",
+      "erreur": "Erreur lors de l'enregistrement"
+    }
+  }
+}

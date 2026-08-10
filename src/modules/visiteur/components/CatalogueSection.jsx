@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { ShoppingBag, BookOpen, Check, ArrowRight, Star } from 'lucide-react';
 import api from '../../../services/api';
 import guestCart from '../../../services/guestCart';
 import toast from 'react-hot-toast';
 
 const BookCard = ({ livre, onAddToCart, addingId, addedIds, prefix = '' }) => {
+  const { t } = useTranslation('accueil');
   const isAdding = addingId === livre.id;
   const isAdded  = addedIds.has(livre.id);
   const to = prefix ? `${prefix}/${livre.id}` : `/livre/${livre.id}`;
@@ -49,7 +51,7 @@ const BookCard = ({ livre, onAddToCart, addingId, addedIds, prefix = '' }) => {
             to={to}
             className="flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-semibold bg-cream-100 text-brown-700 hover:bg-cream-200 transition-colors flex-shrink-0"
           >
-            Voir plus
+            {t('catalogue.voirPlus')}
           </Link>
 
           <button
@@ -68,7 +70,7 @@ const BookCard = ({ livre, onAddToCart, addingId, addedIds, prefix = '' }) => {
             ) : (
               <ShoppingBag className="w-3.5 h-3.5" />
             )}
-            {isAdded ? 'Ajouté' : 'Ajouter'}
+            {isAdded ? t('catalogue.ajoute') : t('catalogue.ajouter')}
           </button>
         </div>
       </div>
@@ -77,6 +79,7 @@ const BookCard = ({ livre, onAddToCart, addingId, addedIds, prefix = '' }) => {
 };
 
 const CatalogueSection = () => {
+  const { t } = useTranslation('accueil');
   const [livres, setLivres] = useState([]);
   const [loading, setLoading] = useState(true);
   const [addingToCart, setAddingToCart] = useState(null);
@@ -141,10 +144,10 @@ const CatalogueSection = () => {
 
   if (livres.length === 0) return null;
 
-  const tabs = [{ id: 'all', label: 'Tous les livres' }, ...collections.map(c => ({ id: c.id, label: c.nom }))];
+  const tabs = [{ id: 'all', label: t('catalogue.tousLesLivres') }, ...collections.map(c => ({ id: c.id, label: c.nom }))];
   const filteredLivres = activeTab === 'all'
-    ? livres.slice(0, 12)
-    : livres.filter(l => l.collection_id === activeTab).slice(0, 12);
+    ? livres
+    : livres.filter(l => l.collection_id === activeTab);
 
   return (
     <section className="py-20 bg-white border-t border-cream-100" id="catalogue">
@@ -153,11 +156,11 @@ const CatalogueSection = () => {
         {/* En-tête */}
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
           <div>
-            <span className="section-eyebrow">Catalogue</span>
-            <h2 className="section-title mt-2">Nos livres en vedette</h2>
+            <span className="section-eyebrow">{t('catalogue.eyebrow')}</span>
+            <h2 className="section-title mt-2">{t('catalogue.titre')}</h2>
           </div>
           <Link to="/livres" className="btn-outline text-sm flex-shrink-0">
-            Voir tout <ArrowRight className="w-4 h-4" />
+            {t('catalogue.voirTout')} <ArrowRight className="w-4 h-4" />
           </Link>
         </div>
 
@@ -196,7 +199,7 @@ const CatalogueSection = () => {
         {filteredLivres.length === 0 && (
           <div className="text-center py-16 text-brown-400">
             <BookOpen className="w-12 h-12 mx-auto mb-3 opacity-40" />
-            <p>Aucun livre dans cette collection pour l'instant.</p>
+            <p>{t('catalogue.aucunLivreCollection')}</p>
           </div>
         )}
       </div>

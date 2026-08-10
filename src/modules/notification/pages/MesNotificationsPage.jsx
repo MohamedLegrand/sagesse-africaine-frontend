@@ -1,29 +1,32 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { FaBell, FaCheckDouble, FaTrash, FaBook, FaCreditCard, FaExternalLinkAlt, FaChevronLeft, FaChevronRight, FaTimes } from 'react-icons/fa';
 import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
 import toast from 'react-hot-toast';
-import Header from '../../Visiteur/components/Header';
-import Footer from '../../Visiteur/components/Footer';
+import Header from '../../visiteur/components/Header';
+import Footer from '../../visiteur/components/Footer';
 import CarteNotification from '../components/CarteNotification';
 import { useNotificationContext } from '../contextes/NotificationContext';
+import { traduireNotification } from '../services/traduireNotification';
 
 const PAR_PAGE = 10;
 
-const TYPE_CONFIG = {
-  livre: { icon: <FaBook className="text-amber-600 text-xl" />, bg: 'bg-amber-100', label: 'Livre' },
-  paiement: { icon: <FaCreditCard className="text-green-600 text-xl" />, bg: 'bg-green-100', label: 'Paiement' },
-};
-
 /* ── Modal détail ─────────────────────────────── */
 const DetailModal = ({ notification, onClose }) => {
+  const { t } = useTranslation('notifications');
+  const TYPE_CONFIG = {
+    livre: { icon: <FaBook className="text-amber-600 text-xl" />, bg: 'bg-amber-100', label: t('mesNotifications.type.livre') },
+    paiement: { icon: <FaCreditCard className="text-green-600 text-xl" />, bg: 'bg-green-100', label: t('mesNotifications.type.paiement') },
+  };
   if (!notification) return null;
   const config = TYPE_CONFIG[notification.type] || {
     icon: <FaBell className="text-amber-600 text-xl" />,
     bg: 'bg-amber-100',
-    label: 'Notification',
+    label: t('mesNotifications.type.notification'),
   };
+  const { titre, message } = traduireNotification(notification);
 
   return (
     <div
@@ -47,11 +50,11 @@ const DetailModal = ({ notification, onClose }) => {
           </div>
           <div>
             <span className="text-xs font-semibold text-amber-600 uppercase tracking-wider">{config.label}</span>
-            <h2 className="text-xl font-bold text-amber-900 leading-tight mt-0.5">{notification.titre}</h2>
+            <h2 className="text-xl font-bold text-amber-900 leading-tight mt-0.5">{titre}</h2>
           </div>
         </div>
 
-        <p className="text-gray-700 leading-relaxed text-sm mb-5">{notification.message}</p>
+        <p className="text-gray-700 leading-relaxed text-sm mb-5">{message}</p>
 
         <p className="text-xs text-gray-400 mb-5">
           {format(new Date(notification.cree_le), "dd MMMM yyyy 'à' HH:mm", { locale: fr })}
@@ -65,14 +68,14 @@ const DetailModal = ({ notification, onClose }) => {
               className="inline-flex items-center gap-2 px-4 py-2.5 bg-amber-600 hover:bg-amber-700 text-white rounded-xl text-sm font-semibold transition shadow-sm"
             >
               <FaExternalLinkAlt className="text-xs" />
-              Voir le contenu
+              {t('mesNotifications.voirLeContenu')}
             </Link>
           )}
           <button
             onClick={onClose}
             className="px-4 py-2.5 border border-gray-200 text-gray-600 rounded-xl text-sm font-medium hover:bg-gray-50 transition"
           >
-            Fermer
+            {t('mesNotifications.fermer')}
           </button>
         </div>
       </div>
@@ -81,7 +84,9 @@ const DetailModal = ({ notification, onClose }) => {
 };
 
 /* ── Modal confirmation suppression tout ─────── */
-const ConfirmModal = ({ onConfirm, onCancel }) => (
+const ConfirmModal = ({ onConfirm, onCancel }) => {
+  const { t } = useTranslation('notifications');
+  return (
   <div
     className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
     onClick={onCancel}
@@ -94,29 +99,31 @@ const ConfirmModal = ({ onConfirm, onCancel }) => (
         <div className="w-14 h-14 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-3">
           <FaTrash className="text-red-500 text-xl" />
         </div>
-        <h3 className="text-lg font-bold text-gray-800 mb-1">Supprimer toutes les notifications ?</h3>
-        <p className="text-sm text-gray-500">Cette action est irréversible.</p>
+        <h3 className="text-lg font-bold text-gray-800 mb-1">{t('mesNotifications.supprimerToutesTitre')}</h3>
+        <p className="text-sm text-gray-500">{t('mesNotifications.actionIrreversible')}</p>
       </div>
       <div className="flex gap-3">
         <button
           onClick={onCancel}
           className="flex-1 py-2.5 border border-gray-200 rounded-xl text-sm font-medium text-gray-700 hover:bg-gray-50 transition"
         >
-          Annuler
+          {t('mesNotifications.annuler')}
         </button>
         <button
           onClick={onConfirm}
           className="flex-1 py-2.5 bg-red-500 hover:bg-red-600 text-white rounded-xl text-sm font-semibold transition shadow-sm"
         >
-          Supprimer tout
+          {t('mesNotifications.supprimerTout')}
         </button>
       </div>
     </div>
   </div>
-);
+  );
+};
 
 /* ── Page principale ─────────────────────────── */
 const MesNotificationsPage = () => {
+  const { t } = useTranslation('notifications');
   const {
     notifications,
     loading,
@@ -161,7 +168,7 @@ const MesNotificationsPage = () => {
   const handleSupprimerTout = async () => {
     await supprimerTout();
     setShowConfirmDelete(false);
-    toast.success('Toutes les notifications ont été supprimées');
+    toast.success(t('mesNotifications.messages.toutesSupprimees'));
   };
 
   const handleFiltreChange = (f) => {
@@ -191,14 +198,14 @@ const MesNotificationsPage = () => {
           {/* En-tête */}
           <div className="text-center mb-8">
             <h1 className="text-4xl md:text-5xl font-playfair font-bold text-amber-800 mb-3">
-              Mes notifications
+              {t('mesNotifications.titre')}
             </h1>
             {nonLuesCount > 0 ? (
               <p className="text-amber-500 font-medium">
-                {nonLuesCount} non lue{nonLuesCount > 1 ? 's' : ''}
+                {t('mesNotifications.nonLue', { count: nonLuesCount })}
               </p>
             ) : (
-              <p className="text-gray-400">Vous êtes à jour !</p>
+              <p className="text-gray-400">{t('mesNotifications.aJour')}</p>
             )}
             <div className="flex items-center justify-center gap-2 mt-4">
               <div className="w-16 h-px bg-amber-300" />
@@ -213,9 +220,9 @@ const MesNotificationsPage = () => {
               {/* Filtres */}
               <div className="flex gap-2 flex-wrap">
                 {[
-                  { key: 'all', label: 'Toutes', count: notifications.length },
-                  { key: 'non_lues', label: 'Non lues', count: nonLuesCount },
-                  { key: 'lues', label: 'Lues', count: notifications.length - nonLuesCount },
+                  { key: 'all', label: t('mesNotifications.filtres.toutes'), count: notifications.length },
+                  { key: 'non_lues', label: t('mesNotifications.filtres.nonLues'), count: nonLuesCount },
+                  { key: 'lues', label: t('mesNotifications.filtres.lues'), count: notifications.length - nonLuesCount },
                 ].map(({ key, label, count }) => (
                   <button
                     key={key}
@@ -244,7 +251,7 @@ const MesNotificationsPage = () => {
                     className="flex items-center gap-2 px-3 py-1.5 bg-amber-100 text-amber-700 rounded-lg text-sm font-medium hover:bg-amber-200 transition"
                   >
                     <FaCheckDouble className="text-xs" />
-                    Tout marquer lu
+                    {t('mesNotifications.toutMarquerLu')}
                   </button>
                 )}
                 {notifications.length > 0 && (
@@ -253,7 +260,7 @@ const MesNotificationsPage = () => {
                     className="flex items-center gap-2 px-3 py-1.5 bg-red-50 text-red-600 rounded-lg text-sm font-medium hover:bg-red-100 transition"
                   >
                     <FaTrash className="text-xs" />
-                    Tout supprimer
+                    {t('mesNotifications.toutSupprimer')}
                   </button>
                 )}
               </div>
@@ -271,11 +278,11 @@ const MesNotificationsPage = () => {
           {notifPage.length === 0 ? (
             <div className="bg-white rounded-2xl shadow-sm border border-amber-100 p-16 text-center">
               <FaBell className="text-amber-200 text-7xl mx-auto mb-4" />
-              <h2 className="text-2xl font-playfair text-amber-700 mb-2">Aucune notification</h2>
+              <h2 className="text-2xl font-playfair text-amber-700 mb-2">{t('mesNotifications.aucuneNotification')}</h2>
               <p className="text-gray-400">
-                {filtre === 'non_lues' ? 'Toutes vos notifications sont lues.' :
-                 filtre === 'lues' ? 'Aucune notification lue pour le moment.' :
-                 "Vous n'avez pas encore de notifications."}
+                {filtre === 'non_lues' ? t('mesNotifications.toutesLues') :
+                 filtre === 'lues' ? t('mesNotifications.aucuneLue') :
+                 t('mesNotifications.pasEncore')}
               </p>
             </div>
           ) : (

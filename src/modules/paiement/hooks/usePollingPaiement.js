@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import paiementsService from '../../../services/paiementsService';
+import { traduireErreurApi } from '../../../services/erreurApi';
 
 // Intervalles de backoff exponentiel (en ms)
 const INTERVALLES_MS = [3000, 5000, 8000, 12000, 18000, 25000, 35000];
@@ -77,7 +78,7 @@ const usePollingPaiement = (commandeId, actif = true) => {
         return;
       }
     } catch (err) {
-      setErreur(err.response?.data?.detail || 'Erreur de vérification');
+      setErreur(traduireErreurApi(err));
       // On continue le polling même en cas d'erreur réseau temporaire
     }
 

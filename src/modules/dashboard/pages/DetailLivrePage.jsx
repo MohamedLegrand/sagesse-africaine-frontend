@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import {
-  FaBook, FaBookOpen, FaDownload, FaArrowLeft, FaStar, FaBookmark,
+  FaBook, FaBookOpen, FaBookReader, FaArrowLeft, FaStar, FaBookmark,
   FaTrash, FaPlus, FaCheckCircle, FaTimesCircle, FaSpinner
 } from 'react-icons/fa';
 import api from '../../../services/api';
@@ -12,8 +13,11 @@ import signetsService from '../../../services/signetsService';
 import avisService from '../../../services/avisService';
 import toast from 'react-hot-toast';
 import DashboardLayout from '../components/DashboardLayout';
+import { avecExtrait } from '../../../data/extraitsLivres';
+import ExtraitModal from '../../../components/ExtraitModal';
 
 const DetailLivrePage = () => {
+  const { t } = useTranslation('dashboard');
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -25,6 +29,7 @@ const DetailLivrePage = () => {
   const [avis, setAvis] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('details');
+  const [extraitOuvert, setExtraitOuvert] = useState(false);
 
   // Formulaire avis
   const [noteAvis, setNoteAvis] = useState(5);
@@ -47,7 +52,7 @@ const DetailLivrePage = () => {
         api.get(`/fichiers-livres/${id}`).then(r => r.data.fichiers || []),
         avisService.getAvisLivre(id).then(r => r.avis || []).catch(() => []),
       ]);
-      setLivre(livreData);
+      setLivre(avecExtrait(livreData));
       setFichiers(fichiersData);
       setAvis(avisData);
 
@@ -67,34 +72,10 @@ const DetailLivrePage = () => {
         setAAcces(false);
       }
     } catch (error) {
-      toast.error('Livre introuvable');
+      toast.error(t('detailLivre.messages.livreIntrouvable'));
       navigate('/dashboard/boutique');
     } finally {
       setLoading(false);
-    }
-  };
-
-  const telecharger = async () => {
-    if (fichiers.length === 0) {
-      toast.error('Aucun fichier disponible');
-      return;
-    }
-    try {
-      const response = await api.get(
-        `/fichiers-livres/${id}/telecharger/${fichiers[0].id}`,
-        { responseType: 'blob' }
-      );
-      const url = window.URL.createObjectURL(new Blob([response.data]));
-      const link = document.createElement('a');
-      link.href = url;
-      link.setAttribute('download', `${livre.titre}.${fichiers[0].format || 'pdf'}`);
-      document.body.appendChild(link);
-      link.click();
-      link.remove();
-      window.URL.revokeObjectURL(url);
-      toast.success('Téléchargement commencé');
-    } catch {
-      toast.error('Erreur lors du téléchargement');
     }
   };
 
@@ -109,9 +90,9 @@ const DetailLivrePage = () => {
       });
       setSignets(prev => [...prev, signet]);
       setNoteSignet('');
-      toast.success('Signet ajouté');
+      toast.success(t('detailLivre.signets.messages.signetAjoute'));
     } catch {
-      toast.error('Erreur ajout signet');
+      toast.error(t('detailLivre.signets.messages.erreurAjout'));
     } finally {
       setAjouterSignet(false);
     }
@@ -121,9 +102,9 @@ const DetailLivrePage = () => {
     try {
       await signetsService.supprimerSignet(signetId);
       setSignets(prev => prev.filter(s => s.id !== signetId));
-      toast.success('Signet supprimé');
+      toast.success(t('detailLivre.signets.messages.signetSupprime'));
     } catch {
-      toast.error('Erreur suppression signet');
+      toast.error(t('detailLivre.signets.messages.erreurSuppression'));
     }
   };
 
@@ -132,7 +113,7 @@ const DetailLivrePage = () => {
     setSoumettreAvis(true);
     try {
       await avisService.creerAvis(id, noteAvis, commentaireAvis);
-      toast.success('Avis soumis, en attente de modération');
+      toast.success(t('detailLivre.avis.messages.avisSoumis'));
       setCommentaireAvis('');
       setNoteAvis(5);
       // Recharger les avis
@@ -140,9 +121,9 @@ const DetailLivrePage = () => {
       setAvis(updated.avis || []);
     } catch (error) {
       if (error.response?.status === 400) {
-        toast.error('Vous avez déjà soumis un avis pour ce livre');
+        toast.error(t('detailLivre.avis.messages.avisDejaSoumis'));
       } else {
-        toast.error('Erreur lors de la soumission');
+        toast.error(t('detailLivre.avis.messages.erreurSoumission'));
       }
     } finally {
       setSoumettreAvis(false);
@@ -178,7 +159,7 @@ const DetailLivrePage = () => {
             className="flex items-center gap-2 text-amber-600 hover:text-amber-700 transition mb-5 font-medium"
           >
             <FaArrowLeft />
-            Retour
+            {t('detailLivre.retour')}
           </button>
 
           {/* Infos livre */}
@@ -197,7 +178,7 @@ const DetailLivrePage = () => {
               <p className="text-amber-500 mb-2">{livre.auteur}</p>
               <div className="flex items-center gap-2 mb-3">
                 <div className="flex gap-0.5">{renderEtoiles(noteMoyenne)}</div>
-                <span className="text-sm text-gray-500">({avis.length} avis)</span>
+                <span className="text-sm text-gray-500">({avis.length} {t('detailLivre.avis')})</span>
               </div>
               <p className="text-gray-600 text-sm mb-4 line-clamp-3">{livre.description}</p>
               <div className="flex flex-wrap gap-2 mb-4">
@@ -205,10 +186,10 @@ const DetailLivrePage = () => {
                   <span className="text-xs px-3 py-1 bg-amber-100 text-amber-700 rounded-full">{livre.langue}</span>
                 )}
                 {livre.isbn && (
-                  <span className="text-xs px-3 py-1 bg-gray-100 text-gray-600 rounded-full">ISBN: {livre.isbn}</span>
+                  <span className="text-xs px-3 py-1 bg-gray-100 text-gray-600 rounded-full">{t('detailLivre.isbn')} {livre.isbn}</span>
                 )}
                 <span className={`text-xs px-3 py-1 rounded-full ${livre.est_gratuit ? 'bg-green-100 text-green-700' : 'bg-amber-100 text-amber-700'}`}>
-                  {livre.est_gratuit ? 'Gratuit' : `${livre.prix} €`}
+                  {livre.est_gratuit ? t('detailLivre.gratuit') : `${livre.prix?.toLocaleString('fr-FR')} XAF`}
                 </span>
               </div>
 
@@ -217,39 +198,41 @@ const DetailLivrePage = () => {
                 <div className="flex flex-wrap gap-3">
                   <div className="flex items-center gap-2 text-green-600 text-sm">
                     <FaCheckCircle />
-                    <span>Vous avez accès à ce livre</span>
+                    <span>{t('detailLivre.vousAvezAcces')}</span>
                   </div>
                   {fichiers.length > 0 && (
-                    <>
-                      <Link
-                        to={`/dashboard/livre/${id}/lire`}
-                        className="flex items-center gap-2 bg-gradient-to-r from-amber-600 to-amber-700 text-white px-4 py-2 rounded-xl text-sm hover:shadow-lg transition"
-                      >
-                        <FaBookOpen />
-                        {progression ? 'Continuer la lecture' : 'Commencer la lecture'}
-                      </Link>
-                      <button
-                        onClick={telecharger}
-                        className="flex items-center gap-2 border border-amber-300 text-amber-700 px-4 py-2 rounded-xl text-sm hover:bg-amber-50 transition"
-                      >
-                        <FaDownload />
-                        Télécharger
-                      </button>
-                    </>
+                    <Link
+                      to={`/dashboard/livre/${id}/lire`}
+                      className="flex items-center gap-2 bg-gradient-to-r from-amber-600 to-amber-700 text-white px-4 py-2 rounded-xl text-sm hover:shadow-lg transition"
+                    >
+                      <FaBookOpen />
+                      {progression ? t('detailLivre.continuerLecture') : t('detailLivre.commencerLecture')}
+                    </Link>
                   )}
                 </div>
               ) : (
-                <div className="flex items-center gap-3">
+                <div className="space-y-3">
                   <div className="flex items-center gap-2 text-red-500 text-sm">
                     <FaTimesCircle />
-                    <span>Vous n'avez pas accès à ce livre</span>
+                    <span>{t('detailLivre.devezAcheter')}</span>
                   </div>
-                  <Link
-                    to="/dashboard/boutique"
-                    className="bg-gradient-to-r from-amber-600 to-amber-700 text-white px-4 py-2 rounded-xl text-sm hover:shadow-lg transition"
-                  >
-                    Acheter
-                  </Link>
+                  <div className="flex flex-wrap gap-3">
+                    <Link
+                      to="/dashboard/boutique"
+                      className="bg-gradient-to-r from-amber-600 to-amber-700 text-white px-4 py-2 rounded-xl text-sm hover:shadow-lg transition"
+                    >
+                      {t('detailLivre.acheter')}
+                    </Link>
+                    {livre.extrait_url && (
+                      <button
+                        onClick={() => setExtraitOuvert(true)}
+                        className="flex items-center gap-2 border border-amber-300 text-amber-700 px-4 py-2 rounded-xl text-sm hover:bg-amber-50 transition"
+                      >
+                        <FaBookReader />
+                        {t('detailLivre.lireUnExtrait')}
+                      </button>
+                    )}
+                  </div>
                 </div>
               )}
             </div>
@@ -267,7 +250,7 @@ const DetailLivrePage = () => {
                     : 'bg-white text-amber-700 hover:bg-amber-100'
                 }`}
               >
-                {tab === 'details' ? 'Détails' : tab === 'progression' ? 'Progression' : tab === 'signets' ? 'Signets' : 'Avis'}
+                {t(`detailLivre.onglets.${tab}`)}
               </button>
             ))}
           </div>
@@ -277,15 +260,15 @@ const DetailLivrePage = () => {
             {/* Détails */}
             {activeTab === 'details' && (
               <div className="space-y-4">
-                <h3 className="text-lg font-playfair font-bold text-amber-800">Description complète</h3>
-                <p className="text-gray-600 leading-relaxed">{livre.description || 'Aucune description disponible.'}</p>
+                <h3 className="text-lg font-playfair font-bold text-amber-800">{t('detailLivre.details.descriptionComplete')}</h3>
+                <p className="text-gray-600 leading-relaxed">{livre.description || t('detailLivre.details.aucuneDescription')}</p>
                 {fichiers.length > 0 && (
                   <div>
-                    <h4 className="font-semibold text-amber-700 mb-2">Formats disponibles</h4>
+                    <h4 className="font-semibold text-amber-700 mb-2">{t('detailLivre.details.formatsDisponibles')}</h4>
                     <div className="flex gap-2 flex-wrap">
                       {fichiers.map(f => (
                         <span key={f.id} className="text-xs px-3 py-1 bg-amber-100 text-amber-700 rounded-full uppercase">
-                          {f.format} — {(f.taille_octets / 1024 / 1024).toFixed(1)} Mo
+                          {f.format} — {t('detailLivre.details.taille', { taille: (f.taille_octets / 1024 / 1024).toFixed(1) })}
                         </span>
                       ))}
                     </div>
@@ -297,14 +280,14 @@ const DetailLivrePage = () => {
             {/* Progression */}
             {activeTab === 'progression' && (
               <div className="space-y-6">
-                <h3 className="text-lg font-playfair font-bold text-amber-800">Ma progression de lecture</h3>
+                <h3 className="text-lg font-playfair font-bold text-amber-800">{t('detailLivre.progression.titre')}</h3>
                 {!aAcces ? (
-                  <p className="text-gray-500">Achetez ce livre pour suivre votre progression.</p>
+                  <p className="text-gray-500">{t('detailLivre.progression.achetezPourSuivre')}</p>
                 ) : progression ? (
                   <div className="space-y-4">
                     <div className="bg-amber-50 rounded-xl p-4">
                       <div className="flex justify-between text-sm text-amber-700 mb-2">
-                        <span>Page {progression.page_actuelle} / {progression.total_pages}</span>
+                        <span>{t('detailLivre.progression.page', { page: progression.page_actuelle, total: progression.total_pages })}</span>
                         <span>{progression.pourcentage}%</span>
                       </div>
                       <div className="w-full bg-amber-200 rounded-full h-3">
@@ -314,7 +297,7 @@ const DetailLivrePage = () => {
                         />
                       </div>
                       <p className="text-xs text-gray-500 mt-2">
-                        Dernière lecture : {new Date(progression.derniere_lecture_le).toLocaleDateString('fr-FR')}
+                        {t('detailLivre.progression.derniereLecture', { date: new Date(progression.derniere_lecture_le).toLocaleDateString('fr-FR') })}
                       </p>
                     </div>
                     <Link
@@ -322,18 +305,18 @@ const DetailLivrePage = () => {
                       className="inline-flex items-center gap-2 bg-gradient-to-r from-amber-600 to-amber-700 text-white px-4 py-2 rounded-xl text-sm hover:shadow-lg transition"
                     >
                       <FaBookOpen />
-                      Continuer la lecture
+                      {t('detailLivre.continuerLecture')}
                     </Link>
                   </div>
                 ) : (
                   <div className="text-center py-8">
-                    <p className="text-gray-500 mb-4">Vous n'avez pas encore commencé ce livre.</p>
+                    <p className="text-gray-500 mb-4">{t('detailLivre.progression.pasEncoreCommence')}</p>
                     <Link
                       to={`/dashboard/livre/${id}/lire`}
                       className="inline-flex items-center gap-2 bg-gradient-to-r from-amber-600 to-amber-700 text-white px-4 py-2 rounded-xl text-sm hover:shadow-lg transition"
                     >
                       <FaBookOpen />
-                      Commencer la lecture
+                      {t('detailLivre.commencerLecture')}
                     </Link>
                   </div>
                 )}
@@ -344,7 +327,7 @@ const DetailLivrePage = () => {
             {activeTab === 'signets' && (
               <div className="space-y-6">
                 <div className="flex justify-between items-center">
-                  <h3 className="text-lg font-playfair font-bold text-amber-800">Mes signets</h3>
+                  <h3 className="text-lg font-playfair font-bold text-amber-800">{t('detailLivre.signets.titre')}</h3>
                   {aAcces && (
                     <button
                       onClick={handleAjouterSignet}
@@ -352,16 +335,16 @@ const DetailLivrePage = () => {
                       className="flex items-center gap-2 bg-amber-600 text-white px-4 py-2 rounded-xl text-sm hover:bg-amber-700 transition disabled:opacity-50"
                     >
                       {ajouterSignet ? <FaSpinner className="animate-spin" /> : <FaPlus />}
-                      Ajouter à la page {progression?.page_actuelle || 1}
+                      {t('detailLivre.signets.ajouterALaPage', { page: progression?.page_actuelle || 1 })}
                     </button>
                   )}
                 </div>
                 {!aAcces ? (
-                  <p className="text-gray-500">Achetez ce livre pour ajouter des signets.</p>
+                  <p className="text-gray-500">{t('detailLivre.signets.achetezPourAjouter')}</p>
                 ) : signets.length === 0 ? (
                   <div className="text-center py-8">
                     <FaBookmark className="text-amber-300 text-5xl mx-auto mb-3" />
-                    <p className="text-gray-500">Aucun signet pour ce livre.</p>
+                    <p className="text-gray-500">{t('detailLivre.signets.aucunSignet')}</p>
                   </div>
                 ) : (
                   <div className="space-y-3">
@@ -370,7 +353,7 @@ const DetailLivrePage = () => {
                         type="text"
                         value={noteSignet}
                         onChange={(e) => setNoteSignet(e.target.value)}
-                        placeholder="Note pour le prochain signet (optionnel)..."
+                        placeholder={t('detailLivre.signets.notePlaceholder')}
                         className="w-full px-4 py-2 border border-amber-200 rounded-xl focus:border-amber-500 outline-none text-sm"
                       />
                     </div>
@@ -379,7 +362,7 @@ const DetailLivrePage = () => {
                         <div className="flex items-start gap-3">
                           <FaBookmark className="text-amber-500 mt-1" />
                           <div>
-                            <p className="font-medium text-amber-800">Page {signet.numero_page}</p>
+                            <p className="font-medium text-amber-800">{t('detailLivre.signets.page', { page: signet.numero_page })}</p>
                             {signet.note && <p className="text-sm text-gray-600">{signet.note}</p>}
                             <p className="text-xs text-gray-400">
                               {new Date(signet.cree_le).toLocaleDateString('fr-FR')}
@@ -402,7 +385,7 @@ const DetailLivrePage = () => {
                       type="text"
                       value={noteSignet}
                       onChange={(e) => setNoteSignet(e.target.value)}
-                      placeholder="Note pour le signet (optionnel)..."
+                      placeholder={t('detailLivre.signets.notePlaceholderSeul')}
                       className="w-full px-4 py-2 border border-amber-200 rounded-xl focus:border-amber-500 outline-none text-sm"
                     />
                   </div>
@@ -414,15 +397,15 @@ const DetailLivrePage = () => {
             {activeTab === 'avis' && (
               <div className="space-y-6">
                 <h3 className="text-lg font-playfair font-bold text-amber-800">
-                  Avis ({avis.length}) — Moyenne {noteMoyenne}/5
+                  {t('detailLivre.avis.titreAvecMoyenne', { count: avis.length, note: noteMoyenne })}
                 </h3>
 
                 {/* Formulaire avis */}
                 {aAcces && (
                   <form onSubmit={handleSoumettreAvis} className="bg-amber-50 rounded-xl p-4 space-y-4">
-                    <h4 className="font-semibold text-amber-700">Laisser un avis</h4>
+                    <h4 className="font-semibold text-amber-700">{t('detailLivre.avis.laisserUnAvis')}</h4>
                     <div>
-                      <p className="text-sm text-gray-600 mb-1">Note</p>
+                      <p className="text-sm text-gray-600 mb-1">{t('detailLivre.avis.note')}</p>
                       <div className="flex gap-1">
                         {renderEtoiles(noteAvis, true, setNoteAvis)}
                         <span className="ml-2 text-sm text-gray-500">{noteAvis}/5</span>
@@ -432,7 +415,7 @@ const DetailLivrePage = () => {
                       value={commentaireAvis}
                       onChange={(e) => setCommentaireAvis(e.target.value)}
                       rows={3}
-                      placeholder="Partagez votre avis sur ce livre..."
+                      placeholder={t('detailLivre.avis.partagezAvis')}
                       className="w-full px-4 py-3 border border-amber-200 rounded-xl focus:border-amber-500 outline-none text-sm resize-none"
                     />
                     <button
@@ -440,7 +423,7 @@ const DetailLivrePage = () => {
                       disabled={soumettreAvis}
                       className="bg-gradient-to-r from-amber-600 to-amber-700 text-white px-6 py-2 rounded-xl text-sm hover:shadow-lg transition disabled:opacity-50"
                     >
-                      {soumettreAvis ? 'Envoi...' : 'Soumettre l\'avis'}
+                      {soumettreAvis ? t('detailLivre.avis.envoiEnCours') : t('detailLivre.avis.soumettreAvis')}
                     </button>
                   </form>
                 )}
@@ -449,7 +432,7 @@ const DetailLivrePage = () => {
                 {avis.length === 0 ? (
                   <div className="text-center py-8">
                     <FaStar className="text-amber-300 text-5xl mx-auto mb-3" />
-                    <p className="text-gray-500">Aucun avis pour ce livre. Soyez le premier !</p>
+                    <p className="text-gray-500">{t('detailLivre.avis.aucunAvisSoyezPremier')}</p>
                   </div>
                 ) : (
                   <div className="space-y-4">
@@ -470,6 +453,9 @@ const DetailLivrePage = () => {
             )}
           </div>
           </>
+        )}
+        {extraitOuvert && (
+          <ExtraitModal livre={livre} onClose={() => setExtraitOuvert(false)} />
         )}
       </div>
     </DashboardLayout>

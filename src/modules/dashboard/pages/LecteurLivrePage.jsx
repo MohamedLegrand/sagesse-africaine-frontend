@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { Document, Page, pdfjs } from 'react-pdf';
 import workerSrc from 'pdfjs-dist/build/pdf.worker.min.mjs?url';
 import {
-  ArrowLeft, ChevronLeft, ChevronRight, Bookmark, ZoomIn, ZoomOut, Loader2, BookX,
+  ArrowLeft, ChevronLeft, ChevronRight, Bookmark, ZoomIn, ZoomOut, Loader2, BookX, Lock, BookOpenText,
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import livresService from '../../../services/livresService';
@@ -11,6 +12,8 @@ import accesLivresService from '../../../services/accesLivresService';
 import fichiersLivresService from '../../../services/fichiersLivresService';
 import progressionService from '../../../services/progressionService';
 import signetsService from '../../../services/signetsService';
+import { avecExtrait } from '../../../data/extraitsLivres';
+import ExtraitModal from '../../../components/ExtraitModal';
 import 'react-pdf/dist/Page/AnnotationLayer.css';
 import 'react-pdf/dist/Page/TextLayer.css';
 
@@ -19,6 +22,7 @@ pdfjs.GlobalWorkerOptions.workerSrc = workerSrc;
 const DELAI_SAUVEGARDE_MS = 1000;
 
 const LecteurLivrePage = () => {
+  const { t } = useTranslation('dashboard');
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -31,6 +35,7 @@ const LecteurLivrePage = () => {
   const [echelle, setEchelle] = useState(1.1);
   const [statut, setStatut] = useState('chargement'); // chargement | pret | sans-acces | sans-fichier | erreur
   const [ajoutSignetEnCours, setAjoutSignetEnCours] = useState(false);
+  const [extraitOuvert, setExtraitOuvert] = useState(false);
 
   const delaiSauvegarde = useRef(null);
 
@@ -43,8 +48,18 @@ const LecteurLivrePage = () => {
         await accesLivresService.verifierAcces(id);
       } catch {
         if (!annule) {
-          toast.error("Vous n'avez pas accès à ce livre");
-          navigate(`/dashboard/livre/${id}`);
+          try {
+            const livreData = await livresService.getLivre(id);
+            if (!annule) {
+              setLivre(avecExtrait(livreData));
+              setStatut('sans-acces');
+            }
+          } catch {
+            if (!annule) {
+              toast.error(t('lecteur.messages.pasAcces'));
+              navigate(`/dashboard/livre/${id}`);
+            }
+          }
         }
         return;
       }
@@ -65,7 +80,7 @@ const LecteurLivrePage = () => {
         }
 
         const premierFichier = fichiersData[0];
-        const blob = await fichiersLivresService.telecharger(id, premierFichier.id);
+        const blob = await fichiersLivresService.lire(id, premierFichier.id);
         const buffer = await blob.arrayBuffer();
 
         if (annule) return;
@@ -84,7 +99,7 @@ const LecteurLivrePage = () => {
 
     charger();
     return () => { annule = true; };
-  }, [id, navigate]);
+  }, [id, navigate, t]);
 
   const sauvegarderProgression = useCallback((page, total) => {
     if (delaiSauvegarde.current) clearTimeout(delaiSauvegarde.current);
@@ -126,9 +141,9 @@ const LecteurLivrePage = () => {
         note: null,
       });
       setSignets((prev) => [...prev, signet]);
-      toast.success(`Signet ajouté à la page ${pageNumber}`);
+      toast.success(t('lecteur.messages.signetAjoutePage', { page: pageNumber }));
     } catch {
-      toast.error("Erreur lors de l'ajout du signet");
+      toast.error(t('lecteur.messages.erreurAjoutSignet'));
     } finally {
       setAjoutSignetEnCours(false);
     }
@@ -140,7 +155,39 @@ const LecteurLivrePage = () => {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center gap-3 bg-brown-950 text-cream-100">
         <Loader2 className="w-10 h-10 animate-spin text-terra-400" />
-        <p className="text-sm text-brown-300">Chargement du livre...</p>
+        <p className="text-sm text-brown-300">{t('lecteur.chargementLivre')}</p>
+      </div>
+    );
+  }
+
+  if (statut === 'sans-acces') {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center gap-4 bg-brown-950 text-cream-100 px-4 text-center">
+        <Lock className="w-12 h-12 text-terra-400" />
+        <h1 className="text-lg font-playfair font-semibold">{livre?.titre}</h1>
+        <p className="max-w-md text-brown-300">
+          {t('lecteur.devezAcheter')}
+        </p>
+        <div className="flex flex-wrap items-center justify-center gap-3 mt-2">
+          <Link
+            to={`/dashboard/livre/${id}`}
+            className="bg-terra-500 hover:bg-terra-600 text-white px-5 py-2.5 rounded-xl text-sm font-semibold transition-colors"
+          >
+            {t('lecteur.acheterCeLivre')}
+          </Link>
+          {livre?.extrait_url && (
+            <button
+              onClick={() => setExtraitOuvert(true)}
+              className="flex items-center gap-2 border border-brown-700 text-cream-200 px-5 py-2.5 rounded-xl text-sm font-semibold hover:bg-brown-800 transition-colors"
+            >
+              <BookOpenText className="w-4 h-4" />
+              {t('lecteur.lireUnExtrait')}
+            </button>
+          )}
+        </div>
+        {extraitOuvert && (
+          <ExtraitModal livre={livre} onClose={() => setExtraitOuvert(false)} />
+        )}
       </div>
     );
   }
@@ -151,11 +198,11 @@ const LecteurLivrePage = () => {
         <BookX className="w-12 h-12 text-terra-400" />
         <p>
           {statut === 'sans-fichier'
-            ? "Aucun fichier n'est disponible pour ce livre."
-            : "Une erreur est survenue lors du chargement du livre."}
+            ? t('lecteur.aucunFichier')
+            : t('lecteur.erreurChargement')}
         </p>
         <Link to={`/dashboard/livre/${id}`} className="text-terra-300 hover:text-terra-200 underline text-sm">
-          Retour à la fiche du livre
+          {t('lecteur.retourFiche')}
         </Link>
       </div>
     );
@@ -170,7 +217,7 @@ const LecteurLivrePage = () => {
           className="flex items-center gap-2 text-cream-200 hover:text-white transition text-sm"
         >
           <ArrowLeft className="w-4 h-4" />
-          <span className="hidden sm:inline">Retour</span>
+          <span className="hidden sm:inline">{t('lecteur.retour')}</span>
         </button>
 
         <h1 className="flex-1 text-center text-sm sm:text-base font-playfair font-semibold text-cream-100 truncate px-2">
@@ -181,14 +228,14 @@ const LecteurLivrePage = () => {
           <button
             onClick={() => setEchelle((e) => Math.max(0.6, +(e - 0.1).toFixed(1)))}
             className="p-2 rounded-lg text-cream-200 hover:bg-brown-800 transition"
-            title="Réduire"
+            title={t('lecteur.reduire')}
           >
             <ZoomOut className="w-4 h-4" />
           </button>
           <button
             onClick={() => setEchelle((e) => Math.min(2, +(e + 0.1).toFixed(1)))}
             className="p-2 rounded-lg text-cream-200 hover:bg-brown-800 transition"
-            title="Agrandir"
+            title={t('lecteur.agrandir')}
           >
             <ZoomIn className="w-4 h-4" />
           </button>
@@ -196,7 +243,7 @@ const LecteurLivrePage = () => {
             onClick={ajouterSignet}
             disabled={ajoutSignetEnCours}
             className="p-2 rounded-lg text-cream-200 hover:bg-brown-800 transition disabled:opacity-50"
-            title="Ajouter un signet à cette page"
+            title={t('lecteur.ajouterSignetPage')}
           >
             <Bookmark className="w-4 h-4" />
           </button>
@@ -216,7 +263,7 @@ const LecteurLivrePage = () => {
                 className="flex-shrink-0 flex items-center gap-1 text-xs px-3 py-1 rounded-full bg-brown-800 text-cream-200 hover:bg-terra-600 transition"
               >
                 <Bookmark className="w-3 h-3" />
-                Page {signet.numero_page}
+                {t('lecteur.page', { page: signet.numero_page })}
               </button>
             ))}
         </div>
@@ -228,7 +275,7 @@ const LecteurLivrePage = () => {
           file={pdfFileMemo}
           onLoadSuccess={handleLoadSuccess}
           loading={<Loader2 className="w-8 h-8 animate-spin text-terra-400 mt-20" />}
-          error={<p className="text-cream-200 mt-20">Impossible d'afficher ce PDF.</p>}
+          error={<p className="text-cream-200 mt-20">{t('lecteur.impossibleAfficherPdf')}</p>}
         >
           <Page
             pageNumber={pageNumber}

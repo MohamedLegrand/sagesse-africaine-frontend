@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Library, Plus, Edit2, Trash2, Search, Check, X } from 'lucide-react';
 import api from '../../../services/api';
 import toast from 'react-hot-toast';
 import AdminLayout from '../components/AdminLayout';
 
 const GestionCollectionsPage = () => {
+  const { t } = useTranslation('admin');
   const [collections, setCollections] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
@@ -21,7 +23,7 @@ const GestionCollectionsPage = () => {
   const fetchCollections = async () => {
     setLoading(true);
     try { const r = await api.get('/collections/', { params: { page, taille: 20 } }); setCollections(r.data.collections || []); setTotal(r.data.total || 0); }
-    catch { toast.error('Erreur chargement'); } finally { setLoading(false); }
+    catch { toast.error(t('collections.messages.erreurChargement')); } finally { setLoading(false); }
   };
 
   const fetchParentCollections = async () => {
@@ -46,19 +48,19 @@ const GestionCollectionsPage = () => {
     e.preventDefault(); setSubmitting(true);
     try {
       const payload = { nom: formData.nom, description: formData.description, collection_parent_id: formData.collection_parent_id || null };
-      if (editingCollection) { await api.put(`/collections/${editingCollection.id}`, payload); toast.success('Collection modifiée'); }
-      else { await api.post('/collections/', payload); toast.success('Collection créée'); }
+      if (editingCollection) { await api.put(`/collections/${editingCollection.id}`, payload); toast.success(t('collections.messages.collectionModifiee')); }
+      else { await api.post('/collections/', payload); toast.success(t('collections.messages.collectionCreee')); }
       setShowModal(false); fetchCollections(); fetchParentCollections();
-    } catch { toast.error('Erreur sauvegarde'); } finally { setSubmitting(false); }
+    } catch { toast.error(t('collections.messages.erreurSauvegarde')); } finally { setSubmitting(false); }
   };
 
   const handleDelete = async (id, nom) => {
-    if (!window.confirm(`Supprimer "${nom}" ?`)) return;
-    try { await api.delete(`/collections/${id}`); toast.success('Supprimée'); fetchCollections(); fetchParentCollections(); }
-    catch { toast.error('Erreur suppression'); }
+    if (!window.confirm(t('collections.messages.confirmSuppression', { nom }))) return;
+    try { await api.delete(`/collections/${id}`); toast.success(t('collections.messages.supprimee')); fetchCollections(); fetchParentCollections(); }
+    catch { toast.error(t('collections.messages.erreurSuppression')); }
   };
 
-  const getParentName = (parentId) => parentCollections.find(p => p.id === parentId)?.nom || 'Principale';
+  const getParentName = (parentId) => parentCollections.find(p => p.id === parentId)?.nom || t('collections.principale');
 
   const filtered = collections.filter(c =>
     c.nom?.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -70,19 +72,19 @@ const GestionCollectionsPage = () => {
     <AdminLayout>
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
         <div>
-          <span className="section-eyebrow">Catalogue</span>
-          <h1 className="section-title mt-2">Gestion des collections</h1>
-          <p className="text-brown-400 text-sm mt-1">{total} collection(s) au total</p>
+          <span className="section-eyebrow">{t('collections.eyebrow')}</span>
+          <h1 className="section-title mt-2">{t('collections.titre')}</h1>
+          <p className="text-brown-400 text-sm mt-1">{t('collections.collectionAuTotal', { count: total })}</p>
         </div>
         <button onClick={openCreateModal} className="btn-primary text-sm flex-shrink-0">
-          <Plus className="w-4 h-4" /> Nouvelle collection
+          <Plus className="w-4 h-4" /> {t('collections.nouvelleCollection')}
         </button>
       </div>
 
       <div className="bg-white rounded-xl border border-cream-200 p-4 mb-6">
         <div className="relative max-w-md">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-brown-300" />
-          <input type="text" placeholder="Rechercher une collection…" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} className="input-field pl-10" />
+          <input type="text" placeholder={t('collections.rechercherPlaceholder')} value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} className="input-field pl-10" />
         </div>
       </div>
 
@@ -99,20 +101,20 @@ const GestionCollectionsPage = () => {
                     <h3 className="font-playfair font-bold text-white text-base">{col.nom}</h3>
                   </div>
                   <div className="flex gap-1.5">
-                    <button onClick={() => openEditModal(col)} className="p-1.5 rounded-lg bg-white/10 hover:bg-white/20 transition-colors" title="Modifier">
+                    <button onClick={() => openEditModal(col)} className="p-1.5 rounded-lg bg-white/10 hover:bg-white/20 transition-colors" title={t('collections.modifierTitle')}>
                       <Edit2 className="w-3.5 h-3.5 text-white" />
                     </button>
-                    <button onClick={() => handleDelete(col.id, col.nom)} className="p-1.5 rounded-lg bg-white/10 hover:bg-red-500/50 transition-colors" title="Supprimer">
+                    <button onClick={() => handleDelete(col.id, col.nom)} className="p-1.5 rounded-lg bg-white/10 hover:bg-red-500/50 transition-colors" title={t('collections.supprimerTitle')}>
                       <Trash2 className="w-3.5 h-3.5 text-white" />
                     </button>
                   </div>
                 </div>
                 <div className="p-4">
-                  <p className="text-brown-500 text-sm mb-3 min-h-[40px]">{col.description || 'Aucune description'}</p>
+                  <p className="text-brown-500 text-sm mb-3 min-h-[40px]">{col.description || t('collections.aucuneDescription')}</p>
                   <div className="flex items-center justify-between text-xs">
-                    <span className="text-brown-300">Slug: {col.slug || '—'}</span>
+                    <span className="text-brown-300">{t('collections.slug', { slug: col.slug || '—' })}</span>
                     <span className="text-terra-500 font-medium">
-                      {col.collection_parent_id ? `Sous ${getParentName(col.collection_parent_id)}` : 'Principale'}
+                      {col.collection_parent_id ? t('collections.sousCollection', { parent: getParentName(col.collection_parent_id) }) : t('collections.principale')}
                     </span>
                   </div>
                 </div>
@@ -121,15 +123,15 @@ const GestionCollectionsPage = () => {
             {filtered.length === 0 && (
               <div className="col-span-3 text-center py-16 text-brown-300">
                 <Library className="w-10 h-10 mx-auto mb-2 opacity-30" />
-                <p className="text-sm">Aucune collection</p>
+                <p className="text-sm">{t('collections.aucuneCollection')}</p>
               </div>
             )}
           </div>
           {totalPages > 1 && (
             <div className="flex items-center justify-center gap-2 mt-6">
-              <button onClick={() => setPage(p => Math.max(1, p - 1))} disabled={page === 1} className="px-4 py-2 border border-cream-200 rounded-lg text-sm text-brown-600 disabled:opacity-40 hover:bg-cream-100 transition-colors">← Précédent</button>
+              <button onClick={() => setPage(p => Math.max(1, p - 1))} disabled={page === 1} className="px-4 py-2 border border-cream-200 rounded-lg text-sm text-brown-600 disabled:opacity-40 hover:bg-cream-100 transition-colors">{t('commun.precedent')}</button>
               <span className="px-4 py-2 bg-terra-500 text-white rounded-lg text-sm font-medium">{page} / {totalPages}</span>
-              <button onClick={() => setPage(p => Math.min(totalPages, p + 1))} disabled={page === totalPages} className="px-4 py-2 border border-cream-200 rounded-lg text-sm text-brown-600 disabled:opacity-40 hover:bg-cream-100 transition-colors">Suivant →</button>
+              <button onClick={() => setPage(p => Math.min(totalPages, p + 1))} disabled={page === totalPages} className="px-4 py-2 border border-cream-200 rounded-lg text-sm text-brown-600 disabled:opacity-40 hover:bg-cream-100 transition-colors">{t('commun.suivant')}</button>
             </div>
           )}
         </>
@@ -140,24 +142,24 @@ const GestionCollectionsPage = () => {
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-2xl max-w-md w-full shadow-2xl">
             <div className="flex items-center justify-between p-6 border-b border-cream-200">
-              <h2 className="font-playfair text-xl font-bold text-brown-950">{editingCollection ? 'Modifier la collection' : 'Ajouter une collection'}</h2>
+              <h2 className="font-playfair text-xl font-bold text-brown-950">{editingCollection ? t('collections.modal.modifierLaCollection') : t('collections.modal.ajouterUneCollection')}</h2>
               <button onClick={() => setShowModal(false)} className="p-1.5 rounded-lg hover:bg-cream-100"><X className="w-5 h-5 text-brown-500" /></button>
             </div>
             <form onSubmit={handleSubmit} className="p-6 space-y-4">
-              <div><label className="input-label">Nom *</label><input type="text" name="nom" value={formData.nom} onChange={handleInputChange} required className="input-field" placeholder="Ex: Sciences Sociales" /></div>
-              <div><label className="input-label">Description</label><textarea name="description" value={formData.description} onChange={handleInputChange} rows={3} className="input-field resize-none" placeholder="Description de la collection…" /></div>
+              <div><label className="input-label">{t('collections.modal.nomLabel')}</label><input type="text" name="nom" value={formData.nom} onChange={handleInputChange} required className="input-field" placeholder={t('collections.modal.nomPlaceholder')} /></div>
+              <div><label className="input-label">{t('collections.modal.descriptionLabel')}</label><textarea name="description" value={formData.description} onChange={handleInputChange} rows={3} className="input-field resize-none" placeholder={t('collections.modal.descriptionPlaceholder')} /></div>
               <div>
-                <label className="input-label">Collection parente</label>
+                <label className="input-label">{t('collections.modal.collectionParenteLabel')}</label>
                 <select name="collection_parent_id" value={formData.collection_parent_id} onChange={handleInputChange} className="input-field">
-                  <option value="">Aucune (principale)</option>
+                  <option value="">{t('collections.modal.aucunePrincipale')}</option>
                   {parentCollections.filter(c => !editingCollection || c.id !== editingCollection.id).map(c => <option key={c.id} value={c.id}>{c.nom}</option>)}
                 </select>
               </div>
               <div className="flex justify-end gap-3 pt-4 border-t border-cream-200">
-                <button type="button" onClick={() => setShowModal(false)} className="btn-outline text-sm">Annuler</button>
+                <button type="button" onClick={() => setShowModal(false)} className="btn-outline text-sm">{t('commun.annuler')}</button>
                 <button type="submit" disabled={submitting} className="btn-primary text-sm disabled:opacity-60">
                   {submitting ? <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" /> : <Check className="w-4 h-4" />}
-                  {editingCollection ? 'Modifier' : 'Créer'}
+                  {editingCollection ? t('commun.modifier') : t('commun.creer')}
                 </button>
               </div>
             </form>

@@ -1,0 +1,31 @@
+{
+  "nav": {
+    "accueil": "Home",
+    "boutique": "Shop",
+    "toutLeCatalogue": "Full catalogue",
+    "quiSommesNous": "About us",
+    "monEspace": "My space",
+    "contact": "Contact",
+    "catalogue": "Catalogue",
+    "menu": "Menu"
+  },
+  "recherche": {
+    "placeholder": "Search for a book...",
+    "gratuit": "Free"
+  },
+  "actions": {
+    "panier": "Cart",
+    "notifications": "Notifications",
+    "monProfil": "My profile",
+    "deconnexion": "Log out",
+    "connexion": "Log in",
+    "sinscrire": "Sign up"
+  },
+  "bandeauSuperieur": "Pan-African publishing group · Intellectual, scientific & cultural production",
+  "facture": {
+    "sessionExpiree": "Your session has expired, please log in again",
+    "nonAutorise": "You are not authorized to download this invoice",
+    "achatIntrouvable": "Order not found",
+    "erreurTelechargement": "Error downloading the invoice"
+  }
+}

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { FaArrowLeft, FaCheckCircle } from 'react-icons/fa';
 import Header from '../../visiteur/components/Header';
 import Footer from '../../visiteur/components/Footer';
@@ -8,8 +9,10 @@ import FormulaireMobileMoney from '../components/FormulaireMobileMoney';
 import usePaiement from '../hooks/usePaiement';
 import api from '../../../services/api';
 import toast from 'react-hot-toast';
+import { traduireErreurApi } from '../../../services/erreurApi';
 
 const PaiementPage = () => {
+  const { t } = useTranslation('paiement');
   const navigate = useNavigate();
   const [panier, setPanier] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -23,14 +26,14 @@ const PaiementPage = () => {
     try {
       const response = await api.get('/panier/');
       if (!response.data.lignes || response.data.lignes.length === 0) {
-        toast.error('Votre panier est vide');
+        toast.error(t('messages.panierVide'));
         navigate('/panier');
         return;
       }
       setPanier(response.data);
     } catch (error) {
       console.error('Erreur chargement panier:', error);
-      toast.error('Erreur chargement du panier');
+      toast.error(t('messages.erreurChargementPanier'));
       navigate('/panier');
     } finally {
       setLoading(false);
@@ -38,13 +41,13 @@ const PaiementPage = () => {
   };
 
   const handlePaiementMobileMoney = async ({ operator, phoneNumber, country }) => {
-    const toastId = toast.loading('Envoi de la demande...');
+    const toastId = toast.loading(t('messages.envoiDemande'));
     try {
       const { commande } = await payer({ operator, phoneNumber, country });
-      toast.success('Demande envoyée ! Confirmez sur votre téléphone.', { id: toastId });
+      toast.success(t('messages.demandeEnvoyeeConfirmez'), { id: toastId });
       navigate(`/confirmation-paiement/${commande.id}`);
     } catch (error) {
-      toast.error(error.response?.data?.detail || 'Le paiement a échoué', { id: toastId });
+      toast.error(traduireErreurApi(error, 'messages.paiementEchoue', 'paiement'), { id: toastId });
     }
   };
 
@@ -73,15 +76,15 @@ const PaiementPage = () => {
             className="flex items-center gap-2 text-amber-600 hover:text-amber-700 mb-6 transition"
           >
             <FaArrowLeft />
-            Retour au panier
+            {t('retourPanier')}
           </button>
 
           <div className="text-center mb-8">
             <h1 className="text-4xl md:text-5xl font-playfair font-bold text-amber-800 mb-4">
-              Paiement
+              {t('titre')}
             </h1>
             <p className="text-amber-500 text-lg">
-              Choisissez votre pays et votre opérateur Mobile Money
+              {t('choisirPaysOperateur')}
             </p>
             <div className="flex items-center justify-center gap-2 mt-4">
               <div className="w-16 h-px bg-amber-300"></div>
@@ -95,7 +98,7 @@ const PaiementPage = () => {
             <div className="lg:col-span-2">
               <div className="bg-white rounded-2xl shadow-lg p-6 mb-6">
                 <h2 className="text-xl font-playfair font-bold text-amber-800 mb-4">
-                  Mobile Money
+                  {t('mobileMoney')}
                 </h2>
                 <FormulaireMobileMoney
                   onSubmit={handlePaiementMobileMoney}
@@ -110,8 +113,8 @@ const PaiementPage = () => {
                   <FaCheckCircle className="text-green-600" />
                 </div>
                 <div>
-                  <p className="text-sm font-medium text-gray-700">Paiement 100% sécurisé</p>
-                  <p className="text-xs text-gray-500">Confirmation directement sur votre téléphone</p>
+                  <p className="text-sm font-medium text-gray-700">{t('paiementSecurise')}</p>
+                  <p className="text-xs text-gray-500">{t('confirmationTelephone')}</p>
                 </div>
               </div>
             </div>

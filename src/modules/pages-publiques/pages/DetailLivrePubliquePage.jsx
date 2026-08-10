@@ -1,15 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { FaBook, FaShoppingCart, FaArrowLeft, FaStar, FaCheck, FaLock, FaTimes, FaExpand, FaBookOpen } from 'react-icons/fa';
 import Header from '../../visiteur/components/Header';
 import Footer from '../../visiteur/components/Footer';
 import api from '../../../services/api';
 import guestCart from '../../../services/guestCart';
 import toast from 'react-hot-toast';
-import { getLivreSiteById } from '../../../data/livresSite';
+import livresService from '../../../services/livresService';
+import { avecExtrait } from '../../../data/extraitsLivres';
 import ExtraitModal from '../../../components/ExtraitModal';
 
 const DetailLivrePubliquePage = () => {
+  const { t } = useTranslation('catalogue');
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -21,33 +24,44 @@ const DetailLivrePubliquePage = () => {
   const [imageAgrandie, setImageAgrandie] = useState(null);
   const [extraitOuvert, setExtraitOuvert] = useState(false);
 
+  const [aAcces, setAAcces] = useState(false);
+
   useEffect(() => {
-    const livreTrouve = getLivreSiteById(id);
-    if (!livreTrouve) {
-      toast.error('Livre introuvable');
-      navigate('/livres');
-    } else {
-      setLivre(livreTrouve);
-    }
-    setLoading(false);
-  }, [id, navigate]);
+    setLoading(true);
+    const token = localStorage.getItem('access_token');
+    
+    Promise.all([
+      livresService.getLivre(id),
+      token ? api.get('/acces-livres/mes-acces').then(r => r.data.acces || []).catch(() => []) : Promise.resolve([])
+    ])
+      .then(([data, accesList]) => {
+        setLivre(avecExtrait(data));
+        const owned = accesList.some(a => a.livre_id === data.id);
+        setAAcces(owned);
+      })
+      .catch(() => {
+        toast.error(t('messages.livreIntrouvable'));
+        navigate('/livres');
+      })
+      .finally(() => setLoading(false));
+  }, [id, navigate, t]);
 
   const handleAddToCart = async () => {
     const token = localStorage.getItem('access_token');
     if (!token) {
       guestCart.addItem(livre);
-      toast.success('Livre ajouté au panier');
+      toast.success(t('messages.livreAjoutePanier'));
       setAdded(true);
       return;
     }
     setAdding(true);
     try {
       await api.post('/panier/ajouter', { livre_id: livre.id, quantite: 1 });
-      toast.success('Livre ajouté au panier');
+      toast.success(t('messages.livreAjoutePanier'));
       window.dispatchEvent(new Event('cartUpdated'));
       setAdded(true);
     } catch {
-      toast.error("Erreur lors de l'ajout au panier");
+      toast.error(t('messages.erreurAjoutPanier'));
     } finally {
       setAdding(false);
     }
@@ -57,7 +71,7 @@ const DetailLivrePubliquePage = () => {
     const token = localStorage.getItem('access_token');
     if (!token) {
       localStorage.setItem('auth_return_to', '/dashboard/paiement');
-      toast('Connectez-vous pour finaliser votre commande', { icon: '🔐' });
+      toast(t('messages.connectezVousFinaliserAchat'), { icon: '🔐' });
       navigate('/connexion');
       return;
     }
@@ -100,7 +114,7 @@ const DetailLivrePubliquePage = () => {
             className="flex items-center gap-2 text-amber-600 hover:text-amber-700 transition mb-6 font-medium"
           >
             <FaArrowLeft />
-            Retour
+            {t('retour')}
           </button>
 
           {/* Carte principale */}
@@ -132,7 +146,7 @@ const DetailLivrePubliquePage = () => {
               {avis.length > 0 && (
                 <div className="flex items-center gap-2 mb-4">
                   <div className="flex gap-0.5">{renderEtoiles(noteMoyenne)}</div>
-                  <span className="text-sm text-gray-500">({avis.length} avis)</span>
+                  <span className="text-sm text-gray-500">({avis.length} {t('avis')})</span>
                 </div>
               )}
 
@@ -145,13 +159,13 @@ const DetailLivrePubliquePage = () => {
                 )}
                 {livre.isbn && (
                   <span className="text-xs px-3 py-1 bg-gray-100 text-gray-600 rounded-full">
-                    ISBN : {livre.isbn}
+                    {t('isbn')} {livre.isbn}
                   </span>
                 )}
                 <span className={`text-xs px-3 py-1 rounded-full font-medium ${
                   livre.est_gratuit ? 'bg-green-100 text-green-700' : 'bg-amber-100 text-amber-700'
                 }`}>
-                  {livre.est_gratuit ? 'Gratuit' : `${livre.prix?.toLocaleString()} XAF`}
+                  {livre.est_gratuit ? t('gratuit') : `${livre.prix?.toLocaleString('fr-FR')} XAF`}
                 </span>
               </div>
 
@@ -165,36 +179,59 @@ const DetailLivrePubliquePage = () => {
               {/* Prix + actions */}
               <div className="border-t border-amber-100 pt-5 flex flex-col sm:flex-row gap-3 items-start sm:items-center">
                 <span className="text-3xl font-bold text-amber-700">
-                  {livre.est_gratuit ? 'Gratuit' : `${livre.prix?.toLocaleString()} XAF`}
+                  {livre.est_gratuit ? t('gratuit') : `${livre.prix?.toLocaleString('fr-FR')} XAF`}
                 </span>
                 <div className="flex gap-3 flex-wrap">
-                  <button
-                    onClick={handleAddToCart}
-                    disabled={adding}
-                    className={`flex items-center gap-2 px-5 py-2.5 rounded-xl font-semibold transition hover:shadow-lg ${
-                      added
-                        ? 'bg-green-500 text-white'
-                        : 'bg-gradient-to-r from-amber-600 to-amber-700 text-white disabled:opacity-50'
-                    }`}
-                  >
-                    {adding ? (
-                      <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                    ) : added ? (
-                      <FaCheck />
+                  {aAcces || livre.est_gratuit ? (
+                    localStorage.getItem('access_token') ? (
+                      <Link
+                        to={`/dashboard/livre/${livre.id}`}
+                        className="flex items-center gap-2 px-5 py-2.5 bg-green-600 hover:bg-green-700 text-white rounded-xl font-semibold transition hover:shadow-lg"
+                      >
+                        <FaBookOpen />
+                        {aAcces ? t('dejaAcheteLire') : t('lireGratuitement')}
+                      </Link>
                     ) : (
-                      <FaShoppingCart />
-                    )}
-                    {added ? 'Ajouté au panier' : 'Ajouter au panier'}
-                  </button>
+                      <Link
+                        to="/connexion"
+                        onClick={() => localStorage.setItem('auth_return_to', `/dashboard/livre/${livre.id}`)}
+                        className="flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-amber-600 to-amber-700 text-white rounded-xl font-semibold transition hover:shadow-lg"
+                      >
+                        <FaBookOpen />
+                        {t('seConnecterPourLireGratuitement')}
+                      </Link>
+                    )
+                  ) : (
+                    <>
+                      <button
+                        onClick={handleAddToCart}
+                        disabled={adding}
+                        className={`flex items-center gap-2 px-5 py-2.5 rounded-xl font-semibold transition hover:shadow-lg ${
+                          added
+                            ? 'bg-green-500 text-white'
+                            : 'bg-gradient-to-r from-amber-600 to-amber-700 text-white disabled:opacity-50'
+                        }`}
+                      >
+                        {adding ? (
+                          <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                        ) : added ? (
+                          <FaCheck />
+                        ) : (
+                          <FaShoppingCart />
+                        )}
+                        {added ? t('ajouteAuPanier') : t('ajouterAuPanier')}
+                      </button>
 
-                  {!livre.est_gratuit && (
-                    <button
-                      onClick={handlePayer}
-                      className="flex items-center gap-2 px-5 py-2.5 rounded-xl font-semibold border-2 border-amber-600 text-amber-700 hover:bg-amber-600 hover:text-white transition"
-                    >
-                      <FaLock className="text-sm" />
-                      Acheter maintenant
-                    </button>
+                      {!livre.est_gratuit && (
+                        <button
+                          onClick={handlePayer}
+                          className="flex items-center gap-2 px-5 py-2.5 rounded-xl font-semibold border-2 border-amber-600 text-amber-700 hover:bg-amber-600 hover:text-white transition"
+                        >
+                          <FaLock className="text-sm" />
+                          {t('acheterMaintenant')}
+                        </button>
+                      )}
+                    </>
                   )}
 
                   {livre.extrait_url && (
@@ -204,7 +241,7 @@ const DetailLivrePubliquePage = () => {
                       className="flex items-center gap-2 px-5 py-2.5 rounded-xl font-semibold border-2 border-amber-300 text-amber-700 hover:bg-amber-50 transition"
                     >
                       <FaBookOpen className="text-sm" />
-                      Lire un extrait
+                      {t('lireUnExtrait')}
                     </button>
                   )}
                 </div>
@@ -214,7 +251,7 @@ const DetailLivrePubliquePage = () => {
               {!localStorage.getItem('access_token') && (
                 <p className="text-xs text-amber-500 mt-3 flex items-center gap-1">
                   <FaLock className="text-xs" />
-                  Une connexion sera requise pour finaliser le paiement
+                  {t('connexionRequisePourPaiement')}
                 </p>
               )}
             </div>
@@ -223,17 +260,19 @@ const DetailLivrePubliquePage = () => {
           {/* Galerie : couverture, sommaire, 4e de couverture */}
           <div className="bg-white rounded-2xl shadow-lg p-6 md:p-8 mb-8">
             <h2 className="text-xl font-playfair font-bold text-amber-800 mb-5">
-              Aperçu du livre
+              {t('apercuLivre')}
             </h2>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
               {[
-                { url: livre.couverture_url, label: 'Couverture' },
-                ...livre.sommaire_urls.map((url, i) => ({
+                { url: livre.couverture_url, label: t('couverture') },
+                ...(livre.sommaire_urls || []).map((url, i) => ({
                   url,
-                  label: livre.sommaire_urls.length > 1 ? `Sommaire (${i + 1}/${livre.sommaire_urls.length})` : 'Sommaire',
+                  label: livre.sommaire_urls.length > 1
+                    ? t('sommaireNumerote', { n: i + 1, total: livre.sommaire_urls.length })
+                    : t('sommaire'),
                 })),
-                { url: livre.quatrieme_couverture_url, label: '4e de couverture' },
-              ].map((img) => (
+                { url: livre.quatrieme_couverture_url, label: t('quatriemeCouverture') },
+              ].filter((img) => img.url).map((img) => (
                 <button
                   key={img.label}
                   type="button"
@@ -286,15 +325,15 @@ const DetailLivrePubliquePage = () => {
           {/* Section avis */}
           <div className="bg-white rounded-2xl shadow-lg p-6">
             <h2 className="text-xl font-playfair font-bold text-amber-800 mb-5">
-              Avis des lecteurs {avis.length > 0 && `(${avis.length})`}
+              {t('avisDesLecteurs')} {avis.length > 0 && `(${avis.length})`}
             </h2>
 
             {avis.length === 0 ? (
               <div className="text-center py-10">
                 <FaStar className="text-amber-300 text-5xl mx-auto mb-3" />
-                <p className="text-gray-500">Aucun avis pour ce livre.</p>
+                <p className="text-gray-500">{t('aucunAvis')}</p>
                 <Link to="/connexion" className="text-amber-600 text-sm hover:underline mt-2 inline-block">
-                  Connectez-vous pour laisser un avis
+                  {t('connectezVousPourAvis')}
                 </Link>
               </div>
             ) : (
@@ -322,7 +361,7 @@ const DetailLivrePubliquePage = () => {
                   to="/connexion"
                   className="text-sm text-amber-600 hover:text-amber-700 underline"
                 >
-                  Connectez-vous pour laisser votre avis
+                  {t('connectezVousPourLaisserAvis')}
                 </Link>
               </div>
             )}

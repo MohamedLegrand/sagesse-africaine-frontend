@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { BookOpen, Shield, Star, Globe } from 'lucide-react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
@@ -7,14 +8,15 @@ import FormulaireInscription from '../components/FormulaireInscription';
 import toast from 'react-hot-toast';
 import api from '../../../services/api';
 
-const perks = [
-  { icon: BookOpen, title: 'Bibliothèque illimitée',   desc: 'Accès à tous vos livres achetés, depuis n\'importe où.' },
-  { icon: Globe,    title: 'Communauté panafricaine',  desc: 'Rejoignez des milliers de lecteurs à travers le continent.' },
-  { icon: Star,     title: 'Recommandations',          desc: 'Des suggestions de lecture personnalisées selon vos goûts.' },
-  { icon: Shield,   title: 'Sécurité garantie',        desc: 'Données protégées, paiements sécurisés, confidentialité.' },
+const PERKS_META = [
+  { icon: BookOpen, cle: 'bibliotheque' },
+  { icon: Globe,    cle: 'communaute' },
+  { icon: Star,     cle: 'recommandations' },
+  { icon: Shield,   cle: 'securite' },
 ];
 
 const InscriptionPage = () => {
+  const { t } = useTranslation('auth');
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -27,15 +29,15 @@ const InscriptionPage = () => {
         prenom: formData.prenom,
         nom: formData.nom,
       });
-      toast.success('Compte créé avec succès ! Vous pouvez vous connecter.');
+      toast.success(t('messages.compteCree'));
       navigate('/connexion');
     } catch (error) {
       if (error.response?.status === 422) {
-        toast.error('Données invalides. Vérifiez votre email.');
+        toast.error(t('messages.donneesInvalidesEmail'));
       } else if (error.response?.status === 400) {
-        toast.error('Cet email est déjà utilisé.');
+        toast.error(t('messages.emailDejaUtilise'));
       } else {
-        toast.error('Erreur lors de l\'inscription. Veuillez réessayer.');
+        toast.error(t('messages.erreurInscription'));
       }
     } finally {
       setIsLoading(false);
@@ -54,10 +56,10 @@ const InscriptionPage = () => {
             <div className="w-full max-w-md">
               <div className="mb-8">
                 <h1 className="font-playfair text-3xl font-bold text-brown-950 mb-2">
-                  Créer un compte
+                  {t('inscription.titre')}
                 </h1>
                 <p className="text-brown-500 text-sm">
-                  Rejoignez la communauté Sagesse Africaine. Gratuit, sans engagement.
+                  {t('inscription.sousTitre')}
                 </p>
               </div>
 
@@ -67,7 +69,7 @@ const InscriptionPage = () => {
 
               <p className="text-center text-xs text-brown-400 mt-6 flex items-center justify-center gap-1.5">
                 <Shield className="w-3.5 h-3.5" />
-                Inscription gratuite — aucune carte de crédit requise
+                {t('inscription.gratuitSansCarte')}
               </p>
             </div>
           </div>
@@ -89,22 +91,21 @@ const InscriptionPage = () => {
 
             <div>
               <h2 className="font-playfair text-3xl font-bold text-white mb-2">
-                Votre passeport vers la culture africaine
+                {t('inscription.titreColonneDroite')}
               </h2>
               <p className="text-terra-100 text-sm leading-relaxed mb-8">
-                Des milliers de lecteurs nous font déjà confiance pour accéder
-                aux meilleurs ouvrages du continent.
+                {t('inscription.texteColonneDroite')}
               </p>
 
               <div className="space-y-4">
-                {perks.map(({ icon: Icon, title, desc }) => (
-                  <div key={title} className="flex items-start gap-4 bg-terra-500/50 rounded-xl p-4">
+                {PERKS_META.map(({ icon: Icon, cle }) => (
+                  <div key={cle} className="flex items-start gap-4 bg-terra-500/50 rounded-xl p-4">
                     <div className="w-9 h-9 rounded-lg bg-white/20 flex items-center justify-center flex-shrink-0">
                       <Icon className="w-4.5 h-4.5 text-white" style={{ width: '18px', height: '18px' }} />
                     </div>
                     <div>
-                      <p className="font-semibold text-white text-sm">{title}</p>
-                      <p className="text-terra-100 text-xs mt-0.5 leading-relaxed">{desc}</p>
+                      <p className="font-semibold text-white text-sm">{t(`inscription.perks.${cle}.titre`)}</p>
+                      <p className="text-terra-100 text-xs mt-0.5 leading-relaxed">{t(`inscription.perks.${cle}.desc`)}</p>
                     </div>
                   </div>
                 ))}
@@ -120,7 +121,7 @@ const InscriptionPage = () => {
                 ))}
               </div>
               <p className="text-white text-xs">
-                <strong>10 000+</strong> lecteurs actifs nous ont rejoints
+                <strong>10 000+</strong> {t('inscription.lecteursRejoints')}
               </p>
             </div>
           </div>

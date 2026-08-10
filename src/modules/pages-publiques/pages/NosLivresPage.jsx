@@ -1,39 +1,44 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { FaBook, FaSearch, FaStar, FaStarHalfAlt, FaShoppingCart } from 'react-icons/fa';
 import Header from '../../visiteur/components/Header';
 import Footer from '../../visiteur/components/Footer';
 import api from '../../../services/api';
 import guestCart from '../../../services/guestCart';
 import toast from 'react-hot-toast';
-import livresSite from '../../../data/livresSite';
+import livresService from '../../../services/livresService';
+import { avecExtrait } from '../../../data/extraitsLivres';
 
 const NosLivresPage = () => {
+  const { t } = useTranslation('catalogue');
   const [livres, setLivres] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [addingToCart, setAddingToCart] = useState(null);
 
   useEffect(() => {
-    setLivres(livresSite);
-    setLoading(false);
-  }, []);
+    livresService.getLivres()
+      .then((data) => setLivres((data.livres || []).map(avecExtrait)))
+      .catch(() => toast.error(t('messages.impossibleChargerCatalogue')))
+      .finally(() => setLoading(false));
+  }, [t]);
 
   const handleAddToCart = async (livre) => {
     const token = localStorage.getItem('access_token');
     if (!token) {
       guestCart.addItem(livre);
-      toast.success('Livre ajouté au panier');
+      toast.success(t('messages.livreAjoutePanier'));
       return;
     }
     setAddingToCart(livre.id);
     try {
       await api.post('/panier/ajouter', { livre_id: livre.id, quantite: 1 });
-      toast.success('Livre ajouté au panier');
+      toast.success(t('messages.livreAjoutePanier'));
       window.dispatchEvent(new Event('cartUpdated'));
     } catch (error) {
       console.error('Erreur ajout panier:', error);
-      toast.error("Erreur lors de l'ajout au panier");
+      toast.error(t('messages.erreurAjoutPanier'));
     } finally {
       setAddingToCart(null);
     }
@@ -82,10 +87,10 @@ const NosLivresPage = () => {
           {/* En-tête */}
           <div className="text-center mb-12">
             <h1 className="text-4xl md:text-5xl font-playfair font-bold text-amber-800 mb-4">
-              Notre catalogue
+              {t('titre')}
             </h1>
             <p className="text-amber-500 text-lg max-w-2xl mx-auto">
-              Découvrez notre collection de livres sur les savoirs africains
+              {t('sousTitre')}
             </p>
             <div className="flex items-center justify-center gap-2 mt-4">
               <div className="w-16 h-px bg-amber-300"></div>
@@ -100,7 +105,7 @@ const NosLivresPage = () => {
               <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-amber-400" />
               <input
                 type="text"
-                placeholder="Rechercher un livre, un auteur..."
+                placeholder={t('rechercherPlaceholder')}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="w-full pl-10 pr-4 py-3 border border-amber-200 rounded-xl focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 outline-none"
@@ -111,7 +116,7 @@ const NosLivresPage = () => {
           {/* Nombre de livres trouvés */}
           <div className="mb-4">
             <p className="text-amber-600">
-              {livresFiltres.length} livre(s) trouvé(s)
+              {t('livreTrouve', { count: livresFiltres.length })}
             </p>
           </div>
 
@@ -119,8 +124,8 @@ const NosLivresPage = () => {
           {livresFiltres.length === 0 ? (
             <div className="bg-white rounded-2xl shadow-lg p-12 text-center">
               <FaBook className="text-amber-300 text-6xl mx-auto mb-4" />
-              <h2 className="text-2xl font-playfair text-amber-700 mb-2">Aucun livre trouvé</h2>
-              <p className="text-gray-500">Essayez de modifier vos critères de recherche</p>
+              <h2 className="text-2xl font-playfair text-amber-700 mb-2">{t('aucunLivreTrouve')}</h2>
+              <p className="text-gray-500">{t('essayezModifierRecherche')}</p>
             </div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
@@ -144,7 +149,7 @@ const NosLivresPage = () => {
                       )}
                       {livre.est_gratuit && (
                         <span className="absolute top-3 right-3 bg-green-500 text-white text-xs px-2 py-1 rounded-full">
-                          Gratuit
+                          {t('gratuit')}
                         </span>
                       )}
                     </div>
@@ -160,12 +165,12 @@ const NosLivresPage = () => {
                     
                     <div className="flex items-center gap-1 mb-3">
                       {renderStars(4.5)}
-                      <span className="text-xs text-gray-400 ml-1">(avis)</span>
+                      <span className="text-xs text-gray-400 ml-1">({t('avis')})</span>
                     </div>
-                    
+
                     <div className="flex justify-between items-center">
                       <span className="text-2xl font-bold text-amber-700">
-                        {livre.est_gratuit ? 'Gratuit' : `${livre.prix.toLocaleString()} XAF`}
+                        {livre.est_gratuit ? t('gratuit') : `${livre.prix.toLocaleString('fr-FR')} XAF`}
                       </span>
                       <button
                         onClick={() => handleAddToCart(livre)}
@@ -177,7 +182,7 @@ const NosLivresPage = () => {
                         ) : (
                           <FaShoppingCart />
                         )}
-                        Ajouter
+                        {t('ajouter')}
                       </button>
                     </div>
                   </div>

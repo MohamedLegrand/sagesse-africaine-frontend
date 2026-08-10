@@ -1,0 +1,331 @@
+{
+  "layout": {
+    "monEspace": "My space",
+    "tableauDeBord": "Dashboard",
+    "deconnexion": "Log out",
+    "nav": {
+      "accueil": "Home",
+      "boutique": "Shop",
+      "bibliotheque": "My library",
+      "panier": "My cart",
+      "historique": "History",
+      "profil": "My profile",
+      "parametres": "Settings"
+    },
+    "messages": {
+      "deconnexionReussie": "Logged out successfully"
+    }
+  },
+
+  "carteLivre": {
+    "gratuitBadge": "FREE",
+    "gratuit": "Free",
+    "detail": "Details",
+    "voirPlus": "View more",
+    "lireUnExtrait": "Read an excerpt",
+    "lire": "Read",
+    "ajouter": "Add"
+  },
+
+  "accueil": {
+    "eyebrow": "Shop",
+    "titre": "Our Catalog",
+    "ouvrageDisponible_one": "{{count}} book available",
+    "ouvrageDisponible_other": "{{count}} books available",
+    "monPanier": "My cart",
+    "tousOnglet": "All",
+    "autresOuvrages": "Other books",
+    "ouvrage_one": "{{count}} book",
+    "ouvrage_other": "{{count}} books",
+    "aucunLivreCollection": "No book in this collection yet.",
+    "aucunLivreDisponible": "No book available at the moment.",
+    "revenezBientot": "Check back soon to discover our new releases.",
+    "messages": {
+      "impossibleChargerCatalogue": "Unable to load the catalog",
+      "livreAjoutePanier": "Book added to cart",
+      "erreurAjout": "Error adding item"
+    }
+  },
+
+  "boutique": {
+    "eyebrow": "Shop",
+    "titre": "Full catalog",
+    "monPanier": "My cart",
+    "rechercherPlaceholder": "Search for a title or an author...",
+    "aucunLivreTrouve": "No book found.",
+    "resultat_one": "{{count}} result",
+    "resultat_other": "{{count}} results",
+    "precedent": "← Previous",
+    "suivant": "Next →",
+    "messages": {
+      "impossibleChargerCatalogue": "Unable to load the catalog",
+      "livreAjoutePanier": "Book added to cart",
+      "erreurAjout": "Error adding item"
+    }
+  },
+
+  "bibliotheque": {
+    "eyebrow": "Library",
+    "titre": "My books",
+    "ouvrageCollection_one": "{{count}} book in your collection",
+    "ouvrageCollection_other": "{{count}} books in your collection",
+    "bibliothequeVide": "Your library is empty",
+    "achetezLivresBoutique": "Buy books in the shop to find them here.",
+    "decouvrirBoutique": "Discover the shop",
+    "rechercherPlaceholder": "Search in my library...",
+    "aucunResultatPour": "No results for \"{{terme}}\"",
+    "ajouteLe": "Added on {{date}}",
+    "lire": "Read",
+    "messages": {
+      "erreurChargement": "Error loading your library"
+    }
+  },
+
+  "detailLivre": {
+    "retour": "Back",
+    "avis": "reviews",
+    "isbn": "ISBN:",
+    "gratuit": "Free",
+    "vousAvezAcces": "You have access to this book",
+    "continuerLecture": "Continue reading",
+    "commencerLecture": "Start reading",
+    "devezAcheter": "You must buy this book before you can read it.",
+    "acheter": "Buy",
+    "lireUnExtrait": "Read an excerpt",
+    "onglets": {
+      "details": "Details",
+      "progression": "Progress",
+      "signets": "Bookmarks",
+      "avis": "Reviews"
+    },
+    "details": {
+      "descriptionComplete": "Full description",
+      "aucuneDescription": "No description available.",
+      "formatsDisponibles": "Available formats",
+      "taille": "{{taille}} MB"
+    },
+    "progression": {
+      "titre": "My reading progress",
+      "achetezPourSuivre": "Buy this book to track your progress.",
+      "page": "Page {{page}} / {{total}}",
+      "derniereLecture": "Last read: {{date}}",
+      "pasEncoreCommence": "You haven't started this book yet."
+    },
+    "signets": {
+      "titre": "My bookmarks",
+      "ajouterALaPage": "Add on page {{page}}",
+      "achetezPourAjouter": "Buy this book to add bookmarks.",
+      "aucunSignet": "No bookmarks for this book.",
+      "notePlaceholder": "Note for the next bookmark (optional)...",
+      "notePlaceholderSeul": "Note for the bookmark (optional)...",
+      "page": "Page {{page}}",
+      "messages": {
+        "signetAjoute": "Bookmark added",
+        "erreurAjout": "Error adding bookmark",
+        "signetSupprime": "Bookmark removed",
+        "erreurSuppression": "Error removing bookmark"
+      }
+    },
+    "avis": {
+      "titreAvecMoyenne": "Reviews ({{count}}) — Average {{note}}/5",
+      "laisserUnAvis": "Leave a review",
+      "note": "Rating",
+      "partagezAvis": "Share your review of this book...",
+      "envoiEnCours": "Sending...",
+      "soumettreAvis": "Submit review",
+      "aucunAvisSoyezPremier": "No reviews for this book yet. Be the first!",
+      "messages": {
+        "avisSoumis": "Review submitted, pending moderation",
+        "avisDejaSoumis": "You have already submitted a review for this book",
+        "erreurSoumission": "Error submitting review"
+      }
+    },
+    "messages": {
+      "livreIntrouvable": "Book not found"
+    }
+  },
+
+  "lecteur": {
+    "chargementLivre": "Loading book...",
+    "devezAcheter": "You must buy this book before you can read it.",
+    "acheterCeLivre": "Buy this book",
+    "lireUnExtrait": "Read an excerpt",
+    "aucunFichier": "No file is available for this book.",
+    "erreurChargement": "An error occurred while loading the book.",
+    "retourFiche": "Back to book page",
+    "retour": "Back",
+    "reduire": "Zoom out",
+    "agrandir": "Zoom in",
+    "ajouterSignetPage": "Add a bookmark to this page",
+    "page": "Page {{page}}",
+    "impossibleAfficherPdf": "Unable to display this PDF.",
+    "messages": {
+      "signetAjoutePage": "Bookmark added on page {{page}}",
+      "erreurAjoutSignet": "Error adding bookmark",
+      "pasAcces": "You don't have access to this book"
+    }
+  },
+
+  "profil": {
+    "titre": "My space",
+    "onglets": {
+      "profil": "My profile",
+      "bibliotheque": "My books",
+      "favoris": "My favorites",
+      "commandes": "My purchases",
+      "telechargements": "Downloads",
+      "parametres": "Settings"
+    },
+    "membreDepuis": "Member since {{date}}",
+    "administrateur": "Administrator",
+    "membre": "Member",
+    "bibliothequeContent": {
+      "aucunLivre": "No book",
+      "pasEncoreAchete": "You haven't bought any books yet",
+      "decouvrirBoutique": "Discover the shop",
+      "titreInconnu": "Unknown title",
+      "auteurInconnu": "Unknown author",
+      "ajouteLe": "Added on {{date}}",
+      "lire": "Read",
+      "telecharger": "Download",
+      "messages": {
+        "telechargementCommence": "Download started",
+        "limiteAtteinte": "Download limit reached for this book. You can still read it online.",
+        "erreurTelechargement": "Error while downloading"
+      }
+    },
+    "favorisContent": {
+      "titre": "My favorites",
+      "fonctionnaliteAVenir": "Coming soon"
+    },
+    "commandesContent": {
+      "aucunAchat": "No purchase",
+      "pasEncoreAchat": "You haven't made any purchase yet",
+      "acheterMaintenant": "Buy now",
+      "articlesCommandes": "Items ordered:",
+      "enCours": "In progress"
+    },
+    "telechargementsContent": {
+      "aucunTelechargement": "No download",
+      "pasEncoreTelecharge": "You haven't downloaded any books yet",
+      "entetes": {
+        "livre": "Book",
+        "format": "Format",
+        "date": "Date",
+        "appareil": "Device",
+        "action": "Action"
+      },
+      "inconnu": "Unknown",
+      "voir": "View"
+    },
+    "parametresContent": {
+      "photoDeProfil": "Profile picture",
+      "avatarUrlPlaceholder": "URL of your avatar...",
+      "mettreAJour": "Update",
+      "informationsPersonnelles": "Personal information",
+      "prenom": "First name",
+      "nom": "Last name",
+      "enregistrer": "Save",
+      "enregistrementEnCours": "Saving...",
+      "changerMotDePasse": "Change my password",
+      "ancienMotDePasse": "Current password",
+      "nouveauMotDePasse": "New password",
+      "confirmerMotDePasse": "Confirm password",
+      "modifierMotDePasse": "Change password",
+      "modificationEnCours": "Changing...",
+      "messages": {
+        "avatarMisAJour": "Avatar updated",
+        "erreurAvatar": "Error updating avatar",
+        "profilMisAJour": "Profile updated",
+        "erreurMiseAJour": "Error updating",
+        "motsDePasseDifferents": "Passwords do not match",
+        "motDePasseModifie": "Password changed",
+        "ancienMotDePasseIncorrect": "Current password is incorrect"
+      }
+    },
+    "messages": {
+      "erreurChargementDonnees": "Error loading data"
+    }
+  },
+
+  "historique": {
+    "titre": "History",
+    "achatEffectue_one": "{{count}} purchase made",
+    "achatEffectue_other": "{{count}} purchases made",
+    "telechargement_one": "{{count}} download",
+    "telechargement_other": "{{count}} downloads",
+    "onglets": {
+      "achats": "Purchases",
+      "telechargements": "Downloads"
+    },
+    "rechercherAchats": "Search in purchases...",
+    "rechercherTelechargements": "Search in downloads...",
+    "statuts": {
+      "payee": "Paid",
+      "livree": "Delivered",
+      "completee": "Completed",
+      "enAttente": "Pending",
+      "annulee": "Cancelled",
+      "enCours": "In progress"
+    },
+    "aucunAchat": "No purchase",
+    "pasEncoreAchat": "You haven't made any purchase yet",
+    "decouvrirBoutique": "Discover the shop",
+    "detailsAchat": "Purchase details",
+    "quantite": "Quantity: {{n}}",
+    "telechargerFacture": "Download invoice",
+    "accederBibliotheque": "Go to my library",
+    "verifierStatutPaiement": "Check payment status",
+    "reessayerPaiement": "Retry payment",
+    "paiementEchoueOuAnnule": "The payment failed or was cancelled.",
+    "aucunTelechargement": "No download",
+    "pasEncoreTelecharge": "You haven't downloaded any books yet",
+    "voirBibliotheque": "View my library",
+    "entetes": {
+      "livre": "Book",
+      "format": "Format",
+      "date": "Date",
+      "appareil": "Device",
+      "action": "Action"
+    },
+    "voir": "View",
+    "article_one": "{{count}} item",
+    "article_other": "{{count}} items",
+    "livreFallback": "Book",
+    "inconnu": "Unknown",
+    "messages": {
+      "verificationEnCours": "Checking payment status...",
+      "paiementReussiDebloque": "Payment successful! Your access has been unlocked.",
+      "paiementEchoue": "The payment failed.",
+      "operateurPasEncoreValide": "The operator hasn't confirmed the debit yet. Please try again shortly.",
+      "impossibleVerifier": "Unable to check the status right now. Please try again.",
+      "erreurChargement": "Error loading history"
+    }
+  },
+
+  "parametres": {
+    "titre": "Settings",
+    "sousTitre": "Manage your preferences",
+    "notifications": {
+      "titre": "Notifications",
+      "email": { "label": "Email notifications", "desc": "Receive notifications by email" },
+      "commandes": { "label": "Purchases", "desc": "Track your purchases" },
+      "promotions": { "label": "Promotions", "desc": "Offers and discounts" },
+      "newsletter": { "label": "Newsletter", "desc": "SAGESSE AFRICAINE news" }
+    },
+    "apparence": {
+      "titre": "Appearance",
+      "clair": "Light",
+      "sombre": "Dark"
+    },
+    "langue": {
+      "titre": "Language"
+    },
+    "enregistrerParametres": "Save settings",
+    "messages": {
+      "erreurChargement": "Error loading settings",
+      "enregistreAvecSucces": "Settings saved successfully",
+      "erreurSauvegarde": "Error saving"
+    }
+  }
+}

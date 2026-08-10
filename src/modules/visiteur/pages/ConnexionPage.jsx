@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { BookOpen, Shield, Library, Users } from 'lucide-react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
@@ -8,14 +9,15 @@ import toast from 'react-hot-toast';
 import api from '../../../services/api';
 import guestCart from '../../../services/guestCart';
 
-const benefits = [
-  { icon: Library, text: 'Accès à toute votre bibliothèque' },
-  { icon: BookOpen, text: 'Lecture sur tous vos appareils' },
-  { icon: Users,   text: 'Rejoindre la communauté africaine' },
-  { icon: Shield,  text: 'Paiements 100% sécurisés' },
+const BENEFITS_META = [
+  { icon: Library,  cle: 'bibliotheque' },
+  { icon: BookOpen, cle: 'lecture' },
+  { icon: Users,    cle: 'communaute' },
+  { icon: Shield,   cle: 'paiement' },
 ];
 
 const ConnexionPage = () => {
+  const { t } = useTranslation('auth');
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -35,7 +37,7 @@ const ConnexionPage = () => {
       const user = userResponse.data;
       localStorage.setItem('user_role', user.role);
 
-      toast.success('Connexion réussie !');
+      toast.success(t('messages.connexionReussie'));
 
       const guestItems = guestCart.getItems();
       if (guestItems.length > 0) {
@@ -45,7 +47,7 @@ const ConnexionPage = () => {
           )
         );
         guestCart.clear();
-        toast.success(`${guestItems.length} article(s) transféré(s) depuis votre panier`);
+        toast.success(t('messages.articlesTransferes', { count: guestItems.length }));
       }
 
       const returnTo = localStorage.getItem('auth_return_to');
@@ -62,11 +64,11 @@ const ConnexionPage = () => {
       }
     } catch (error) {
       if (error.response?.status === 401) {
-        toast.error('Email ou mot de passe incorrect');
+        toast.error(t('messages.emailMotDePasseIncorrect'));
       } else if (error.response?.status === 422) {
-        toast.error('Données invalides');
+        toast.error(t('messages.donneesInvalides'));
       } else {
-        toast.error('Erreur de connexion. Veuillez réessayer.');
+        toast.error(t('messages.erreurConnexion'));
       }
     } finally {
       setIsLoading(false);
@@ -97,16 +99,16 @@ const ConnexionPage = () => {
 
             <div>
               <blockquote className="font-playfair italic text-2xl text-white leading-relaxed mb-4">
-                « La lecture est à l'esprit ce que l'exercice est au corps »
+                {t('connexion.citation')}
               </blockquote>
-              <cite className="text-brown-400 text-sm not-italic">— Joseph Addison</cite>
+              <cite className="text-brown-400 text-sm not-italic">{t('connexion.citationAuteur')}</cite>
             </div>
 
             <div className="grid grid-cols-2 gap-3">
-              {benefits.map(({ icon: Icon, text }) => (
-                <div key={text} className="flex items-start gap-2.5 bg-brown-900 rounded-xl p-3">
+              {BENEFITS_META.map(({ icon: Icon, cle }) => (
+                <div key={cle} className="flex items-start gap-2.5 bg-brown-900 rounded-xl p-3">
                   <Icon className="w-4 h-4 text-gold-400 mt-0.5 flex-shrink-0" />
-                  <span className="text-brown-200 text-xs leading-relaxed">{text}</span>
+                  <span className="text-brown-200 text-xs leading-relaxed">{t(`connexion.avantages.${cle}`)}</span>
                 </div>
               ))}
             </div>
@@ -117,10 +119,10 @@ const ConnexionPage = () => {
             <div className="w-full max-w-md">
               <div className="mb-8">
                 <h1 className="font-playfair text-3xl font-bold text-brown-950 mb-2">
-                  Connexion
+                  {t('connexion.titre')}
                 </h1>
                 <p className="text-brown-500 text-sm">
-                  Accédez à votre espace personnel et votre bibliothèque.
+                  {t('connexion.sousTitre')}
                 </p>
               </div>
 
@@ -130,7 +132,7 @@ const ConnexionPage = () => {
 
               <p className="text-center text-xs text-brown-400 mt-6 flex items-center justify-center gap-1.5">
                 <Shield className="w-3.5 h-3.5" />
-                Vos données sont protégées et sécurisées
+                {t('connexion.donneesProtegees')}
               </p>
             </div>
           </div>

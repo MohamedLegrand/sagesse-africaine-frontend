@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import {
   FaCheckCircle,
   FaBook,
@@ -23,6 +24,7 @@ const DUREE_MAX_MS = 5 * 60 * 1000;
 
 // ─── Sous-composant : Barre de progression temporelle ────────────────────────
 const BarreProgression = ({ tempsRestantMs }) => {
+  const { t } = useTranslation('paiement');
   const pct = Math.max(0, Math.min(100, (tempsRestantMs / DUREE_MAX_MS) * 100));
   const secondes = Math.ceil(tempsRestantMs / 1000);
   const minutes  = Math.floor(secondes / 60);
@@ -34,8 +36,8 @@ const BarreProgression = ({ tempsRestantMs }) => {
   return (
     <div className="w-full mb-6">
       <div className="flex justify-between text-xs text-amber-600 mb-1 font-medium">
-        <span>Confirmation automatique</span>
-        <span>{label} restant</span>
+        <span>{t('confirmation.confirmationAutomatique')}</span>
+        <span>{label} {t('confirmation.restant')}</span>
       </div>
       <div className="w-full h-2 bg-amber-100 rounded-full overflow-hidden">
         <div
@@ -48,137 +50,145 @@ const BarreProgression = ({ tempsRestantMs }) => {
 };
 
 // ─── Sous-composant : Panneau d'attente avec polling ─────────────────────────
-const PanneauAttente = ({ tempsRestantMs, tentatives, erreur }) => (
-  <div className="flex flex-col items-center">
-    {/* Icône animée */}
-    <div className="relative w-24 h-24 flex items-center justify-center mb-6">
-      <div className="absolute inset-0 rounded-full bg-amber-100 animate-ping opacity-40" />
-      <div className="w-24 h-24 rounded-full bg-amber-100 flex items-center justify-center">
-        <FaHourglassHalf className="text-amber-500 text-4xl animate-pulse" />
+const PanneauAttente = ({ tempsRestantMs, tentatives, erreur }) => {
+  const { t } = useTranslation('paiement');
+  return (
+    <div className="flex flex-col items-center">
+      {/* Icône animée */}
+      <div className="relative w-24 h-24 flex items-center justify-center mb-6">
+        <div className="absolute inset-0 rounded-full bg-amber-100 animate-ping opacity-40" />
+        <div className="w-24 h-24 rounded-full bg-amber-100 flex items-center justify-center">
+          <FaHourglassHalf className="text-amber-500 text-4xl animate-pulse" />
+        </div>
       </div>
-    </div>
 
-    <h1 className="text-3xl md:text-4xl font-playfair font-bold text-amber-800 mb-3">
-      Paiement en cours de traitement
-    </h1>
+      <h1 className="text-3xl md:text-4xl font-playfair font-bold text-amber-800 mb-3">
+        {t('confirmation.paiementEnCours')}
+      </h1>
 
-    {/* Instruction mobile money */}
-    <div className="flex items-center gap-2 bg-amber-50 border border-amber-200 rounded-xl px-4 py-3 mb-4 text-amber-700">
-      <FaMobileAlt className="text-xl shrink-0" />
-      <p className="text-sm font-medium">
-        Acceptez la demande de paiement sur votre téléphone
+      {/* Instruction mobile money */}
+      <div className="flex items-center gap-2 bg-amber-50 border border-amber-200 rounded-xl px-4 py-3 mb-4 text-amber-700">
+        <FaMobileAlt className="text-xl shrink-0" />
+        <p className="text-sm font-medium">
+          {t('confirmation.accepterDemandeTelephone')}
+        </p>
+      </div>
+
+      <p className="text-gray-500 text-sm mb-6">
+        {erreur
+          ? <span className="text-orange-500">⚠️ {erreur} — {t('confirmation.nouvelleTentative')}</span>
+          : <>{t('confirmation.verificationEnCours')} <FaSpinner className="inline animate-spin ml-1" /> {tentatives > 0 && <span className="text-xs text-gray-400">{t('confirmation.tentative', { n: tentatives })}</span>}</>
+        }
       </p>
+
+      {/* Barre de progression */}
+      <BarreProgression tempsRestantMs={tempsRestantMs} />
     </div>
-
-    <p className="text-gray-500 text-sm mb-6">
-      {erreur
-        ? <span className="text-orange-500">⚠️ {erreur} — nouvelle tentative…</span>
-        : <>Vérification en cours <FaSpinner className="inline animate-spin ml-1" /> {tentatives > 0 && <span className="text-xs text-gray-400">(tentative {tentatives})</span>}</>
-      }
-    </p>
-
-    {/* Barre de progression */}
-    <BarreProgression tempsRestantMs={tempsRestantMs} />
-  </div>
-);
+  );
+};
 
 // ─── Sous-composant : Paiement réussi ────────────────────────────────────────
-const PanneauReussi = ({ commande, telecharger, telechargementFacture }) => (
-  <div className="flex flex-col items-center">
-    <div className="w-24 h-24 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-6 animate-bounce-once">
-      <FaCheckCircle className="text-green-600 text-5xl" />
-    </div>
-
-    <h1 className="text-3xl md:text-4xl font-playfair font-bold text-amber-800 mb-4">
-      Paiement réussi !
-    </h1>
-    <p className="text-gray-600 mb-6">
-      Votre commande a été validée avec succès. Vos livres sont disponibles dans votre bibliothèque.
-    </p>
-
-    {/* Récapitulatif commande */}
-    <div className="bg-white rounded-2xl shadow-lg p-6 mb-8 text-left w-full">
-      <div className="flex justify-between items-center mb-4">
-        <h2 className="font-semibold text-amber-800">Commande</h2>
-        <span className="font-mono text-xs text-gray-400">{commande.id}</span>
+const PanneauReussi = ({ commande, telecharger, telechargementFacture }) => {
+  const { t } = useTranslation('paiement');
+  return (
+    <div className="flex flex-col items-center">
+      <div className="w-24 h-24 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-6 animate-bounce-once">
+        <FaCheckCircle className="text-green-600 text-5xl" />
       </div>
-      <div className="space-y-3 mb-4">
-        {commande.lignes?.map((ligne) => (
-          <div key={ligne.id} className="flex justify-between text-sm">
-            <span className="text-gray-600">Livre x{ligne.quantite}</span>
-            <span className="text-amber-700 font-medium">
-              {(ligne.prix_unitaire * ligne.quantite).toLocaleString()} {commande.devise}
-            </span>
-          </div>
-        ))}
-      </div>
-      <div className="border-t border-amber-100 pt-4 flex justify-between items-center">
-        <span className="font-semibold text-amber-800">Total payé</span>
-        <span className="text-xl font-bold text-amber-700">
-          {commande.montant_total?.toLocaleString()} {commande.devise}
-        </span>
-      </div>
-    </div>
 
-    {/* Actions */}
-    <div className="flex flex-col sm:flex-row gap-4 justify-center mb-6 w-full">
-      <Link
-        to="/dashboard/bibliotheque"
-        className="bg-gradient-to-r from-amber-600 to-amber-700 text-white px-6 py-3 rounded-xl font-semibold hover:shadow-lg transition flex items-center justify-center gap-2"
-      >
-        <FaBook />
-        Voir ma bibliothèque
+      <h1 className="text-3xl md:text-4xl font-playfair font-bold text-amber-800 mb-4">
+        {t('confirmation.paiementReussi')}
+      </h1>
+      <p className="text-gray-600 mb-6">
+        {t('confirmation.commandeValidee')}
+      </p>
+
+      {/* Récapitulatif commande */}
+      <div className="bg-white rounded-2xl shadow-lg p-6 mb-8 text-left w-full">
+        <div className="flex justify-between items-center mb-4">
+          <h2 className="font-semibold text-amber-800">{t('confirmation.commande')}</h2>
+          <span className="font-mono text-xs text-gray-400">{commande.id}</span>
+        </div>
+        <div className="space-y-3 mb-4">
+          {commande.lignes?.map((ligne) => (
+            <div key={ligne.id} className="flex justify-between text-sm">
+              <span className="text-gray-600">{t('confirmation.livreQuantite', { n: ligne.quantite })}</span>
+              <span className="text-amber-700 font-medium">
+                {(ligne.prix_unitaire * ligne.quantite).toLocaleString()} {commande.devise}
+              </span>
+            </div>
+          ))}
+        </div>
+        <div className="border-t border-amber-100 pt-4 flex justify-between items-center">
+          <span className="font-semibold text-amber-800">{t('confirmation.totalPaye')}</span>
+          <span className="text-xl font-bold text-amber-700">
+            {commande.montant_total?.toLocaleString()} {commande.devise}
+          </span>
+        </div>
+      </div>
+
+      {/* Actions */}
+      <div className="flex flex-col sm:flex-row gap-4 justify-center mb-6 w-full">
+        <Link
+          to="/dashboard/bibliotheque"
+          className="bg-gradient-to-r from-amber-600 to-amber-700 text-white px-6 py-3 rounded-xl font-semibold hover:shadow-lg transition flex items-center justify-center gap-2"
+        >
+          <FaBook />
+          {t('confirmation.voirBibliotheque')}
+        </Link>
+        <button
+          onClick={() => telecharger(commande.id)}
+          disabled={telechargementFacture}
+          className="border border-amber-600 text-amber-700 px-6 py-3 rounded-xl font-semibold hover:bg-amber-600 hover:text-white transition flex items-center justify-center gap-2 disabled:opacity-50"
+        >
+          {telechargementFacture ? <FaSpinner className="animate-spin" /> : <FaFileDownload />}
+          {t('confirmation.telechargerFacture')}
+        </button>
+      </div>
+
+      <Link to="/" className="text-amber-600 hover:text-amber-700 transition inline-flex items-center gap-2 text-sm">
+        <FaHome />
+        {t('confirmation.retourAccueil')}
       </Link>
-      <button
-        onClick={() => telecharger(commande.id)}
-        disabled={telechargementFacture}
-        className="border border-amber-600 text-amber-700 px-6 py-3 rounded-xl font-semibold hover:bg-amber-600 hover:text-white transition flex items-center justify-center gap-2 disabled:opacity-50"
-      >
-        {telechargementFacture ? <FaSpinner className="animate-spin" /> : <FaFileDownload />}
-        Télécharger la facture
-      </button>
     </div>
-
-    <Link to="/" className="text-amber-600 hover:text-amber-700 transition inline-flex items-center gap-2 text-sm">
-      <FaHome />
-      Retour à l'accueil
-    </Link>
-  </div>
-);
+  );
+};
 
 // ─── Sous-composant : Paiement échoué / expiré ───────────────────────────────
-const PanneauEchec = ({ estExpire, navigate }) => (
-  <div className="flex flex-col items-center">
-    <div className="w-24 h-24 rounded-full bg-red-100 flex items-center justify-center mx-auto mb-6">
-      <FaTimesCircle className="text-red-500 text-5xl" />
+const PanneauEchec = ({ estExpire, navigate }) => {
+  const { t } = useTranslation('paiement');
+  return (
+    <div className="flex flex-col items-center">
+      <div className="w-24 h-24 rounded-full bg-red-100 flex items-center justify-center mx-auto mb-6">
+        <FaTimesCircle className="text-red-500 text-5xl" />
+      </div>
+
+      <h1 className="text-3xl md:text-4xl font-playfair font-bold text-amber-800 mb-4">
+        {estExpire ? t('confirmation.delaiDepasse') : t('confirmation.paiementNonAbouti')}
+      </h1>
+      <p className="text-gray-600 mb-8">
+        {estExpire ? t('confirmation.texteExpire') : t('confirmation.texteEchoue')}
+      </p>
+
+      <button
+        onClick={() => navigate('/paiement')}
+        className="bg-gradient-to-r from-amber-600 to-amber-700 text-white px-8 py-3 rounded-xl font-semibold hover:shadow-lg transition flex items-center justify-center gap-3 mb-4"
+      >
+        <FaRedo />
+        {t('confirmation.reessayerPaiement')}
+      </button>
+
+      <Link to="/" className="text-amber-600 hover:text-amber-700 transition inline-flex items-center gap-2 text-sm">
+        <FaHome />
+        {t('confirmation.retourAccueil')}
+      </Link>
     </div>
-
-    <h1 className="text-3xl md:text-4xl font-playfair font-bold text-amber-800 mb-4">
-      {estExpire ? 'Délai de confirmation dépassé' : 'Paiement non abouti'}
-    </h1>
-    <p className="text-gray-600 mb-8">
-      {estExpire
-        ? 'Nous n\'avons pas reçu la confirmation dans les délais impartis. Le paiement a été annulé automatiquement.'
-        : 'Le paiement n\'a pas pu être traité. Aucune somme n\'a été débitée.'}
-    </p>
-
-    <button
-      onClick={() => navigate('/paiement')}
-      className="bg-gradient-to-r from-amber-600 to-amber-700 text-white px-8 py-3 rounded-xl font-semibold hover:shadow-lg transition flex items-center justify-center gap-3 mb-4"
-    >
-      <FaRedo />
-      Réessayer le paiement
-    </button>
-
-    <Link to="/" className="text-amber-600 hover:text-amber-700 transition inline-flex items-center gap-2 text-sm">
-      <FaHome />
-      Retour à l'accueil
-    </Link>
-  </div>
-);
+  );
+};
 
 // ─── Composant principal ──────────────────────────────────────────────────────
 const ConfirmationPaiementPage = () => {
+  const { t } = useTranslation('paiement');
   const { commandeId } = useParams();
   const navigate       = useNavigate();
 
@@ -214,9 +224,9 @@ const ConfirmationPaiementPage = () => {
   // Notification toast quand le polling détecte un succès
   useEffect(() => {
     if (statutPoll === 'reussi') {
-      toast.success('Paiement confirmé ! Vos livres sont disponibles.');
+      toast.success(t('messages.paiementConfirme'));
     }
-  }, [statutPoll]);
+  }, [statutPoll, t]);
 
   // Chargement initial de la commande
   useEffect(() => {
@@ -229,9 +239,9 @@ const ConfirmationPaiementPage = () => {
         setCommande(cmd);
         setStatutInitial(cmd.statut === 'payee' ? 'reussi' : cmd.statut);
       })
-      .catch(() => toast.error('Commande introuvable'))
+      .catch(() => toast.error(t('messages.commandeIntrouvable')))
       .finally(() => setLoadingInit(false));
-  }, [commandeId, navigate]);
+  }, [commandeId, navigate, t]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-amber-50 via-white to-amber-100">
@@ -248,7 +258,7 @@ const ConfirmationPaiementPage = () => {
 
             {/* Commande introuvable */}
             {!loadingInit && !commande && (
-              <p className="text-gray-500">Commande introuvable.</p>
+              <p className="text-gray-500">{t('confirmation.commandeIntrouvable')}</p>
             )}
 
             {/* Contenu principal */}

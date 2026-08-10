@@ -17,7 +17,7 @@ const addItem = (livre, quantite = 1) => {
   const items = getItems();
   const existing = items.find(i => i.livre_id === livre.id);
   if (existing) {
-    existing.quantite += quantite;
+    existing.quantite = 1;
   } else {
     items.push({
       id: `guest_${livre.id}`,
@@ -30,7 +30,7 @@ const addItem = (livre, quantite = 1) => {
         couverture_url: livre.couverture_url,
         est_gratuit: livre.est_gratuit,
       },
-      quantite,
+      quantite: 1,
       prix_unitaire: livre.prix || 0,
     });
   }
@@ -45,7 +45,7 @@ const updateQuantite = (livreId, quantite) => {
   if (quantite < 1) { removeItem(livreId); return; }
   const items = getItems();
   const item = items.find(i => i.livre_id === livreId);
-  if (item) { item.quantite = quantite; save(items); }
+  if (item) { item.quantite = 1; save(items); }
 };
 
 const clear = () => {

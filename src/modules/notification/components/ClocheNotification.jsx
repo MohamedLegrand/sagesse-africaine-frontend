@@ -1,13 +1,16 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { Bell } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
 import { fr } from 'date-fns/locale';
 import { useNotificationContext } from '../contextes/NotificationContext';
+import { traduireNotification } from '../services/traduireNotification';
 
 const TYPE_ICONS = { livre: '📚', paiement: '💳' };
 
 const ClocheNotification = ({ className = '' }) => {
+  const { t } = useTranslation('notifications');
   const ctx = useNotificationContext();
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
@@ -27,7 +30,7 @@ const ClocheNotification = ({ className = '' }) => {
   const handleClickNotif = async (notif) => {
     if (!notif.est_lu) await marquerCommeLu(notif.id);
     setOpen(false);
-    if (notif.lien) navigate(notif.lien);
+    navigate('/mes-notifications');
   };
 
   return (
@@ -35,7 +38,7 @@ const ClocheNotification = ({ className = '' }) => {
       <button
         onClick={() => setOpen(v => !v)}
         className="relative p-2 rounded-lg text-brown-600 hover:bg-cream-100 transition-colors"
-        aria-label="Notifications"
+        aria-label={t('cloche.ariaLabel')}
       >
         <Bell className="w-5 h-5" />
         {nonLues > 0 && (
@@ -49,10 +52,10 @@ const ClocheNotification = ({ className = '' }) => {
         <div className="absolute right-0 top-12 w-80 bg-white rounded-xl shadow-2xl border border-cream-200 z-50 overflow-hidden">
           {/* En-tête */}
           <div className="flex items-center justify-between px-4 py-3 border-b border-cream-100 bg-cream-50">
-            <span className="font-semibold text-brown-800 text-sm">Notifications</span>
+            <span className="font-semibold text-brown-800 text-sm">{t('cloche.titre')}</span>
             {nonLues > 0 && (
               <span className="text-xs bg-red-100 text-red-600 font-semibold px-2 py-0.5 rounded-full">
-                {nonLues} non lue{nonLues > 1 ? 's' : ''}
+                {t('cloche.nonLue', { count: nonLues })}
               </span>
             )}
           </div>
@@ -62,10 +65,12 @@ const ClocheNotification = ({ className = '' }) => {
             {dernieres.length === 0 ? (
               <div className="px-4 py-10 text-center">
                 <Bell className="w-10 h-10 mx-auto mb-3 text-brown-200" />
-                <p className="text-sm text-brown-400">Aucune notification pour le moment</p>
+                <p className="text-sm text-brown-400">{t('cloche.aucuneNotification')}</p>
               </div>
             ) : (
-              dernieres.map((notif) => (
+              dernieres.map((notif) => {
+                const { titre, message } = traduireNotification(notif);
+                return (
                 <button
                   key={notif.id}
                   onClick={() => handleClickNotif(notif)}
@@ -79,21 +84,22 @@ const ClocheNotification = ({ className = '' }) => {
                   <div className="flex-1 min-w-0">
                     <div className="flex items-start justify-between gap-1">
                       <p className={`text-sm font-medium leading-tight ${!notif.est_lu ? 'text-brown-900' : 'text-brown-600'}`}>
-                        {notif.titre}
+                        {titre}
                       </p>
                       {!notif.est_lu && (
                         <div className="w-1.5 h-1.5 bg-terra-500 rounded-full flex-shrink-0 mt-1.5" />
                       )}
                     </div>
                     <p className="text-xs text-brown-400 mt-0.5 line-clamp-2 leading-relaxed">
-                      {notif.message}
+                      {message}
                     </p>
                     <p className="text-[10px] text-brown-300 mt-1">
                       {formatDistanceToNow(new Date(notif.cree_le), { addSuffix: true, locale: fr })}
                     </p>
                   </div>
                 </button>
-              ))
+                );
+              })
             )}
           </div>
 
@@ -104,7 +110,7 @@ const ClocheNotification = ({ className = '' }) => {
               onClick={() => setOpen(false)}
               className="block text-center text-xs font-semibold text-terra-600 hover:text-terra-800 transition-colors py-1"
             >
-              Voir toutes les notifications →
+              {t('cloche.voirToutes')}
             </Link>
           </div>
         </div>

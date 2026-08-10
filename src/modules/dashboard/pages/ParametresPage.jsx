@@ -1,9 +1,13 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { FaBell, FaPalette, FaLanguage, FaGlobe, FaMoon, FaSun, FaSave } from 'react-icons/fa';
 import toast from 'react-hot-toast';
 import DashboardLayout from '../components/DashboardLayout';
+import api from '../../../services/api';
+import i18n from '../../../i18n';
 
 const ParametresPage = () => {
+  const { t } = useTranslation('dashboard');
   const [updating, setUpdating] = useState(false);
   const [settings, setSettings] = useState({
     notifications: {
@@ -19,6 +23,27 @@ const ParametresPage = () => {
   useEffect(() => {
     const savedTheme = localStorage.getItem('theme');
     if (savedTheme) setSettings(prev => ({ ...prev, apparence: { theme: savedTheme } }));
+
+    const fetchPreferences = async () => {
+      try {
+        const response = await api.get('/utilisateurs/me');
+        const data = response.data;
+        setSettings(prev => ({
+          ...prev,
+          langue: data.langue || 'fr',
+          notifications: {
+            email: data.notif_email !== undefined ? data.notif_email : true,
+            commandes: data.notif_commandes !== undefined ? data.notif_commandes : true,
+            promotions: data.notif_promotions !== undefined ? data.notif_promotions : false,
+            newsletter: data.notif_newsletter !== undefined ? data.notif_newsletter : true,
+          }
+        }));
+      } catch (error) {
+        toast.error(t('parametres.messages.erreurChargement'));
+      }
+    };
+
+    fetchPreferences();
   }, []);
 
   const handleNotificationChange = (key) => {
@@ -38,11 +63,19 @@ const ParametresPage = () => {
     e.preventDefault();
     setUpdating(true);
     try {
-      localStorage.setItem('notifications', JSON.stringify(settings.notifications));
-      localStorage.setItem('langue', settings.langue);
-      toast.success('Paramètres enregistrés avec succès');
+      await api.put('/utilisateurs/me/preferences', {
+        langue: settings.langue,
+        notifications: {
+          email: settings.notifications.email,
+          commandes: settings.notifications.commandes,
+          promotions: settings.notifications.promotions,
+          newsletter: settings.notifications.newsletter,
+        }
+      });
+      i18n.changeLanguage(settings.langue);
+      toast.success(t('parametres.messages.enregistreAvecSucces'));
     } catch {
-      toast.error('Erreur lors de la sauvegarde');
+      toast.error(t('parametres.messages.erreurSauvegarde'));
     } finally {
       setUpdating(false);
     }
@@ -61,8 +94,8 @@ const ParametresPage = () => {
     <DashboardLayout>
       <div className="container mx-auto max-w-4xl">
         <div className="mb-6">
-          <h1 className="text-2xl font-playfair font-bold text-amber-800">Paramètres</h1>
-          <p className="text-amber-500 text-sm">Gérez vos préférences</p>
+          <h1 className="text-2xl font-playfair font-bold text-amber-800">{t('parametres.titre')}</h1>
+          <p className="text-amber-500 text-sm">{t('parametres.sousTitre')}</p>
         </div>
 
         <form onSubmit={handleSubmit}>
@@ -70,14 +103,14 @@ const ParametresPage = () => {
           <div className="bg-white rounded-2xl shadow-lg p-8 mb-8">
             <div className="flex items-center gap-3 mb-6">
               <FaBell className="text-amber-600 text-2xl" />
-              <h2 className="text-xl font-playfair font-bold text-amber-800">Notifications</h2>
+              <h2 className="text-xl font-playfair font-bold text-amber-800">{t('parametres.notifications.titre')}</h2>
             </div>
             <div className="space-y-4">
               {[
-                { key: 'email', label: 'Notifications par email', desc: 'Recevez des notifications par email' },
-                { key: 'commandes', label: 'Commandes', desc: 'Suivi de vos commandes' },
-                { key: 'promotions', label: 'Promotions', desc: 'Offres et réductions' },
-                { key: 'newsletter', label: 'Newsletter', desc: 'Actualités de SAGESSE AFRICAINE' },
+                { key: 'email', label: t('parametres.notifications.email.label'), desc: t('parametres.notifications.email.desc') },
+                { key: 'commandes', label: t('parametres.notifications.commandes.label'), desc: t('parametres.notifications.commandes.desc') },
+                { key: 'promotions', label: t('parametres.notifications.promotions.label'), desc: t('parametres.notifications.promotions.desc') },
+                { key: 'newsletter', label: t('parametres.notifications.newsletter.label'), desc: t('parametres.notifications.newsletter.desc') },
               ].map(item => (
                 <label key={item.key} className="flex items-center justify-between cursor-pointer">
                   <div>
@@ -97,12 +130,12 @@ const ParametresPage = () => {
           <div className="bg-white rounded-2xl shadow-lg p-8 mb-8">
             <div className="flex items-center gap-3 mb-6">
               <FaPalette className="text-amber-600 text-2xl" />
-              <h2 className="text-xl font-playfair font-bold text-amber-800">Apparence</h2>
+              <h2 className="text-xl font-playfair font-bold text-amber-800">{t('parametres.apparence.titre')}</h2>
             </div>
             <div className="grid grid-cols-2 gap-4">
               {[
-                { value: 'clair', label: 'Clair', icon: FaSun },
-                { value: 'sombre', label: 'Sombre', icon: FaMoon },
+                { value: 'clair', label: t('parametres.apparence.clair'), icon: FaSun },
+                { value: 'sombre', label: t('parametres.apparence.sombre'), icon: FaMoon },
               ].map(theme => (
                 <button
                   key={theme.value}
@@ -127,7 +160,7 @@ const ParametresPage = () => {
           <div className="bg-white rounded-2xl shadow-lg p-8 mb-8">
             <div className="flex items-center gap-3 mb-6">
               <FaLanguage className="text-amber-600 text-2xl" />
-              <h2 className="text-xl font-playfair font-bold text-amber-800">Langue</h2>
+              <h2 className="text-xl font-playfair font-bold text-amber-800">{t('parametres.langue.titre')}</h2>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {[
@@ -162,7 +195,7 @@ const ParametresPage = () => {
               ) : (
                 <FaSave />
               )}
-              Enregistrer les paramètres
+              {t('parametres.enregistrerParametres')}
             </button>
           </div>
         </form>

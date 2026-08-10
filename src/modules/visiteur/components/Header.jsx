@@ -1,11 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Search, ShoppingBag, Bell, User, LogOut, Menu, X, ChevronDown, BookOpen } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
+import { Search, ShoppingBag, Bell, User, LogOut, Menu, X, ChevronDown, BookOpen, Globe } from 'lucide-react';
 import api from '../../../services/api';
 import authService from '../../../services/authService';
 import guestCart from '../../../services/guestCart';
+import { changerLangue, synchroniserLangueDepuisCompte } from '../../../services/preferencesLangue';
 
 const Header = () => {
+  const { t, i18n } = useTranslation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -32,6 +35,16 @@ const Header = () => {
     return () => window.removeEventListener('storage', checkAuth);
   }, []);
 
+  // La langue enregistrée sur le compte (si connecté) fait autorité sur celle
+  // détectée localement — utile en se connectant depuis un nouvel appareil.
+  useEffect(() => {
+    if (isAuthenticated) synchroniserLangueDepuisCompte();
+  }, [isAuthenticated]);
+
+  const basculerLangue = () => {
+    changerLangue(i18n.language === 'fr' ? 'en' : 'fr');
+  };
+
   useEffect(() => {
     api.get('/collections/')
       .then(r => setCollections(r.data.collections || []))
@@ -42,14 +55,8 @@ const Header = () => {
     if (!searchTerm || searchTerm.length < 2) { setSearchResults([]); return; }
     const t = setTimeout(async () => {
       try {
-        const r = await api.get('/livres/', { params: { page: 1, taille: 10 } });
-        const livres = r.data.livres || [];
-        setSearchResults(
-          livres.filter(l =>
-            l.titre?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            l.auteur?.toLowerCase().includes(searchTerm.toLowerCase())
-          ).slice(0, 5)
-        );
+        const r = await api.get('/livres/', { params: { page: 1, taille: 5, recherche: searchTerm } });
+        setSearchResults(r.data.livres || []);
       } catch {}
     }, 300);
     return () => clearTimeout(t);
@@ -122,7 +129,7 @@ const Header = () => {
     }`}>
       {/* Bande supérieure dorée */}
       <div className="bg-brown-950 text-gold-300 text-center text-sm py-2 px-4 hidden md:block">
-        <span>Groupe panafricain d'édition · Production intellectuelle, scientifique & culturelle</span>
+        <span>{t('bandeauSuperieur')}</span>
       </div>
 
       <div className="container-editorial h-20 flex items-center justify-between gap-4">
@@ -157,7 +164,7 @@ const Header = () => {
             to={isAuthenticated ? '/dashboard' : '/'}
             className="px-4 py-2 text-base font-medium text-brown-700 hover:text-brown-950 hover:bg-cream-100 rounded-lg transition-colors"
           >
-            Accueil
+            {t('nav.accueil')}
           </Link>
 
           <div
@@ -166,7 +173,7 @@ const Header = () => {
             onMouseLeave={() => setShowBoutiqueMenu(false)}
           >
             <button className="flex items-center gap-1 px-4 py-2 text-base font-medium text-brown-700 hover:text-brown-950 hover:bg-cream-100 rounded-lg transition-colors">
-              Boutique
+              {t('nav.boutique')}
               <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${showBoutiqueMenu ? 'rotate-180' : ''}`} />
             </button>
             {showBoutiqueMenu && (
@@ -177,7 +184,7 @@ const Header = () => {
                   onClick={() => setShowBoutiqueMenu(false)}
                 >
                   <BookOpen className="w-5 h-5 text-terra-400" />
-                  Tout le catalogue
+                  {t('nav.toutLeCatalogue')}
                 </Link>
                 {collections.length > 0 && (
                   <div className="my-1 border-t border-cream-100" />
@@ -201,7 +208,7 @@ const Header = () => {
               to="/qui-sommes-nous"
               className="px-4 py-2 text-base font-medium text-brown-700 hover:text-brown-950 hover:bg-cream-100 rounded-lg transition-colors"
             >
-              Qui sommes-nous
+              {t('nav.quiSommesNous')}
             </Link>
           )}
 
@@ -210,7 +217,7 @@ const Header = () => {
               to="/dashboard"
               className="px-4 py-2 text-base font-medium text-brown-700 hover:text-brown-950 hover:bg-cream-100 rounded-lg transition-colors"
             >
-              Mon espace
+              {t('nav.monEspace')}
             </Link>
           )}
 
@@ -218,7 +225,7 @@ const Header = () => {
             to="/contact"
             className="px-4 py-2 text-base font-medium text-brown-700 hover:text-brown-950 hover:bg-cream-100 rounded-lg transition-colors"
           >
-            Contact
+            {t('nav.contact')}
           </Link>
         </div>
 
@@ -231,7 +238,7 @@ const Header = () => {
               <form onSubmit={handleSearchSubmit} className="flex items-center">
                 <input
                   type="text"
-                  placeholder="Rechercher un livre..."
+                  placeholder={t('recherche.placeholder')}
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   autoFocus
@@ -272,7 +279,7 @@ const Header = () => {
                           <p className="text-xs text-brown-500">{livre.auteur}</p>
                         </div>
                         <span className="text-xs text-terra-600 font-medium flex-shrink-0 ml-auto">
-                          {livre.est_gratuit ? 'Gratuit' : `${livre.prix?.toLocaleString()} F`}
+                          {livre.est_gratuit ? t('recherche.gratuit') : `${livre.prix?.toLocaleString('fr-FR')} XAF`}
                         </span>
                       </button>
                     ))}
@@ -290,11 +297,22 @@ const Header = () => {
             )}
           </div>
 
+          {/* LANGUE */}
+          <button
+            onClick={basculerLangue}
+            className="hidden lg:flex items-center gap-1 p-2 rounded-lg text-brown-600 hover:text-brown-900 hover:bg-cream-100 transition-colors text-xs font-bold uppercase"
+            aria-label="Changer de langue"
+            title={i18n.language === 'fr' ? 'English' : 'Français'}
+          >
+            <Globe className="w-4 h-4" />
+            {i18n.language === 'fr' ? 'EN' : 'FR'}
+          </button>
+
           {/* PANIER */}
           <Link
             to="/panier"
             className="relative p-2 rounded-lg text-brown-600 hover:text-brown-900 hover:bg-cream-100 transition-colors"
-            aria-label="Panier"
+            aria-label={t('actions.panier')}
           >
             <ShoppingBag className="w-5 h-5" />
             {cartItemCount > 0 && (
@@ -309,7 +327,7 @@ const Header = () => {
             <Link
               to="/mes-notifications"
               className="relative p-2 rounded-lg text-brown-600 hover:text-brown-900 hover:bg-cream-100 transition-colors"
-              aria-label="Notifications"
+              aria-label={t('actions.notifications')}
             >
               <Bell className="w-5 h-5" />
               {notificationCount > 0 && (
@@ -326,7 +344,7 @@ const Header = () => {
               <Link
                 to="/dashboard/profil"
                 className="p-2 rounded-lg text-brown-600 hover:text-brown-900 hover:bg-cream-100 transition-colors"
-                aria-label="Mon profil"
+                aria-label={t('actions.monProfil')}
               >
                 <User className="w-6 h-6" />
               </Link>
@@ -335,7 +353,7 @@ const Header = () => {
                 className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-base font-medium text-red-600 hover:bg-red-50 transition-colors"
               >
                 <LogOut className="w-5 h-5" />
-                <span>Déconnexion</span>
+                <span>{t('actions.deconnexion')}</span>
               </button>
             </div>
           ) : (
@@ -344,13 +362,13 @@ const Header = () => {
                 onClick={() => navigate('/connexion')}
                 className="px-5 py-2.5 text-base font-semibold text-brown-800 border border-brown-300 rounded-lg hover:bg-cream-100 transition-colors"
               >
-                Connexion
+                {t('actions.connexion')}
               </button>
               <button
                 onClick={() => navigate('/inscription')}
                 className="btn-primary text-base"
               >
-                S'inscrire
+                {t('actions.sinscrire')}
               </button>
             </div>
           )}
@@ -359,7 +377,7 @@ const Header = () => {
           <button
             className="lg:hidden p-2 rounded-lg text-brown-700 hover:bg-cream-100 transition-colors ml-1"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            aria-label="Menu"
+            aria-label={t('nav.menu')}
           >
             {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>
@@ -376,7 +394,7 @@ const Header = () => {
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-brown-400" />
                 <input
                   type="text"
-                  placeholder="Rechercher un livre..."
+                  placeholder={t('recherche.placeholder')}
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   className="w-full pl-9 pr-4 py-2.5 border border-brown-200 rounded-lg text-sm focus:border-terra-400 focus:outline-none"
@@ -386,44 +404,52 @@ const Header = () => {
 
             <Link to={isAuthenticated ? '/dashboard' : '/'} onClick={() => setMobileMenuOpen(false)}
               className="flex items-center gap-3 px-3 py-3 rounded-lg text-brown-700 hover:bg-cream-100 text-base font-medium">
-              Accueil
+              {t('nav.accueil')}
             </Link>
             <Link to="/livres" onClick={() => setMobileMenuOpen(false)}
               className="flex items-center gap-3 px-3 py-3 rounded-lg text-brown-700 hover:bg-cream-100 text-base font-medium">
-              <BookOpen className="w-5 h-5 text-terra-400" /> Catalogue
+              <BookOpen className="w-5 h-5 text-terra-400" /> {t('nav.catalogue')}
             </Link>
             {!isAuthenticated && (
               <Link to="/qui-sommes-nous" onClick={() => setMobileMenuOpen(false)}
                 className="block px-3 py-3 rounded-lg text-brown-700 hover:bg-cream-100 text-base font-medium">
-                Qui sommes-nous
+                {t('nav.quiSommesNous')}
               </Link>
             )}
             {isAuthenticated && (
               <Link to="/dashboard" onClick={() => setMobileMenuOpen(false)}
                 className="block px-3 py-3 rounded-lg text-brown-700 hover:bg-cream-100 text-base font-medium">
-                Mon espace
+                {t('nav.monEspace')}
               </Link>
             )}
             <Link to="/contact" onClick={() => setMobileMenuOpen(false)}
               className="block px-3 py-3 rounded-lg text-brown-700 hover:bg-cream-100 text-base font-medium">
-              Contact
+              {t('nav.contact')}
             </Link>
+
+            <button
+              onClick={basculerLangue}
+              className="flex items-center gap-3 px-3 py-3 rounded-lg text-brown-700 hover:bg-cream-100 text-base font-medium w-full"
+            >
+              <Globe className="w-5 h-5 text-terra-400" />
+              {i18n.language === 'fr' ? 'English' : 'Français'}
+            </button>
 
             <div className="border-t border-cream-200 pt-3 mt-3">
               {isAuthenticated ? (
                 <button onClick={() => { handleLogout(); setMobileMenuOpen(false); }}
                   className="flex items-center gap-2 px-3 py-3 rounded-lg text-red-600 hover:bg-red-50 text-base font-medium w-full">
-                  <LogOut className="w-5 h-5" /> Déconnexion
+                  <LogOut className="w-5 h-5" /> {t('actions.deconnexion')}
                 </button>
               ) : (
                 <div className="flex gap-2">
                   <button onClick={() => { navigate('/connexion'); setMobileMenuOpen(false); }}
                     className="flex-1 py-3 text-base font-semibold text-brown-800 border border-brown-300 rounded-lg hover:bg-cream-100 transition-colors">
-                    Connexion
+                    {t('actions.connexion')}
                   </button>
                   <button onClick={() => { navigate('/inscription'); setMobileMenuOpen(false); }}
                     className="flex-1 btn-primary text-base">
-                    S'inscrire
+                    {t('actions.sinscrire')}
                   </button>
                 </div>
               )}

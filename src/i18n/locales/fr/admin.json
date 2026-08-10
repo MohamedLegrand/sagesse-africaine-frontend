@@ -1,0 +1,430 @@
+{
+  "layout": {
+    "nav": {
+      "tableauDeBord": "Tableau de bord",
+      "livres": "Livres",
+      "utilisateurs": "Utilisateurs",
+      "achats": "Achats",
+      "collections": "Collections",
+      "avis": "Avis",
+      "statistiques": "Statistiques"
+    },
+    "administrateur": "Administrateur",
+    "voirLeSite": "Voir le site",
+    "deconnexion": "Déconnexion",
+    "admin": "Admin",
+    "messages": {
+      "deconnexionReussie": "Déconnexion réussie"
+    }
+  },
+
+  "commun": {
+    "aucuneDonnee": "Aucune donnée",
+    "precedent": "← Précédent",
+    "suivant": "Suivant →",
+    "annuler": "Annuler",
+    "modifier": "Modifier",
+    "creer": "Créer",
+    "fermer": "Fermer",
+    "supprimer": "Supprimer",
+    "confirmer": "Confirmer",
+    "erreurChargement": "Erreur chargement"
+  },
+
+  "dashboard": {
+    "eyebrow": "Vue d'ensemble",
+    "titre": "Tableau de bord",
+    "chargement": "Chargement de l'espace administrateur…",
+    "cartes": {
+      "totalLivres": "Total livres",
+      "livresPublies": "Livres publiés",
+      "utilisateurs": "Utilisateurs",
+      "achats": "Achats",
+      "chiffreAffaires": "Chiffre d'affaires",
+      "avisEnAttente": "Avis en attente"
+    },
+    "statuts": {
+      "payee": "Payée",
+      "livree": "Livrée",
+      "annulee": "Annulée",
+      "enAttente": "En attente",
+      "enCours": "En cours"
+    },
+    "derniersAchats": "Derniers achats",
+    "voirTout": "Voir tout",
+    "aucunAchat": "Aucun achat",
+    "derniersInscrits": "Derniers inscrits",
+    "aucunUtilisateur": "Aucun utilisateur",
+    "admin": "Admin",
+    "membre": "Membre",
+    "actionsRapides": "Actions rapides",
+    "ajouterLivre": { "titre": "Ajouter un livre", "desc": "Nouvelle publication" },
+    "gererMembres": { "titre": "Gérer les membres", "desc": "Modifier les rôles" },
+    "modererAvis": { "titre": "Modérer les avis", "desc": "{{count}} en attente" },
+    "messages": {
+      "erreurChargementDonnees": "Erreur chargement des données"
+    }
+  },
+
+  "livres": {
+    "eyebrow": "Catalogue",
+    "titre": "Gestion des livres",
+    "livreAuTotal_one": "{{count}} livre au total",
+    "livreAuTotal_other": "{{count}} livres au total",
+    "nouveauLivre": "Nouveau livre",
+    "rechercherPlaceholder": "Rechercher un livre (titre, auteur)…",
+    "entetes": {
+      "couverture": "Couverture",
+      "titreAuteur": "Titre / Auteur",
+      "prix": "Prix",
+      "statut": "Statut",
+      "actions": "Actions"
+    },
+    "gratuit": "Gratuit",
+    "publie": "Publié",
+    "brouillon": "Brouillon",
+    "depublier": "Dépublier",
+    "publier": "Publier",
+    "modifierTitle": "Modifier",
+    "supprimerTitle": "Supprimer",
+    "aucunLivreTrouve": "Aucun livre trouvé",
+    "modal": {
+      "modifierLeLivre": "Modifier le livre",
+      "ajouterUnLivre": "Ajouter un livre",
+      "sectionInformations": "Informations du livre",
+      "sectionVisuels": "Visuels du livre",
+      "sectionVisuelsDesc": "Gérez les images affichées sur la fiche du livre : première de couverture, 4e de couverture, pages de sommaire.",
+      "sectionFichiers": "Fichiers",
+      "sectionFichiersDesc": "Le fichier ebook (PDF/EPUB) proposé à l'achat et l'extrait de lecture gratuit affichés aux visiteurs.",
+      "titreLabel": "Titre *",
+      "auteurLabel": "Auteur *",
+      "descriptionLabel": "Description",
+      "prixLabel": "Prix (XAF)",
+      "langueLabel": "Langue",
+      "isbnLabel": "ISBN",
+      "collectionLabel": "Collection",
+      "selectionner": "Sélectionner…",
+      "imageCouvertureLabel": "Première de couverture",
+      "quatriemeCouvertureLabel": "4e de couverture",
+      "sommaireLabel": "Sommaire",
+      "extraitLabel": "Extrait",
+      "voirExtrait": "Voir l'extrait actuel",
+      "apercu": "Aperçu",
+      "aucuneImage": "Aucune image",
+      "ajouterImage": "Ajouter une image",
+      "remplacerImage": "Remplacer",
+      "ajouterDesImages": "Ajouter des images",
+      "aucunSommaire": "Aucune image",
+      "chargement": "Chargement…",
+      "fichierEbookLabel": "Fichier ebook",
+      "aucunFichierEbook": "Aucun fichier ebook envoyé",
+      "ajouterFichierEbook": "Ajouter un fichier (PDF ou EPUB)",
+      "remplacerFichier": "Remplacer ce fichier",
+      "aucunExtrait": "Aucun extrait envoyé",
+      "ajouterExtrait": "Ajouter un extrait (DOCX ou PDF)",
+      "remplacerExtrait": "Remplacer l'extrait",
+      "livreGratuit": "Livre gratuit"
+    },
+    "messages": {
+      "impossibleChargerCatalogue": "Impossible de charger le catalogue",
+      "imagePngJpegUniquement": "Image PNG ou JPEG uniquement",
+      "fichierPdfEpubUniquement": "Fichier PDF ou EPUB uniquement",
+      "fichierExtraitInvalide": "Fichier DOCX ou PDF uniquement",
+      "erreurEnvoiPdf": "Erreur lors de l'envoi du fichier PDF",
+      "erreurEnvoiImage": "Erreur lors de l'envoi de l'image",
+      "erreurEnvoiExtrait": "Erreur lors de l'envoi de l'extrait",
+      "sommaireSupprime": "Image de sommaire supprimée",
+      "imageSupprimee": "Image supprimée",
+      "extraitSupprime": "Extrait supprimé",
+      "fichierSupprime": "Fichier supprimé",
+      "fichierRemplace": "Fichier remplacé",
+      "confirmSuppressionVisuel": "Confirmer la suppression ?",
+      "livreModifie": "Livre modifié",
+      "livreCree": "Livre créé",
+      "erreurSauvegarde": "Erreur lors de la sauvegarde",
+      "confirmSuppression": "Supprimer \"{{titre}}\" ?",
+      "livreSupprime": "Livre supprimé",
+      "erreurSuppression": "Erreur suppression",
+      "livreDepublie": "Livre dépublié",
+      "livrePublie": "Livre publié",
+      "erreurPublication": "Erreur publication"
+    }
+  },
+
+  "utilisateurs": {
+    "eyebrow": "Communauté",
+    "titre": "Gestion des utilisateurs",
+    "membreAuTotal_one": "{{count}} membre au total",
+    "membreAuTotal_other": "{{count}} membres au total",
+    "nouvelUtilisateur": "Nouvel utilisateur",
+    "rechercherPlaceholder": "Rechercher (nom, prénom, email)…",
+    "entetes": {
+      "utilisateur": "Utilisateur",
+      "email": "Email",
+      "role": "Rôle",
+      "statut": "Statut",
+      "inscription": "Inscription",
+      "actions": "Actions"
+    },
+    "admin": "Admin",
+    "membre": "Membre",
+    "actif": "Actif",
+    "inactif": "Inactif",
+    "changerRoleTitle": "Changer rôle",
+    "desactiverTitle": "Désactiver",
+    "activerTitle": "Activer",
+    "modifierTitle": "Modifier",
+    "supprimerTitle": "Supprimer",
+    "aucunUtilisateur": "Aucun utilisateur",
+    "modal": {
+      "modifier": "Modifier",
+      "ajouterUnUtilisateur": "Ajouter un utilisateur",
+      "prenomLabel": "Prénom *",
+      "nomLabel": "Nom *",
+      "emailLabel": "Email *",
+      "motDePasseLabel": "Mot de passe *"
+    },
+    "modalRole": {
+      "titre": "Changer le rôle",
+      "roleLabel": "Rôle",
+      "utilisateur": "Utilisateur",
+      "administrateur": "Administrateur"
+    },
+    "messages": {
+      "erreurChargement": "Erreur chargement",
+      "utilisateurModifie": "Utilisateur modifié",
+      "utilisateurCree": "Utilisateur créé",
+      "erreurSauvegarde": "Erreur lors de la sauvegarde",
+      "roleChangeEn": "Rôle changé en {{role}}",
+      "erreurChangementRole": "Erreur changement rôle",
+      "utilisateurDesactive": "Utilisateur désactivé",
+      "utilisateurActive": "Utilisateur activé",
+      "erreur": "Erreur",
+      "confirmSuppression": "Supprimer \"{{nom}}\" ?",
+      "supprime": "Supprimé",
+      "erreurSuppression": "Erreur suppression"
+    }
+  },
+
+  "commandes": {
+    "eyebrow": "Commerce",
+    "titre": "Gestion des achats",
+    "achatAuTotal_one": "{{count}} achat au total",
+    "achatAuTotal_other": "{{count}} achats au total",
+    "actualiser": "Actualiser",
+    "rechercherPlaceholder": "Rechercher (ID, client, email)…",
+    "entetes": {
+      "id": "ID",
+      "client": "Client",
+      "montant": "Montant",
+      "statut": "Statut",
+      "date": "Date",
+      "actions": "Actions"
+    },
+    "statuts": {
+      "enAttente": "En attente",
+      "payee": "Payée",
+      "livree": "Livrée",
+      "annulee": "Annulée",
+      "enCours": "En cours"
+    },
+    "voirDetailsTitle": "Voir détails",
+    "supprimerTitle": "Supprimer",
+    "aucunAchat": "Aucun achat",
+    "modal": {
+      "detailsAchat": "Détails de l'achat",
+      "nomComplet": "Nom complet",
+      "email": "Email",
+      "date": "Date",
+      "statut": "Statut",
+      "changerLeStatut": "Changer le statut",
+      "articlesAchetes": "Articles achetés",
+      "quantiteAbregee": "Qté: {{n}}",
+      "total": "Total",
+      "supprimer": "Supprimer",
+      "imprimer": "Imprimer",
+      "fermer": "Fermer"
+    },
+    "messages": {
+      "erreurChargement": "Erreur chargement",
+      "statutMisAJour": "Statut mis à jour : {{statut}}",
+      "erreurMiseAJour": "Erreur mise à jour",
+      "confirmSuppression": "Supprimer définitivement cet achat ?",
+      "achatSupprime": "Achat supprimé",
+      "erreurSuppression": "Erreur lors de la suppression"
+    }
+  },
+
+  "collections": {
+    "eyebrow": "Catalogue",
+    "titre": "Gestion des collections",
+    "collectionAuTotal_one": "{{count}} collection au total",
+    "collectionAuTotal_other": "{{count}} collections au total",
+    "nouvelleCollection": "Nouvelle collection",
+    "rechercherPlaceholder": "Rechercher une collection…",
+    "modifierTitle": "Modifier",
+    "supprimerTitle": "Supprimer",
+    "aucuneDescription": "Aucune description",
+    "slug": "Slug: {{slug}}",
+    "sousCollection": "Sous {{parent}}",
+    "principale": "Principale",
+    "aucuneCollection": "Aucune collection",
+    "modal": {
+      "modifierLaCollection": "Modifier la collection",
+      "ajouterUneCollection": "Ajouter une collection",
+      "nomLabel": "Nom *",
+      "nomPlaceholder": "Ex: Sciences Sociales",
+      "descriptionLabel": "Description",
+      "descriptionPlaceholder": "Description de la collection…",
+      "collectionParenteLabel": "Collection parente",
+      "aucunePrincipale": "Aucune (principale)"
+    },
+    "messages": {
+      "erreurChargement": "Erreur chargement",
+      "collectionModifiee": "Collection modifiée",
+      "collectionCreee": "Collection créée",
+      "erreurSauvegarde": "Erreur sauvegarde",
+      "confirmSuppression": "Supprimer \"{{nom}}\" ?",
+      "supprimee": "Supprimée",
+      "erreurSuppression": "Erreur suppression"
+    }
+  },
+
+  "avis": {
+    "eyebrow": "Modération",
+    "titre": "Gestion des avis",
+    "avisEnAttente_one": "{{count}} avis en attente",
+    "avisEnAttente_other": "{{count}} avis en attente",
+    "rechercherPlaceholder": "Rechercher (livre, auteur, commentaire)…",
+    "filtres": {
+      "tous": "Tous",
+      "enAttenteAvecCount": "En attente ({{count}})",
+      "approuves": "Approuvés"
+    },
+    "noteLabels": {
+      "1": "Très mauvais",
+      "2": "Mauvais",
+      "3": "Moyen",
+      "4": "Bien",
+      "5": "Excellent"
+    },
+    "aucunAvisCorrespond": "Aucun avis ne correspond aux critères",
+    "livre": "Livre : {{titre}}",
+    "aucunCommentaire": "Aucun commentaire",
+    "approuve": "✓ Approuvé",
+    "enAttenteModeration": "⏳ En attente de modération",
+    "modal": {
+      "detailsAvis": "Détails de l'avis",
+      "note": "Note",
+      "commentaire": "Commentaire",
+      "approuver": "Approuver",
+      "supprimer": "Supprimer",
+      "fermer": "Fermer"
+    },
+    "messages": {
+      "erreurChargement": "Erreur chargement",
+      "avisApprouve": "Avis approuvé",
+      "erreur": "Erreur",
+      "confirmSuppression": "Supprimer cet avis ?",
+      "avisSupprime": "Avis supprimé"
+    }
+  },
+
+  "statistiques": {
+    "eyebrow": "Analyse",
+    "titre": "Statistiques globales",
+    "chargement": "Chargement des statistiques…",
+    "actualiser": "Actualiser",
+    "exporterPdf": "Exporter en PDF",
+    "generationEnCours": "Génération…",
+    "mois": ["Jan", "Fév", "Mar", "Avr", "Mai", "Jun", "Jul", "Aoû", "Sep", "Oct", "Nov", "Déc"],
+    "onglets": {
+      "apercu": "Vue d'ensemble",
+      "paiements": "Paiements & conversion",
+      "revenu": "Revenu & ventes",
+      "catalogue": "Catalogue",
+      "lecture": "Lecture & engagement",
+      "activite": "Activité récente"
+    },
+    "cartes": {
+      "livres": { "label": "Livres", "sub": "{{count}} publiés" },
+      "utilisateurs": { "label": "Utilisateurs", "sub": "{{count}} actifs" },
+      "achats": { "label": "Achats", "sub": "{{count}} payés" },
+      "caTotal": { "label": "CA total", "sub": "moyen: {{montant}} XAF" },
+      "avis": { "label": "Avis", "sub": "{{approuves}} approuvés • {{note}}/5" },
+      "telechargements": { "label": "Téléchargements", "sub": "fichiers téléchargés" },
+      "exemplairesVendus": { "label": "Exemplaires vendus", "sub": "livres payés, en unités" },
+      "montantEncaisse": { "label": "Montant des livres payés", "sub": "uniquement achats payés" }
+    },
+    "cartesPaiements": {
+      "tauxReussite": { "label": "Taux de réussite paiements", "sub": "sur les paiements terminés (réussis/échoués)" },
+      "conversionPaye": { "label": "Conversion achat → payé", "sub": "part des achats qui aboutissent" },
+      "fraisMoyen": { "label": "Frais moyen HR-Skills Pay", "sub": "par transaction tentée" },
+      "achatsBloques": { "label": "Achats bloqués", "sub": "en attente depuis + de 5 min" },
+      "panierMoyenPaye": { "label": "Panier moyen payé", "sub": "uniquement achats payés" }
+    },
+    "cartesEngagement": {
+      "retention": { "label": "Rétention 30 jours", "sub": "utilisateurs ayant commandé récemment" },
+      "conversionGratuits": { "label": "Conversion livres gratuits", "sub": "gratuits déjà consultés/ajoutés" },
+      "conversionPayants": { "label": "Conversion livres payants", "sub": "payants déjà achetés" },
+      "completionMoyenne": { "label": "Complétion moyenne", "sub": "avancement moyen des lectures" },
+      "achetesJamaisLus": { "label": "Achetés mais jamais lus", "sub": "utilisateurs concernés" },
+      "lecturesEnLigne": { "label": "Lectures en ligne", "sub": "vs {{count}} téléchargements" }
+    },
+    "sections": {
+      "croissancePlateforme": "Croissance de la plateforme",
+      "croissanceSousTitre": "Nouveaux achats et nouveaux membres, 6 derniers mois",
+      "achats": "Achats",
+      "nouveauxMembres": "Nouveaux membres",
+      "repartitionLivres": "Répartition des livres",
+      "statutAchats": "Statut des achats",
+      "activite30j": "Activité — 30 derniers jours",
+      "nouveauxAchats": "Nouveaux achats",
+      "reussitePaiements": "Réussite des paiements",
+      "parOperateur": "Par opérateur",
+      "parDevise": "Par devise",
+      "revenu6mois": "Revenu — 6 derniers mois avec ventes",
+      "topVentes": "Top 5 — Livres les plus vendus",
+      "topRentables": "Top 5 — Livres les plus rentables",
+      "livresJamaisVendus": "Livres jamais vendus",
+      "tousVendus": "Tous les livres ont été vendus au moins une fois 🎉",
+      "conversionParType": "Conversion par type de livre",
+      "gratuitsConsultes": "Gratuits consultés/ajoutés",
+      "payantsAchetes": "Payants achetés",
+      "topLus": "Top 5 — Livres les plus lus",
+      "lectureEnLigneVsTelechargement": "Lecture en ligne vs téléchargement",
+      "activiteRecente": "Activité récente",
+      "aucuneActivite": "Aucune activité",
+      "reussis": "Réussis",
+      "echoues": "Échoués",
+      "gratuits": "Gratuits",
+      "payants": "Payants",
+      "lecturesEnLigneLabel": "Lectures en ligne",
+      "telechargementsLabel": "Téléchargements"
+    },
+    "livreSupprime": "Livre supprimé",
+    "utilisateurSupprime": "Utilisateur supprimé",
+    "autre": "Autre",
+    "unites": {
+      "vendu_one": "{{count}} vendu",
+      "vendu_other": "{{count}} vendus",
+      "session_one": "{{count}} session",
+      "session_other": "{{count}} sessions"
+    },
+    "gratuit": "Gratuit",
+    "rapport": {
+      "titre": "Rapport de statistiques",
+      "genereLe": "Généré le",
+      "tableauDeBord": "Tableau de bord — SAGESSE AFRICAINE",
+      "achatsAuTotal": "Achats au total",
+      "montantEncaisse": "Montant encaissé",
+      "utilisateurs": "Utilisateurs",
+      "pied": "SAGESSE AFRICAINE — Rapport généré automatiquement depuis l'espace administrateur"
+    },
+    "messages": {
+      "erreurChargement": "Erreur chargement",
+      "rapportGenere": "Rapport PDF généré",
+      "erreurGenerationPdf": "Erreur lors de la génération du PDF"
+    }
+  }
+}

@@ -17,13 +17,10 @@ const OublierMotDePassePage = () => {
     try {
       await authService.oublierMotDePasse(email);
       setEnvoye(true);
-      toast.success('Email de réinitialisation envoyé !');
-    } catch (error) {
-      if (error.response?.status === 404) {
-        toast.error('Aucun compte associé à cet email');
-      } else {
-        toast.error('Erreur lors de l\'envoi. Veuillez réessayer.');
-      }
+    } catch {
+      // Le backend répond toujours 200 (par conception, pour ne pas révéler si
+      // l'email existe) : une erreur ici est forcément un souci réseau/serveur.
+      toast.error("Erreur lors de l'envoi. Veuillez réessayer.");
     } finally {
       setLoading(false);
     }

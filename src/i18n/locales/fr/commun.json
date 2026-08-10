@@ -1,0 +1,31 @@
+{
+  "nav": {
+    "accueil": "Accueil",
+    "boutique": "Boutique",
+    "toutLeCatalogue": "Tout le catalogue",
+    "quiSommesNous": "Qui sommes-nous",
+    "monEspace": "Mon espace",
+    "contact": "Contact",
+    "catalogue": "Catalogue",
+    "menu": "Menu"
+  },
+  "recherche": {
+    "placeholder": "Rechercher un livre...",
+    "gratuit": "Gratuit"
+  },
+  "actions": {
+    "panier": "Panier",
+    "notifications": "Notifications",
+    "monProfil": "Mon profil",
+    "deconnexion": "Déconnexion",
+    "connexion": "Connexion",
+    "sinscrire": "S'inscrire"
+  },
+  "bandeauSuperieur": "Groupe panafricain d'édition · Production intellectuelle, scientifique & culturelle",
+  "facture": {
+    "sessionExpiree": "Votre session a expiré, veuillez vous reconnecter",
+    "nonAutorise": "Vous n'êtes pas autorisé à télécharger cette facture",
+    "achatIntrouvable": "Achat introuvable",
+    "erreurTelechargement": "Erreur lors du téléchargement de la facture"
+  }
+}

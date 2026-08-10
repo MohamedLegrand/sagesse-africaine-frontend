@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import {
   BookOpen, Users, ShoppingBag, TrendingUp, Eye, Star,
   Plus, ArrowRight, BarChart2, Clock, CheckCircle
@@ -9,6 +10,7 @@ import toast from 'react-hot-toast';
 import AdminLayout from '../components/AdminLayout';
 
 const DashboardAdminPage = () => {
+  const { t } = useTranslation('admin');
   const [stats, setStats] = useState({
     totalLivres: 0, totalUtilisateurs: 0, totalCommandes: 0,
     totalVentes: 0, livresPublies: 0, avisEnAttente: 0,
@@ -40,21 +42,21 @@ const DashboardAdminPage = () => {
         setRecentOrders(commandes.slice(0, 5));
         setRecentUsers((usersRes.data.utilisateurs || []).slice(0, 5));
       } catch {
-        toast.error('Erreur chargement des données');
+        toast.error(t('dashboard.messages.erreurChargementDonnees'));
       } finally {
         setLoading(false);
       }
     };
     fetchData();
-  }, []);
+  }, [t]);
 
   const statCards = [
-    { label: 'Total livres',       value: stats.totalLivres,                          icon: BookOpen,   color: 'bg-terra-50 text-terra-600',  border: 'border-terra-100',  path: '/admin/livres' },
-    { label: 'Livres publiés',     value: stats.livresPublies,                        icon: Eye,        color: 'bg-brown-50 text-brown-700',  border: 'border-brown-100',  path: '/admin/livres' },
-    { label: 'Utilisateurs',       value: stats.totalUtilisateurs,                    icon: Users,      color: 'bg-blue-50 text-blue-600',    border: 'border-blue-100',   path: '/admin/utilisateurs' },
-    { label: 'Commandes',          value: stats.totalCommandes,                       icon: ShoppingBag,color: 'bg-green-50 text-green-600',  border: 'border-green-100',  path: '/admin/commandes' },
-    { label: 'Chiffre d\'affaires',value: `${stats.totalVentes.toLocaleString()} F`,  icon: TrendingUp, color: 'bg-gold-50 text-gold-600',    border: 'border-gold-100',   path: '/admin/statistiques' },
-    { label: 'Avis en attente',    value: stats.avisEnAttente,                        icon: Star,       color: 'bg-red-50 text-red-600',      border: 'border-red-100',    path: '/admin/avis' },
+    { label: t('dashboard.cartes.totalLivres'),       value: stats.totalLivres,                          icon: BookOpen,   color: 'bg-terra-50 text-terra-600',  border: 'border-terra-100',  path: '/admin/livres' },
+    { label: t('dashboard.cartes.livresPublies'),     value: stats.livresPublies,                        icon: Eye,        color: 'bg-brown-50 text-brown-700',  border: 'border-brown-100',  path: '/admin/livres' },
+    { label: t('dashboard.cartes.utilisateurs'),       value: stats.totalUtilisateurs,                    icon: Users,      color: 'bg-blue-50 text-blue-600',    border: 'border-blue-100',   path: '/admin/utilisateurs' },
+    { label: t('dashboard.cartes.achats'),             value: stats.totalCommandes,                       icon: ShoppingBag,color: 'bg-green-50 text-green-600',  border: 'border-green-100',  path: '/admin/commandes' },
+    { label: t('dashboard.cartes.chiffreAffaires'),value: `${stats.totalVentes.toLocaleString('fr-FR')} XAF`,  icon: TrendingUp, color: 'bg-gold-50 text-gold-600',    border: 'border-gold-100',   path: '/admin/statistiques' },
+    { label: t('dashboard.cartes.avisEnAttente'),    value: stats.avisEnAttente,                        icon: Star,       color: 'bg-red-50 text-red-600',      border: 'border-red-100',    path: '/admin/avis' },
   ];
 
   const getStatusStyle = (statut) => {
@@ -71,8 +73,8 @@ const DashboardAdminPage = () => {
 
   const getStatusLabel = (statut) => {
     const map = {
-      'payee': 'Payée', 'payé': 'Payée', 'livree': 'Livrée',
-      'annulee': 'Annulée', 'en_attente': 'En attente', 'en_cours': 'En cours',
+      'payee': t('dashboard.statuts.payee'), 'payé': t('dashboard.statuts.payee'), 'livree': t('dashboard.statuts.livree'),
+      'annulee': t('dashboard.statuts.annulee'), 'en_attente': t('dashboard.statuts.enAttente'), 'en_cours': t('dashboard.statuts.enCours'),
     };
     return map[statut] || statut;
   };
@@ -82,7 +84,7 @@ const DashboardAdminPage = () => {
       <AdminLayout>
         <div className="flex flex-col items-center justify-center py-32 gap-4">
           <div className="w-12 h-12 border-4 border-terra-500 border-t-transparent rounded-full animate-spin" />
-          <p className="text-brown-500 font-medium">Chargement de l'espace administrateur…</p>
+          <p className="text-brown-500 font-medium">{t('dashboard.chargement')}</p>
         </div>
       </AdminLayout>
     );
@@ -92,8 +94,8 @@ const DashboardAdminPage = () => {
     <AdminLayout>
       {/* En-tête */}
       <div className="mb-8">
-        <span className="section-eyebrow">Vue d'ensemble</span>
-        <h1 className="section-title mt-2">Tableau de bord</h1>
+        <span className="section-eyebrow">{t('dashboard.eyebrow')}</span>
+        <h1 className="section-title mt-2">{t('dashboard.titre')}</h1>
       </div>
 
       {/* Cartes statistiques */}
@@ -124,10 +126,10 @@ const DashboardAdminPage = () => {
           <div className="flex items-center justify-between mb-5">
             <div className="flex items-center gap-2">
               <ShoppingBag className="w-4 h-4 text-terra-500" />
-              <h2 className="font-playfair font-bold text-brown-950 text-lg">Dernières commandes</h2>
+              <h2 className="font-playfair font-bold text-brown-950 text-lg">{t('dashboard.derniersAchats')}</h2>
             </div>
             <Link to="/admin/commandes" className="text-xs font-semibold text-terra-500 hover:text-terra-700 flex items-center gap-1">
-              Voir tout <ArrowRight className="w-3 h-3" />
+              {t('dashboard.voirTout')} <ArrowRight className="w-3 h-3" />
             </Link>
           </div>
           {recentOrders.length > 0 ? (
@@ -139,7 +141,7 @@ const DashboardAdminPage = () => {
                     <p className="text-xs text-brown-400">{new Date(order.cree_le).toLocaleDateString('fr-FR')}</p>
                   </div>
                   <div className="text-right">
-                    <p className="font-bold text-brown-800 text-sm">{order.montant_total?.toLocaleString()} F</p>
+                    <p className="font-bold text-brown-800 text-sm">{order.montant_total?.toLocaleString('fr-FR')} XAF</p>
                     <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${getStatusStyle(order.statut)}`}>
                       {getStatusLabel(order.statut)}
                     </span>
@@ -150,7 +152,7 @@ const DashboardAdminPage = () => {
           ) : (
             <div className="text-center py-10 text-brown-300">
               <ShoppingBag className="w-10 h-10 mx-auto mb-2 opacity-30" />
-              <p className="text-sm">Aucune commande</p>
+              <p className="text-sm">{t('dashboard.aucunAchat')}</p>
             </div>
           )}
         </div>
@@ -160,10 +162,10 @@ const DashboardAdminPage = () => {
           <div className="flex items-center justify-between mb-5">
             <div className="flex items-center gap-2">
               <Users className="w-4 h-4 text-terra-500" />
-              <h2 className="font-playfair font-bold text-brown-950 text-lg">Derniers inscrits</h2>
+              <h2 className="font-playfair font-bold text-brown-950 text-lg">{t('dashboard.derniersInscrits')}</h2>
             </div>
             <Link to="/admin/utilisateurs" className="text-xs font-semibold text-terra-500 hover:text-terra-700 flex items-center gap-1">
-              Voir tout <ArrowRight className="w-3 h-3" />
+              {t('dashboard.voirTout')} <ArrowRight className="w-3 h-3" />
             </Link>
           </div>
           {recentUsers.length > 0 ? (
@@ -186,7 +188,7 @@ const DashboardAdminPage = () => {
                   <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium flex-shrink-0 ${
                     user.role === 'admin' ? 'bg-brown-100 text-brown-700' : 'bg-green-100 text-green-700'
                   }`}>
-                    {user.role === 'admin' ? 'Admin' : 'Membre'}
+                    {user.role === 'admin' ? t('dashboard.admin') : t('dashboard.membre')}
                   </span>
                 </div>
               ))}
@@ -194,7 +196,7 @@ const DashboardAdminPage = () => {
           ) : (
             <div className="text-center py-10 text-brown-300">
               <Users className="w-10 h-10 mx-auto mb-2 opacity-30" />
-              <p className="text-sm">Aucun utilisateur</p>
+              <p className="text-sm">{t('dashboard.aucunUtilisateur')}</p>
             </div>
           )}
         </div>
@@ -204,7 +206,7 @@ const DashboardAdminPage = () => {
       <div className="bg-white rounded-xl border border-cream-200 p-6">
         <div className="flex items-center gap-2 mb-5">
           <BarChart2 className="w-4 h-4 text-terra-500" />
-          <h2 className="font-playfair font-bold text-brown-950 text-lg">Actions rapides</h2>
+          <h2 className="font-playfair font-bold text-brown-950 text-lg">{t('dashboard.actionsRapides')}</h2>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
           <Link
@@ -215,8 +217,8 @@ const DashboardAdminPage = () => {
               <Plus className="w-5 h-5 text-white" />
             </div>
             <div>
-              <p className="font-semibold text-brown-900 text-sm">Ajouter un livre</p>
-              <p className="text-xs text-brown-400">Nouvelle publication</p>
+              <p className="font-semibold text-brown-900 text-sm">{t('dashboard.ajouterLivre.titre')}</p>
+              <p className="text-xs text-brown-400">{t('dashboard.ajouterLivre.desc')}</p>
             </div>
           </Link>
           <Link
@@ -227,8 +229,8 @@ const DashboardAdminPage = () => {
               <Users className="w-5 h-5 text-white" />
             </div>
             <div>
-              <p className="font-semibold text-brown-900 text-sm">Gérer les membres</p>
-              <p className="text-xs text-brown-400">Modifier les rôles</p>
+              <p className="font-semibold text-brown-900 text-sm">{t('dashboard.gererMembres.titre')}</p>
+              <p className="text-xs text-brown-400">{t('dashboard.gererMembres.desc')}</p>
             </div>
           </Link>
           <Link
@@ -239,8 +241,8 @@ const DashboardAdminPage = () => {
               <Star className="w-5 h-5 text-white" />
             </div>
             <div>
-              <p className="font-semibold text-brown-900 text-sm">Modérer les avis</p>
-              <p className="text-xs text-brown-400">{stats.avisEnAttente} en attente</p>
+              <p className="font-semibold text-brown-900 text-sm">{t('dashboard.modererAvis.titre')}</p>
+              <p className="text-xs text-brown-400">{t('dashboard.modererAvis.desc', { count: stats.avisEnAttente })}</p>
             </div>
           </Link>
         </div>

@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { FaBell, FaEnvelope, FaShoppingCart, FaBook, FaUserCheck } from 'react-icons/fa';
-import Header from '../../Visiteur/components/Header';
-import Footer from '../../Visiteur/components/Footer';
+import Header from '../../visiteur/components/Header';
+import Footer from '../../visiteur/components/Footer';
 import toast from 'react-hot-toast';
 
 const ParametresNotificationPage = () => {
+  const { t } = useTranslation('notifications');
   const [settings, setSettings] = useState({
     email_commandes: true,
     email_promotions: false,
@@ -30,9 +32,9 @@ const ParametresNotificationPage = () => {
     try {
       // TODO: Appel API pour sauvegarder les préférences
       await new Promise(resolve => setTimeout(resolve, 1000));
-      toast.success('Préférences enregistrées');
+      toast.success(t('parametres.messages.enregistre'));
     } catch (error) {
-      toast.error('Erreur lors de l\'enregistrement');
+      toast.error(t('parametres.messages.erreur'));
     } finally {
       setLoading(false);
     }
@@ -40,22 +42,22 @@ const ParametresNotificationPage = () => {
 
   const sections = [
     {
-      title: 'Notifications par email',
+      title: t('parametres.email.titre'),
       icon: FaEnvelope,
       items: [
-        { key: 'email_commandes', label: 'Commandes', description: 'Confirmation et suivi des commandes' },
-        { key: 'email_promotions', label: 'Promotions', description: 'Offres spéciales et réductions' },
-        { key: 'email_newsletter', label: 'Newsletter', description: 'Actualités de SAGESSE AFRICAINE' },
-        { key: 'email_publications', label: 'Nouvelles publications', description: 'Nouveaux livres ajoutés' }
+        { key: 'email_commandes', label: t('parametres.email.achats.label'), description: t('parametres.email.achats.desc') },
+        { key: 'email_promotions', label: t('parametres.email.promotions.label'), description: t('parametres.email.promotions.desc') },
+        { key: 'email_newsletter', label: t('parametres.email.newsletter.label'), description: t('parametres.email.newsletter.desc') },
+        { key: 'email_publications', label: t('parametres.email.publications.label'), description: t('parametres.email.publications.desc') }
       ]
     },
     {
-      title: 'Notifications in-app',
+      title: t('parametres.inapp.titre'),
       icon: FaBell,
       items: [
-        { key: 'inapp_commandes', label: 'Commandes', description: 'Mises à jour de vos commandes' },
-        { key: 'inapp_messages', label: 'Messages', description: 'Messages de l\'équipe' },
-        { key: 'inapp_publications', label: 'Publications', description: 'Nouveautés éditoriales' }
+        { key: 'inapp_commandes', label: t('parametres.inapp.achats.label'), description: t('parametres.inapp.achats.desc') },
+        { key: 'inapp_messages', label: t('parametres.inapp.messages.label'), description: t('parametres.inapp.messages.desc') },
+        { key: 'inapp_publications', label: t('parametres.inapp.publications.label'), description: t('parametres.inapp.publications.desc') }
       ]
     }
   ];
@@ -69,10 +71,10 @@ const ParametresNotificationPage = () => {
           {/* En-tête */}
           <div className="text-center mb-8">
             <h1 className="text-4xl md:text-5xl font-playfair font-bold text-amber-800 mb-4">
-              Préférences de notification
+              {t('parametres.titre')}
             </h1>
             <p className="text-amber-500 text-lg">
-              Gérez comment vous souhaitez être notifié
+              {t('parametres.sousTitre')}
             </p>
             <div className="flex items-center justify-center gap-2 mt-4">
               <div className="w-16 h-px bg-amber-300"></div>
@@ -122,7 +124,7 @@ const ParametresNotificationPage = () => {
                 disabled={loading}
                 className="bg-gradient-to-r from-amber-600 to-amber-700 text-white px-8 py-3 rounded-xl font-semibold hover:shadow-lg transition disabled:opacity-50"
               >
-                {loading ? 'Enregistrement...' : 'Enregistrer les préférences'}
+                {loading ? t('parametres.enregistrementEnCours') : t('parametres.enregistrer')}
               </button>
             </div>
           </form>

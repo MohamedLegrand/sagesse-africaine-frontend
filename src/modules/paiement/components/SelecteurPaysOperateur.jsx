@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'framer-motion';
 import paiementsService from '../../../services/paiementsService';
 
@@ -32,6 +33,7 @@ const infoOperateur = (code) => OPERATEURS_INFO[code] || { nom: code, bg: '#D977
  * avec animation de transition à chaque changement.
  */
 const SelecteurPaysOperateur = ({ country, operator, onChangeCountry, onChangeOperator, montantXaf }) => {
+  const { t } = useTranslation('paiement');
   const [paysListe, setPaysListe] = useState([]);
   const [chargement, setChargement] = useState(true);
 
@@ -55,7 +57,7 @@ const SelecteurPaysOperateur = ({ country, operator, onChangeCountry, onChangeOp
   return (
     <div className="space-y-5">
       <div>
-        <label className="block text-amber-700 text-sm font-medium mb-2">Pays</label>
+        <label className="block text-amber-700 text-sm font-medium mb-2">{t('pays')}</label>
         <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
           {paysListe.map((p) => (
             <motion.button
@@ -79,7 +81,7 @@ const SelecteurPaysOperateur = ({ country, operator, onChangeCountry, onChangeOp
       </div>
 
       <div>
-        <label className="block text-amber-700 text-sm font-medium mb-2">Opérateur</label>
+        <label className="block text-amber-700 text-sm font-medium mb-2">{t('operateur')}</label>
         <AnimatePresence mode="wait">
           <motion.div
             key={country}
@@ -119,7 +121,7 @@ const SelecteurPaysOperateur = ({ country, operator, onChangeCountry, onChangeOp
           animate={{ opacity: 1, y: 0 }}
           className="bg-amber-50 rounded-xl p-3 text-sm text-amber-700 flex justify-between items-center"
         >
-          <span>Montant à payer</span>
+          <span>{t('montantAPayer')}</span>
           <span className="font-bold text-base">
             {Math.round(montantXaf * paysActuel.taux_depuis_xaf).toLocaleString()} {paysActuel.devise}
           </span>

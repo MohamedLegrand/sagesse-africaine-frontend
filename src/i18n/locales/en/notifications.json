@@ -1,0 +1,103 @@
+{
+  "contenu": {
+    "ACHAT_EFFECTUE": {
+      "titre": "Purchase successful",
+      "message": "Your order has been recorded. Total: {{montant}} {{devise}}."
+    },
+    "ACHAT_ANNULE": {
+      "titre": "Order cancelled",
+      "message": "Your order has been cancelled."
+    },
+    "ACHAT_ANNULE_ADMIN": {
+      "titre": "Order cancelled",
+      "message": "Your order has been cancelled by our team."
+    },
+    "REMBOURSEMENT_EFFECTUE": {
+      "titre": "Refund processed",
+      "message": "Your order has been refunded. The amount will be credited within 3 to 5 business days."
+    },
+    "PAIEMENT_CONFIRME": {
+      "titre": "Payment confirmed!",
+      "message": "Your payment has been confirmed. Your books are now available in your library."
+    },
+    "LIVRE_AJOUTE": {
+      "titre": "Book added",
+      "message": "The book \"{{titre}}\" has been successfully added to the catalog."
+    },
+    "LIVRE_MODIFIE": {
+      "titre": "Book updated",
+      "message": "The book \"{{titre}}\" has been successfully updated."
+    },
+    "LIVRE_SUPPRIME": {
+      "titre": "Book deleted",
+      "message": "The book \"{{titre}}\" has been removed from the catalog."
+    }
+  },
+  "cloche": {
+    "ariaLabel": "Notifications",
+    "titre": "Notifications",
+    "nonLue_one": "{{count}} unread",
+    "nonLue_other": "{{count}} unread",
+    "aucuneNotification": "No notifications yet",
+    "voirToutes": "View all notifications →"
+  },
+  "carte": {
+    "marquerCommeLu": "Mark as read",
+    "supprimer": "Delete",
+    "voir": "View →"
+  },
+  "mesNotifications": {
+    "titre": "My notifications",
+    "nonLue_one": "{{count}} unread",
+    "nonLue_other": "{{count}} unread",
+    "aJour": "You're all caught up!",
+    "filtres": {
+      "toutes": "All",
+      "nonLues": "Unread",
+      "lues": "Read"
+    },
+    "toutMarquerLu": "Mark all read",
+    "toutSupprimer": "Delete all",
+    "aucuneNotification": "No notifications",
+    "toutesLues": "All your notifications are read.",
+    "aucuneLue": "No read notifications at the moment.",
+    "pasEncore": "You don't have any notifications yet.",
+    "type": {
+      "livre": "Book",
+      "paiement": "Payment",
+      "notification": "Notification"
+    },
+    "voirLeContenu": "View content",
+    "fermer": "Close",
+    "supprimerToutesTitre": "Delete all notifications?",
+    "actionIrreversible": "This action is irreversible.",
+    "annuler": "Cancel",
+    "supprimerTout": "Delete all",
+    "messages": {
+      "toutesSupprimees": "All notifications have been deleted"
+    }
+  },
+  "parametres": {
+    "titre": "Notification preferences",
+    "sousTitre": "Manage how you want to be notified",
+    "email": {
+      "titre": "Email notifications",
+      "achats": { "label": "Purchases", "desc": "Confirmation and tracking of your purchases" },
+      "promotions": { "label": "Promotions", "desc": "Special offers and discounts" },
+      "newsletter": { "label": "Newsletter", "desc": "SAGESSE AFRICAINE news" },
+      "publications": { "label": "New publications", "desc": "Newly added books" }
+    },
+    "inapp": {
+      "titre": "In-app notifications",
+      "achats": { "label": "Purchases", "desc": "Updates on your purchases" },
+      "messages": { "label": "Messages", "desc": "Messages from the team" },
+      "publications": { "label": "Publications", "desc": "Editorial news" }
+    },
+    "enregistrer": "Save preferences",
+    "enregistrementEnCours": "Saving...",
+    "messages": {
+      "enregistre": "Preferences saved",
+      "erreur": "Error while saving"
+    }
+  }
+}

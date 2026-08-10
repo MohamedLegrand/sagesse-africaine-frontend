@@ -1,0 +1,430 @@
+{
+  "layout": {
+    "nav": {
+      "tableauDeBord": "Dashboard",
+      "livres": "Books",
+      "utilisateurs": "Users",
+      "achats": "Orders",
+      "collections": "Collections",
+      "avis": "Reviews",
+      "statistiques": "Statistics"
+    },
+    "administrateur": "Administrator",
+    "voirLeSite": "View site",
+    "deconnexion": "Log out",
+    "admin": "Admin",
+    "messages": {
+      "deconnexionReussie": "Logged out successfully"
+    }
+  },
+
+  "commun": {
+    "aucuneDonnee": "No data",
+    "precedent": "← Previous",
+    "suivant": "Next →",
+    "annuler": "Cancel",
+    "modifier": "Edit",
+    "creer": "Create",
+    "fermer": "Close",
+    "supprimer": "Delete",
+    "confirmer": "Confirm",
+    "erreurChargement": "Loading error"
+  },
+
+  "dashboard": {
+    "eyebrow": "Overview",
+    "titre": "Dashboard",
+    "chargement": "Loading admin area…",
+    "cartes": {
+      "totalLivres": "Total books",
+      "livresPublies": "Published books",
+      "utilisateurs": "Users",
+      "achats": "Orders",
+      "chiffreAffaires": "Revenue",
+      "avisEnAttente": "Pending reviews"
+    },
+    "statuts": {
+      "payee": "Paid",
+      "livree": "Delivered",
+      "annulee": "Cancelled",
+      "enAttente": "Pending",
+      "enCours": "In progress"
+    },
+    "derniersAchats": "Latest orders",
+    "voirTout": "View all",
+    "aucunAchat": "No order",
+    "derniersInscrits": "Latest members",
+    "aucunUtilisateur": "No user",
+    "admin": "Admin",
+    "membre": "Member",
+    "actionsRapides": "Quick actions",
+    "ajouterLivre": { "titre": "Add a book", "desc": "New publication" },
+    "gererMembres": { "titre": "Manage members", "desc": "Change roles" },
+    "modererAvis": { "titre": "Moderate reviews", "desc": "{{count}} pending" },
+    "messages": {
+      "erreurChargementDonnees": "Error loading data"
+    }
+  },
+
+  "livres": {
+    "eyebrow": "Catalog",
+    "titre": "Manage books",
+    "livreAuTotal_one": "{{count}} book in total",
+    "livreAuTotal_other": "{{count}} books in total",
+    "nouveauLivre": "New book",
+    "rechercherPlaceholder": "Search a book (title, author)…",
+    "entetes": {
+      "couverture": "Cover",
+      "titreAuteur": "Title / Author",
+      "prix": "Price",
+      "statut": "Status",
+      "actions": "Actions"
+    },
+    "gratuit": "Free",
+    "publie": "Published",
+    "brouillon": "Draft",
+    "depublier": "Unpublish",
+    "publier": "Publish",
+    "modifierTitle": "Edit",
+    "supprimerTitle": "Delete",
+    "aucunLivreTrouve": "No book found",
+    "modal": {
+      "modifierLeLivre": "Edit book",
+      "ajouterUnLivre": "Add a book",
+      "sectionInformations": "Book information",
+      "sectionVisuels": "Book visuals",
+      "sectionVisuelsDesc": "Manage the images shown on the book page: front cover, back cover, table of contents pages.",
+      "sectionFichiers": "Files",
+      "sectionFichiersDesc": "The ebook file (PDF/EPUB) sold to readers and the free reading excerpt shown to visitors.",
+      "titreLabel": "Title *",
+      "auteurLabel": "Author *",
+      "descriptionLabel": "Description",
+      "prixLabel": "Price (XAF)",
+      "langueLabel": "Language",
+      "isbnLabel": "ISBN",
+      "collectionLabel": "Collection",
+      "selectionner": "Select…",
+      "imageCouvertureLabel": "Front cover",
+      "quatriemeCouvertureLabel": "Back cover",
+      "sommaireLabel": "Table of contents",
+      "extraitLabel": "Excerpt",
+      "voirExtrait": "View current excerpt",
+      "apercu": "Preview",
+      "aucuneImage": "No image",
+      "ajouterImage": "Add an image",
+      "remplacerImage": "Replace",
+      "ajouterDesImages": "Add images",
+      "aucunSommaire": "No image",
+      "chargement": "Loading…",
+      "fichierEbookLabel": "Ebook file",
+      "aucunFichierEbook": "No ebook file uploaded",
+      "ajouterFichierEbook": "Add a file (PDF or EPUB)",
+      "remplacerFichier": "Replace this file",
+      "aucunExtrait": "No excerpt uploaded",
+      "ajouterExtrait": "Add an excerpt (DOCX or PDF)",
+      "remplacerExtrait": "Replace excerpt",
+      "livreGratuit": "Free book"
+    },
+    "messages": {
+      "impossibleChargerCatalogue": "Unable to load the catalog",
+      "imagePngJpegUniquement": "PNG or JPEG image only",
+      "fichierPdfEpubUniquement": "PDF or EPUB file only",
+      "fichierExtraitInvalide": "DOCX or PDF file only",
+      "erreurEnvoiPdf": "Error uploading PDF file",
+      "erreurEnvoiImage": "Error uploading image",
+      "erreurEnvoiExtrait": "Error uploading excerpt",
+      "sommaireSupprime": "Table of contents image deleted",
+      "imageSupprimee": "Image deleted",
+      "extraitSupprime": "Excerpt deleted",
+      "fichierSupprime": "File deleted",
+      "fichierRemplace": "File replaced",
+      "confirmSuppressionVisuel": "Confirm deletion?",
+      "livreModifie": "Book updated",
+      "livreCree": "Book created",
+      "erreurSauvegarde": "Error saving",
+      "confirmSuppression": "Delete \"{{titre}}\"?",
+      "livreSupprime": "Book deleted",
+      "erreurSuppression": "Deletion error",
+      "livreDepublie": "Book unpublished",
+      "livrePublie": "Book published",
+      "erreurPublication": "Publication error"
+    }
+  },
+
+  "utilisateurs": {
+    "eyebrow": "Community",
+    "titre": "Manage users",
+    "membreAuTotal_one": "{{count}} member in total",
+    "membreAuTotal_other": "{{count}} members in total",
+    "nouvelUtilisateur": "New user",
+    "rechercherPlaceholder": "Search (name, first name, email)…",
+    "entetes": {
+      "utilisateur": "User",
+      "email": "Email",
+      "role": "Role",
+      "statut": "Status",
+      "inscription": "Joined",
+      "actions": "Actions"
+    },
+    "admin": "Admin",
+    "membre": "Member",
+    "actif": "Active",
+    "inactif": "Inactive",
+    "changerRoleTitle": "Change role",
+    "desactiverTitle": "Deactivate",
+    "activerTitle": "Activate",
+    "modifierTitle": "Edit",
+    "supprimerTitle": "Delete",
+    "aucunUtilisateur": "No user",
+    "modal": {
+      "modifier": "Edit",
+      "ajouterUnUtilisateur": "Add a user",
+      "prenomLabel": "First name *",
+      "nomLabel": "Last name *",
+      "emailLabel": "Email *",
+      "motDePasseLabel": "Password *"
+    },
+    "modalRole": {
+      "titre": "Change role",
+      "roleLabel": "Role",
+      "utilisateur": "User",
+      "administrateur": "Administrator"
+    },
+    "messages": {
+      "erreurChargement": "Loading error",
+      "utilisateurModifie": "User updated",
+      "utilisateurCree": "User created",
+      "erreurSauvegarde": "Error saving",
+      "roleChangeEn": "Role changed to {{role}}",
+      "erreurChangementRole": "Error changing role",
+      "utilisateurDesactive": "User deactivated",
+      "utilisateurActive": "User activated",
+      "erreur": "Error",
+      "confirmSuppression": "Delete \"{{nom}}\"?",
+      "supprime": "Deleted",
+      "erreurSuppression": "Deletion error"
+    }
+  },
+
+  "commandes": {
+    "eyebrow": "Commerce",
+    "titre": "Manage orders",
+    "achatAuTotal_one": "{{count}} order in total",
+    "achatAuTotal_other": "{{count}} orders in total",
+    "actualiser": "Refresh",
+    "rechercherPlaceholder": "Search (ID, customer, email)…",
+    "entetes": {
+      "id": "ID",
+      "client": "Customer",
+      "montant": "Amount",
+      "statut": "Status",
+      "date": "Date",
+      "actions": "Actions"
+    },
+    "statuts": {
+      "enAttente": "Pending",
+      "payee": "Paid",
+      "livree": "Delivered",
+      "annulee": "Cancelled",
+      "enCours": "In progress"
+    },
+    "voirDetailsTitle": "View details",
+    "supprimerTitle": "Delete",
+    "aucunAchat": "No order",
+    "modal": {
+      "detailsAchat": "Order details",
+      "nomComplet": "Full name",
+      "email": "Email",
+      "date": "Date",
+      "statut": "Status",
+      "changerLeStatut": "Change status",
+      "articlesAchetes": "Purchased items",
+      "quantiteAbregee": "Qty: {{n}}",
+      "total": "Total",
+      "supprimer": "Delete",
+      "imprimer": "Print",
+      "fermer": "Close"
+    },
+    "messages": {
+      "erreurChargement": "Loading error",
+      "statutMisAJour": "Status updated: {{statut}}",
+      "erreurMiseAJour": "Update error",
+      "confirmSuppression": "Permanently delete this order?",
+      "achatSupprime": "Order deleted",
+      "erreurSuppression": "Deletion error"
+    }
+  },
+
+  "collections": {
+    "eyebrow": "Catalog",
+    "titre": "Manage collections",
+    "collectionAuTotal_one": "{{count}} collection in total",
+    "collectionAuTotal_other": "{{count}} collections in total",
+    "nouvelleCollection": "New collection",
+    "rechercherPlaceholder": "Search a collection…",
+    "modifierTitle": "Edit",
+    "supprimerTitle": "Delete",
+    "aucuneDescription": "No description",
+    "slug": "Slug: {{slug}}",
+    "sousCollection": "Under {{parent}}",
+    "principale": "Main",
+    "aucuneCollection": "No collection",
+    "modal": {
+      "modifierLaCollection": "Edit collection",
+      "ajouterUneCollection": "Add a collection",
+      "nomLabel": "Name *",
+      "nomPlaceholder": "E.g. Social Sciences",
+      "descriptionLabel": "Description",
+      "descriptionPlaceholder": "Collection description…",
+      "collectionParenteLabel": "Parent collection",
+      "aucunePrincipale": "None (main)"
+    },
+    "messages": {
+      "erreurChargement": "Loading error",
+      "collectionModifiee": "Collection updated",
+      "collectionCreee": "Collection created",
+      "erreurSauvegarde": "Save error",
+      "confirmSuppression": "Delete \"{{nom}}\"?",
+      "supprimee": "Deleted",
+      "erreurSuppression": "Deletion error"
+    }
+  },
+
+  "avis": {
+    "eyebrow": "Moderation",
+    "titre": "Manage reviews",
+    "avisEnAttente_one": "{{count}} review pending",
+    "avisEnAttente_other": "{{count}} reviews pending",
+    "rechercherPlaceholder": "Search (book, author, comment)…",
+    "filtres": {
+      "tous": "All",
+      "enAttenteAvecCount": "Pending ({{count}})",
+      "approuves": "Approved"
+    },
+    "noteLabels": {
+      "1": "Very poor",
+      "2": "Poor",
+      "3": "Average",
+      "4": "Good",
+      "5": "Excellent"
+    },
+    "aucunAvisCorrespond": "No reviews match the criteria",
+    "livre": "Book: {{titre}}",
+    "aucunCommentaire": "No comment",
+    "approuve": "✓ Approved",
+    "enAttenteModeration": "⏳ Pending moderation",
+    "modal": {
+      "detailsAvis": "Review details",
+      "note": "Rating",
+      "commentaire": "Comment",
+      "approuver": "Approve",
+      "supprimer": "Delete",
+      "fermer": "Close"
+    },
+    "messages": {
+      "erreurChargement": "Loading error",
+      "avisApprouve": "Review approved",
+      "erreur": "Error",
+      "confirmSuppression": "Delete this review?",
+      "avisSupprime": "Review deleted"
+    }
+  },
+
+  "statistiques": {
+    "eyebrow": "Analytics",
+    "titre": "Global statistics",
+    "chargement": "Loading statistics…",
+    "actualiser": "Refresh",
+    "exporterPdf": "Export as PDF",
+    "generationEnCours": "Generating…",
+    "mois": ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+    "onglets": {
+      "apercu": "Overview",
+      "paiements": "Payments & conversion",
+      "revenu": "Revenue & sales",
+      "catalogue": "Catalog",
+      "lecture": "Reading & engagement",
+      "activite": "Recent activity"
+    },
+    "cartes": {
+      "livres": { "label": "Books", "sub": "{{count}} published" },
+      "utilisateurs": { "label": "Users", "sub": "{{count}} active" },
+      "achats": { "label": "Orders", "sub": "{{count}} paid" },
+      "caTotal": { "label": "Total revenue", "sub": "avg: {{montant}} XAF" },
+      "avis": { "label": "Reviews", "sub": "{{approuves}} approved • {{note}}/5" },
+      "telechargements": { "label": "Downloads", "sub": "files downloaded" },
+      "exemplairesVendus": { "label": "Copies sold", "sub": "paid books, in units" },
+      "montantEncaisse": { "label": "Amount from paid books", "sub": "paid orders only" }
+    },
+    "cartesPaiements": {
+      "tauxReussite": { "label": "Payment success rate", "sub": "on completed payments (successful/failed)" },
+      "conversionPaye": { "label": "Order → paid conversion", "sub": "share of orders that complete" },
+      "fraisMoyen": { "label": "Average HR-Skills Pay fee", "sub": "per attempted transaction" },
+      "achatsBloques": { "label": "Stuck orders", "sub": "pending for over 5 min" },
+      "panierMoyenPaye": { "label": "Average paid basket", "sub": "paid orders only" }
+    },
+    "cartesEngagement": {
+      "retention": { "label": "30-day retention", "sub": "users who ordered recently" },
+      "conversionGratuits": { "label": "Free books conversion", "sub": "free books already viewed/added" },
+      "conversionPayants": { "label": "Paid books conversion", "sub": "paid books already bought" },
+      "completionMoyenne": { "label": "Average completion", "sub": "average reading progress" },
+      "achetesJamaisLus": { "label": "Bought but never read", "sub": "users concerned" },
+      "lecturesEnLigne": { "label": "Online reads", "sub": "vs {{count}} downloads" }
+    },
+    "sections": {
+      "croissancePlateforme": "Platform growth",
+      "croissanceSousTitre": "New orders and new members, last 6 months",
+      "achats": "Orders",
+      "nouveauxMembres": "New members",
+      "repartitionLivres": "Book breakdown",
+      "statutAchats": "Order status",
+      "activite30j": "Activity — last 30 days",
+      "nouveauxAchats": "New orders",
+      "reussitePaiements": "Payment success",
+      "parOperateur": "By operator",
+      "parDevise": "By currency",
+      "revenu6mois": "Revenue — last 6 months with sales",
+      "topVentes": "Top 5 — Best-selling books",
+      "topRentables": "Top 5 — Most profitable books",
+      "livresJamaisVendus": "Never-sold books",
+      "tousVendus": "All books have sold at least once 🎉",
+      "conversionParType": "Conversion by book type",
+      "gratuitsConsultes": "Free books viewed/added",
+      "payantsAchetes": "Paid books bought",
+      "topLus": "Top 5 — Most read books",
+      "lectureEnLigneVsTelechargement": "Online reading vs downloads",
+      "activiteRecente": "Recent activity",
+      "aucuneActivite": "No activity",
+      "reussis": "Successful",
+      "echoues": "Failed",
+      "gratuits": "Free",
+      "payants": "Paid",
+      "lecturesEnLigneLabel": "Online reads",
+      "telechargementsLabel": "Downloads"
+    },
+    "livreSupprime": "Deleted book",
+    "utilisateurSupprime": "Deleted user",
+    "autre": "Other",
+    "unites": {
+      "vendu_one": "{{count}} sold",
+      "vendu_other": "{{count}} sold",
+      "session_one": "{{count}} session",
+      "session_other": "{{count}} sessions"
+    },
+    "gratuit": "Free",
+    "rapport": {
+      "titre": "Statistics report",
+      "genereLe": "Generated on",
+      "tableauDeBord": "Dashboard — SAGESSE AFRICAINE",
+      "achatsAuTotal": "Orders in total",
+      "montantEncaisse": "Amount collected",
+      "utilisateurs": "Users",
+      "pied": "SAGESSE AFRICAINE — Report automatically generated from the admin area"
+    },
+    "messages": {
+      "erreurChargement": "Loading error",
+      "rapportGenere": "PDF report generated",
+      "erreurGenerationPdf": "Error generating PDF"
+    }
+  }
+}

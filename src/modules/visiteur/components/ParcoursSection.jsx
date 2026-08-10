@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { ArrowRight, BookOpen, Users, Feather, Globe, Heart, Lightbulb } from 'lucide-react';
 import api from '../../../services/api';
 
@@ -20,6 +21,7 @@ const palette = [
 ];
 
 const ParcoursSection = ({ livres = [] }) => {
+  const { t } = useTranslation('accueil');
   const [collections, setCollections] = useState([]);
 
   useEffect(() => {
@@ -37,17 +39,16 @@ const ParcoursSection = ({ livres = [] }) => {
         {/* En-tête */}
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-12">
           <div>
-            <span className="section-eyebrow">Parcours de lecture</span>
+            <span className="section-eyebrow">{t('parcours.eyebrow')}</span>
             <h2 className="section-title mt-2">
-              Choisissez votre chemin
+              {t('parcours.titre')}
             </h2>
             <p className="text-brown-500 mt-3 max-w-lg text-sm leading-relaxed">
-              Nos collections organisent les savoirs africains par grands thèmes.
-              Suivez un parcours ou construisez le vôtre.
+              {t('parcours.sousTitre')}
             </p>
           </div>
           <Link to="/livres" className="btn-outline flex-shrink-0 text-sm">
-            Voir tout <ArrowRight className="w-4 h-4" />
+            {t('parcours.voirTout')} <ArrowRight className="w-4 h-4" />
           </Link>
         </div>
 
@@ -82,7 +83,7 @@ const ParcoursSection = ({ livres = [] }) => {
                     </h3>
                     {count > 0 && (
                       <span className="text-xs text-brown-400 mt-0.5 block">
-                        {count} ouvrage{count > 1 ? 's' : ''}
+                        {t('parcours.ouvrage', { count })}
                       </span>
                     )}
                   </div>
@@ -113,7 +114,7 @@ const ParcoursSection = ({ livres = [] }) => {
 
                 {/* CTA */}
                 <div className={`flex items-center gap-1 text-xs font-semibold ${colors.text} group-hover:gap-2 transition-all`}>
-                  Commencer ce parcours
+                  {t('parcours.commencerParcours')}
                   <ArrowRight className="w-3.5 h-3.5" />
                 </div>
               </Link>

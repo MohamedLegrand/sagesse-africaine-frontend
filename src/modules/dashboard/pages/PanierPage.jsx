@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { FaBook, FaTrash, FaPlus, FaMinus, FaShoppingCart, FaCreditCard } from 'react-icons/fa';
 import api from '../../../services/api';
 import toast from 'react-hot-toast';
 import DashboardLayout from '../components/DashboardLayout';
 
 const PanierPage = () => {
+  const { t } = useTranslation('panier');
   const navigate = useNavigate();
   const [panier, setPanier] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -39,7 +41,7 @@ const PanierPage = () => {
       setPanier({ ...panierData });
     } catch (error) {
       console.error('Erreur chargement panier:', error);
-      toast.error('Erreur chargement du panier');
+      toast.error(t('messages.erreurChargement'));
     } finally {
       setLoading(false);
     }
@@ -53,9 +55,9 @@ const PanierPage = () => {
       await api.post('/panier/ajouter', { livre_id: livreId, quantite: nouvelleQuantite });
       await fetchPanier();
       window.dispatchEvent(new Event('cartUpdated'));
-      toast.success('Quantité mise à jour');
+      toast.success(t('messages.quantiteMiseAJour'));
     } catch {
-      toast.error('Erreur lors de la mise à jour');
+      toast.error(t('messages.erreurMiseAJour'));
     } finally {
       setUpdating(false);
     }
@@ -67,24 +69,24 @@ const PanierPage = () => {
       await api.delete(`/panier/retirer/${livreId}`);
       await fetchPanier();
       window.dispatchEvent(new Event('cartUpdated'));
-      toast.success('Article retiré');
+      toast.success(t('messages.articleRetire'));
     } catch {
-      toast.error('Erreur lors du retrait');
+      toast.error(t('messages.erreurRetrait'));
     } finally {
       setUpdating(false);
     }
   };
 
   const viderPanier = async () => {
-    if (!window.confirm('Voulez-vous vraiment vider votre panier ?')) return;
+    if (!window.confirm(t('messages.confirmViderPanier'))) return;
     setUpdating(true);
     try {
       await api.delete('/panier/vider');
       await fetchPanier();
       window.dispatchEvent(new Event('cartUpdated'));
-      toast.success('Panier vidé');
+      toast.success(t('messages.panierVideMessage'));
     } catch {
-      toast.error('Erreur lors du vidage');
+      toast.error(t('messages.erreurVidage'));
     } finally {
       setUpdating(false);
     }
@@ -99,9 +101,9 @@ const PanierPage = () => {
       <div className="container mx-auto max-w-6xl">
         <div className="mb-6">
           <h1 className="text-2xl font-playfair font-bold text-amber-800">
-            Mon panier
+            {t('titre')}
             {nombreLivres > 0 && (
-              <span className="text-lg text-amber-500 ml-2">({nombreLivres} article{nombreLivres > 1 ? 's' : ''})</span>
+              <span className="text-lg text-amber-500 ml-2">{t('article', { count: nombreLivres })}</span>
             )}
           </h1>
         </div>
@@ -113,10 +115,10 @@ const PanierPage = () => {
         ) : lignes.length === 0 ? (
           <div className="bg-white rounded-2xl shadow-lg p-12 text-center">
             <FaShoppingCart className="text-amber-300 text-6xl mx-auto mb-4" />
-            <h2 className="text-2xl font-playfair text-amber-700 mb-2">Votre panier est vide</h2>
-            <p className="text-gray-500 mb-6">Découvrez notre catalogue et ajoutez des livres</p>
+            <h2 className="text-2xl font-playfair text-amber-700 mb-2">{t('panierVide')}</h2>
+            <p className="text-gray-500 mb-6">{t('decouvrezCatalogue')}</p>
             <Link to="/dashboard/boutique" className="bg-gradient-to-r from-amber-600 to-amber-700 text-white px-6 py-3 rounded-xl font-semibold hover:shadow-lg transition inline-block">
-              Découvrir la boutique
+              {t('decouvrirBoutique')}
             </Link>
           </div>
         ) : (
@@ -148,7 +150,7 @@ const PanierPage = () => {
                     <div className="flex-1 min-w-0">
                       <Link to={`/dashboard/livre/${ligne.livre_id}`}>
                         <h3 className="font-playfair font-bold text-amber-800 hover:text-amber-600 transition line-clamp-2">
-                          {ligne.livre?.titre || 'Titre inconnu'}
+                          {ligne.livre?.titre || t('titreInconnu')}
                         </h3>
                       </Link>
                       {ligne.livre?.auteur && (
@@ -156,11 +158,11 @@ const PanierPage = () => {
                       )}
                       <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1">
                         <span className="text-amber-600 text-sm">
-                          Prix unitaire : <strong>{prixUnitaire.toLocaleString()} XAF</strong>
+                          {t('prixUnitaire')} <strong>{prixUnitaire.toLocaleString('fr-FR')} XAF</strong>
                         </span>
                         {ligne.quantite > 1 && (
                           <span className="text-amber-700 text-sm font-bold">
-                            Sous-total : {sousTotal.toLocaleString()} XAF
+                            {t('sousTotal')} {sousTotal.toLocaleString('fr-FR')} XAF
                           </span>
                         )}
                       </div>
@@ -168,22 +170,8 @@ const PanierPage = () => {
 
                     {/* Quantité + Actions */}
                     <div className="text-right flex-shrink-0">
-                      <div className="flex items-center gap-2 mb-3">
-                        <button
-                          onClick={() => updateQuantite(ligne.livre_id, ligne.quantite - 1)}
-                          disabled={updating}
-                          className="w-8 h-8 rounded-full bg-amber-100 text-amber-700 hover:bg-amber-200 transition flex items-center justify-center disabled:opacity-50"
-                        >
-                          <FaMinus className="text-xs" />
-                        </button>
-                        <span className="w-8 text-center text-amber-800 font-medium">{ligne.quantite}</span>
-                        <button
-                          onClick={() => updateQuantite(ligne.livre_id, ligne.quantite + 1)}
-                          disabled={updating}
-                          className="w-8 h-8 rounded-full bg-amber-100 text-amber-700 hover:bg-amber-200 transition flex items-center justify-center disabled:opacity-50"
-                        >
-                          <FaPlus className="text-xs" />
-                        </button>
+                      <div className="mb-3 text-amber-700 text-sm font-medium">
+                        {t('quantite')}
                       </div>
                       <button
                         onClick={() => retirerArticle(ligne.livre_id)}
@@ -191,7 +179,7 @@ const PanierPage = () => {
                         className="text-red-500 hover:text-red-600 text-sm flex items-center gap-1 ml-auto transition"
                       >
                         <FaTrash />
-                        Supprimer
+                        {t('supprimer')}
                       </button>
                     </div>
                   </div>
@@ -204,37 +192,37 @@ const PanierPage = () => {
                 className="text-red-500 hover:text-red-600 text-sm flex items-center gap-2 mt-4 transition"
               >
                 <FaTrash />
-                Vider le panier
+                {t('viderPanier')}
               </button>
             </div>
 
             {/* Récapitulatif */}
             <div className="lg:col-span-1">
               <div className="bg-white rounded-2xl shadow-lg p-6 sticky top-24">
-                <h3 className="text-xl font-playfair font-bold text-amber-800 mb-4">Récapitulatif</h3>
+                <h3 className="text-xl font-playfair font-bold text-amber-800 mb-4">{t('recapitulatif')}</h3>
                 <div className="space-y-3 border-b border-amber-100 pb-4 mb-4">
                   <div className="flex justify-between">
-                    <span className="text-gray-600">Sous-total</span>
-                    <span className="text-amber-800 font-medium">{total?.toLocaleString() || 0} XAF</span>
+                    <span className="text-gray-600">{t('sousTotal')}</span>
+                    <span className="text-amber-800 font-medium">{total?.toLocaleString('fr-FR') || 0} XAF</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-600">Frais de livraison</span>
-                    <span className="text-green-600">Gratuit</span>
+                    <span className="text-gray-600">{t('fraisLivraison')}</span>
+                    <span className="text-green-600">{t('gratuit')}</span>
                   </div>
                 </div>
                 <div className="flex justify-between mb-6">
-                  <span className="text-lg font-bold text-amber-800">Total</span>
-                  <span className="text-2xl font-bold text-amber-700">{total?.toLocaleString() || 0} XAF</span>
+                  <span className="text-lg font-bold text-amber-800">{t('total')}</span>
+                  <span className="text-2xl font-bold text-amber-700">{total?.toLocaleString('fr-FR') || 0} XAF</span>
                 </div>
                 <button
                   onClick={() => navigate('/dashboard/paiement')}
                   className="w-full bg-gradient-to-r from-amber-600 to-amber-700 text-white py-3 rounded-xl font-semibold hover:shadow-lg transition flex items-center justify-center gap-2"
                 >
                   <FaCreditCard />
-                  Procéder au paiement
+                  {t('procederAuPaiement')}
                 </button>
                 <Link to="/dashboard/boutique" className="block text-center text-amber-600 text-sm mt-4 hover:text-amber-700 transition">
-                  ← Continuer mes achats
+                  {t('continuerAchats')}
                 </Link>
               </div>
             </div>

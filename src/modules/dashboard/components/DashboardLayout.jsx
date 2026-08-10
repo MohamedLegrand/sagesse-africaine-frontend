@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import {
   LayoutDashboard, Store, Library, ShoppingBag, Clock,
   UserCircle, Settings, LogOut, Menu, X, ChevronRight, BookOpen
@@ -10,16 +11,17 @@ import toast from 'react-hot-toast';
 import ClocheNotification from '../../notification/components/ClocheNotification';
 
 const navItems = [
-  { path: '/dashboard',              label: 'Accueil',          icon: LayoutDashboard, exact: true },
-  { path: '/dashboard/boutique',     label: 'Boutique',         icon: Store },
-  { path: '/dashboard/bibliotheque', label: 'Ma bibliothèque',  icon: Library },
-  { path: '/dashboard/panier',       label: 'Mon panier',       icon: ShoppingBag, badge: 'cart' },
-  { path: '/dashboard/historique',   label: 'Historique',       icon: Clock },
-  { path: '/dashboard/profil',       label: 'Mon profil',       icon: UserCircle },
-  { path: '/dashboard/parametres',   label: 'Paramètres',       icon: Settings },
+  { path: '/dashboard',              key: 'accueil',      icon: LayoutDashboard, exact: true },
+  { path: '/dashboard/boutique',     key: 'boutique',     icon: Store },
+  { path: '/dashboard/bibliotheque', key: 'bibliotheque', icon: Library },
+  { path: '/dashboard/panier',       key: 'panier',       icon: ShoppingBag, badge: 'cart' },
+  { path: '/dashboard/historique',   key: 'historique',   icon: Clock },
+  { path: '/dashboard/profil',       key: 'profil',       icon: UserCircle },
+  { path: '/dashboard/parametres',   key: 'parametres',   icon: Settings },
 ];
 
 const DashboardLayout = ({ children }) => {
+  const { t } = useTranslation('dashboard');
   const navigate = useNavigate();
   const location = useLocation();
   const [user, setUser] = useState(null);
@@ -53,7 +55,7 @@ const DashboardLayout = ({ children }) => {
 
   const handleLogout = async () => {
     await authService.logout();
-    toast.success('Déconnexion réussie');
+    toast.success(t('layout.messages.deconnexionReussie'));
     navigate('/connexion');
   };
 
@@ -102,7 +104,7 @@ const DashboardLayout = ({ children }) => {
               className={active ? 'nav-item-active' : 'nav-item'}
             >
               <Icon className="w-4.5 h-4.5 flex-shrink-0" style={{ width: '18px', height: '18px' }} />
-              <span className="flex-1">{item.label}</span>
+              <span className="flex-1">{t(`layout.nav.${item.key}`)}</span>
               {badgeCount > 0 && (
                 <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded-full ${
                   active ? 'bg-white/30 text-white' : 'bg-terra-500 text-white'
@@ -122,7 +124,7 @@ const DashboardLayout = ({ children }) => {
           className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-red-600 hover:bg-red-50 transition-colors"
         >
           <LogOut style={{ width: '18px', height: '18px' }} className="flex-shrink-0" />
-          Déconnexion
+          {t('layout.deconnexion')}
         </button>
       </div>
     </div>
@@ -152,19 +154,22 @@ const DashboardLayout = ({ children }) => {
               />
               <div className="hidden sm:flex flex-col leading-none">
                 <span className="font-playfair text-base font-bold text-brown-950">SAGESSE AFRICAINE</span>
-                <span className="text-[11px] text-terra-500 tracking-widest uppercase">Mon espace</span>
+                <span className="text-[11px] text-terra-500 tracking-widest uppercase">{t('layout.monEspace')}</span>
               </div>
             </Link>
           </div>
 
           {/* Fil d'Ariane — page active */}
           <div className="hidden md:flex items-center gap-1 text-xs text-brown-400">
-            <Link to="/dashboard" className="hover:text-brown-700">Tableau de bord</Link>
+            <Link to="/dashboard" className="hover:text-brown-700">{t('layout.tableauDeBord')}</Link>
             {location.pathname !== '/dashboard' && (
               <>
                 <ChevronRight className="w-3 h-3" />
                 <span className="text-brown-600 font-medium capitalize">
-                  {navItems.find(n => n.path !== '/dashboard' && location.pathname.startsWith(n.path))?.label || ''}
+                  {(() => {
+                    const found = navItems.find(n => n.path !== '/dashboard' && location.pathname.startsWith(n.path));
+                    return found ? t(`layout.nav.${found.key}`) : '';
+                  })()}
                 </span>
               </>
             )}
@@ -262,7 +267,7 @@ const DashboardLayout = ({ children }) => {
                   )}
                 </div>
                 <span className="text-[10px] font-medium leading-none">
-                  {item.label.split(' ')[0]}
+                  {t(`layout.nav.${item.key}`).split(' ')[0]}
                 </span>
                 {active && (
                   <div className="absolute top-0 left-1/2 -translate-x-1/2 w-8 h-0.5 bg-terra-500 rounded-full" />

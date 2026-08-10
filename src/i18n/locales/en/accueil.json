@@ -1,0 +1,88 @@
+{
+  "footer": {
+    "description": "Pan-African publishing, printing and cultural distribution group. A people who master their knowledge also master their destiny.",
+    "navigation": "Navigation",
+    "contact": "Contact",
+    "ville": "Yaoundé, Cameroon",
+    "restezInforme": "Stay informed",
+    "newsletterTexte": "Get our latest releases and cultural news.",
+    "newsletterPlaceholder": "Your email address",
+    "sabonner": "Subscribe",
+    "droitsReserves": "All rights reserved",
+    "retourHaut": "Back to top",
+    "liens": {
+      "accueil": "Home",
+      "catalogue": "Catalogue",
+      "quiSommesNous": "About us",
+      "etreEdite": "Get published with us",
+      "contact": "Contact",
+      "confidentialite": "Privacy",
+      "mentionsLegales": "Legal notice",
+      "cgv": "Terms & conditions"
+    }
+  },
+  "hero": {
+    "eyebrow": "Pan-African publishing group",
+    "titrePart1": "African",
+    "titrePart2": "wisdom",
+    "titrePart3": "your heritage",
+    "sousTitre": "Pan-African platform for intellectual, scientific, cultural and educational production. Discover the knowledge that honors our continent.",
+    "explorerCatalogue": "Explore the catalogue",
+    "rejoindreCommunaute": "Join the community",
+    "citation": "\"A people who master their knowledge also master their destiny\"",
+    "stats": {
+      "ouvrages": "Published works",
+      "auteurs": "African authors",
+      "lecteurs": "Active readers",
+      "collections": "Collections"
+    }
+  },
+  "catalogue": {
+    "eyebrow": "Catalogue",
+    "titre": "Our catalogue",
+    "voirTout": "See all",
+    "tousLesLivres": "All books",
+    "voirPlus": "See more",
+    "ajouter": "Add",
+    "ajoute": "Added",
+    "aucunLivreCollection": "No books in this collection yet."
+  },
+  "parcours": {
+    "eyebrow": "Reading paths",
+    "titre": "Choose your path",
+    "sousTitre": "Our collections organize African knowledge by major themes. Follow a path or build your own.",
+    "voirTout": "See all",
+    "ouvrage_one": "{{count}} book",
+    "ouvrage_other": "{{count}} books",
+    "commencerParcours": "Start this path"
+  },
+  "onboarding": {
+    "eyebrow": "How it works",
+    "titreLigne1": "Start your journey",
+    "titreLigne2": "in 4 steps",
+    "sousTitre": "Joining the Sagesse Africaine community is simple, fast and free.",
+    "etapes": {
+      "compte": { "titre": "Create your account", "desc": "Free sign-up in 2 minutes. Access your personal space and track your reading." },
+      "explorer": { "titre": "Explore our collections", "desc": "Browse over 15 themed collections and find the books that suit you." },
+      "acheter": { "titre": "Buy easily", "desc": "Secure payment by card, Orange Money or MTN Mobile Money. Instant delivery." },
+      "lire": { "titre": "Read & progress", "desc": "Access your books from any device. Track your progress and notes." }
+    },
+    "creerCompteGratuit": "Create my free account",
+    "dejaMembre": "Already a member?",
+    "seConnecter": "Log in"
+  },
+  "valeur": {
+    "eyebrow": "Why choose us",
+    "titreLigne1": "A library",
+    "titreLigne2": "built for Africa",
+    "texte": "Sagesse Africaine is not an ordinary bookstore. It's an editorial project that puts African culture and intelligence at its center. Every book published is an act of intellectual sovereignty.",
+    "citation": "\"Culture is the most powerful weapon to change the world\"",
+    "citationAuteur": "— Nelson Mandela",
+    "items": {
+      "authenticite": { "titre": "African authenticity", "desc": "Works written by and for Africans. Rigorous curation that highlights our ancestral and contemporary knowledge.", "statLabel": "African authors" },
+      "portee": { "titre": "Pan-African reach", "desc": "From Dakar to Nairobi, from Lagos to Yaoundé — our authors come from across the continent and the diaspora.", "statLabel": "countries represented" },
+      "acces": { "titre": "Instant access", "desc": "Buy and read immediately. Our e-books are available on all your devices, online and offline.", "statLabel": "access time" },
+      "paiement": { "titre": "Secure local payment", "desc": "Orange Money, MTN Mobile Money, bank card — pay with the methods you know, safely.", "statLabel": "payment methods" }
+    }
+  }
+}
