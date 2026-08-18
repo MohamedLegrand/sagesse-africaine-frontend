@@ -137,7 +137,7 @@ const Header = () => {
         {/* LOGO */}
         <Link to="/" className="flex items-center gap-3 flex-shrink-0 group">
           <img
-            src="/images/logo.png"
+            src="/images/logo.jpeg"
             alt="SAGESSE AFRICAINE"
             className="h-14 w-auto"
             onError={(e) => {

@@ -6,6 +6,8 @@
   "livreTrouve_other": "{{count}} livres trouvés",
   "aucunLivreTrouve": "Aucun livre trouvé",
   "essayezModifierRecherche": "Essayez de modifier vos critères de recherche",
+  "aucunLivreCollection": "Aucun livre de cette collection disponible pour le moment",
+  "revenirCatalogueComplet": "Voir tout le catalogue",
   "gratuit": "Gratuit",
   "ajouter": "Ajouter",
   "avis": "avis",

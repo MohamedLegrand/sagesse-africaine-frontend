@@ -314,7 +314,7 @@ const GestionLivresPage = () => {
     e.preventDefault(); setSubmitting(true);
     try {
       let livreId = editingLivre?.id;
-      const payload = { titre: formData.titre, auteur: formData.auteur, description: formData.description, prix: formData.prix, est_gratuit: formData.est_gratuit, langue: formData.langue, isbn: formData.isbn, couverture_url: formData.couverture_url, collection_id: formData.collection_id };
+      const payload = { titre: formData.titre, auteur: formData.auteur, description: formData.description, prix: formData.prix, est_gratuit: formData.est_gratuit, langue: formData.langue, isbn: formData.isbn, couverture_url: formData.couverture_url, collection_id: formData.collection_id || null };
       if (editingLivre) { await api.put(`/livres/${editingLivre.id}`, payload); toast.success(t('livres.messages.livreModifie')); }
       else { const r = await api.post('/livres/', payload); livreId = r.data.id; toast.success(t('livres.messages.livreCree')); }
       if (selectedPdf && livreId) await uploadPdf(livreId);

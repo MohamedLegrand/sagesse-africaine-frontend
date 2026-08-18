@@ -157,6 +157,7 @@
     "membreAuTotal_one": "{{count}} membre au total",
     "membreAuTotal_other": "{{count}} membres au total",
     "nouvelUtilisateur": "Nouvel utilisateur",
+    "creerCompteAdmin": "Créer un compte admin",
     "rechercherPlaceholder": "Rechercher (nom, prénom, email)…",
     "entetes": {
       "utilisateur": "Utilisateur",
@@ -190,10 +191,20 @@
       "utilisateur": "Utilisateur",
       "administrateur": "Administrateur"
     },
+    "modalAdmin": {
+      "titre": "Créer un compte admin",
+      "genererMotDePasse": "Générer un mot de passe sécurisé",
+      "motDePasseAide": "Au moins 8 caractères. Utilisez le générateur pour un mot de passe robuste.",
+      "afficherMasquer": "Afficher / masquer",
+      "copier": "Copier",
+      "creer": "Créer le compte admin"
+    },
     "messages": {
       "erreurChargement": "Erreur chargement",
       "utilisateurModifie": "Utilisateur modifié",
       "utilisateurCree": "Utilisateur créé",
+      "adminCree": "Compte admin créé",
+      "motDePasseCopie": "Mot de passe copié",
       "erreurSauvegarde": "Erreur lors de la sauvegarde",
       "roleChangeEn": "Rôle changé en {{role}}",
       "erreurChangementRole": "Erreur changement rôle",
@@ -269,6 +280,8 @@
     "sousCollection": "Sous {{parent}}",
     "principale": "Principale",
     "aucuneCollection": "Aucune collection",
+    "gererLivres": "Gérer les livres",
+    "gererLivresTitle": "Gérer les livres",
     "modal": {
       "modifierLaCollection": "Modifier la collection",
       "ajouterUneCollection": "Ajouter une collection",
@@ -277,7 +290,16 @@
       "descriptionLabel": "Description",
       "descriptionPlaceholder": "Description de la collection…",
       "collectionParenteLabel": "Collection parente",
-      "aucunePrincipale": "Aucune (principale)"
+      "aucunePrincipale": "Aucune (principale)",
+      "gererLivres": "Livres de la collection",
+      "livresDansCollection_one": "{{count}} livre dans cette collection",
+      "livresDansCollection_other": "{{count}} livres dans cette collection",
+      "aucunLivreDansCollection": "Aucun livre dans cette collection pour le moment",
+      "ajouterUnLivre": "Ajouter un livre",
+      "rechercherUnLivrePlaceholder": "Rechercher un livre par titre…",
+      "aucunLivreDisponible": "Aucun livre disponible",
+      "retirer": "Retirer",
+      "ajouter": "Ajouter"
     },
     "messages": {
       "erreurChargement": "Erreur chargement",
@@ -286,7 +308,12 @@
       "erreurSauvegarde": "Erreur sauvegarde",
       "confirmSuppression": "Supprimer \"{{nom}}\" ?",
       "supprimee": "Supprimée",
-      "erreurSuppression": "Erreur suppression"
+      "erreurSuppression": "Erreur suppression",
+      "erreurChargementLivres": "Impossible de charger les livres",
+      "livreAjoute": "Livre ajouté à la collection",
+      "livreRetire": "Livre retiré de la collection",
+      "erreurAjoutLivre": "Erreur lors de l'ajout du livre",
+      "erreurRetraitLivre": "Erreur lors du retrait du livre"
     }
   },
 
@@ -337,6 +364,15 @@
     "actualiser": "Actualiser",
     "exporterPdf": "Exporter en PDF",
     "generationEnCours": "Génération…",
+    "periodeLabel": "Période :",
+    "periodes": {
+      "1m": "1 mois",
+      "2m": "2 mois",
+      "3m": "3 mois",
+      "6m": "6 mois",
+      "1a": "1 an",
+      "tout": "Tout"
+    },
     "mois": ["Jan", "Fév", "Mar", "Avr", "Mai", "Jun", "Jul", "Aoû", "Sep", "Oct", "Nov", "Déc"],
     "onglets": {
       "apercu": "Vue d'ensemble",
@@ -388,6 +424,11 @@
       "topRentables": "Top 5 — Livres les plus rentables",
       "livresJamaisVendus": "Livres jamais vendus",
       "tousVendus": "Tous les livres ont été vendus au moins une fois 🎉",
+      "aucuneVentePeriode": "Aucune vente sur cette période",
+      "mieuxNotes": "Livres les mieux notés",
+      "moinsBienNotes": "Livres les moins bien notés",
+      "aucunAvis": "Pas encore d'avis sur ces livres",
+      "aucuneVenteJamais": "livres publiés sans aucune vente",
       "conversionParType": "Conversion par type de livre",
       "gratuitsConsultes": "Gratuits consultés/ajoutés",
       "payantsAchetes": "Payants achetés",
@@ -409,7 +450,9 @@
       "vendu_one": "{{count}} vendu",
       "vendu_other": "{{count}} vendus",
       "session_one": "{{count}} session",
-      "session_other": "{{count}} sessions"
+      "session_other": "{{count}} sessions",
+      "avis_one": "{{count}} avis",
+      "avis_other": "{{count}} avis"
     },
     "gratuit": "Gratuit",
     "rapport": {

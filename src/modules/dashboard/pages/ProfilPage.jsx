@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import {
-  FaUser, FaBook, FaHeart, FaShoppingCart, FaDownload,
+  FaUser, FaBook, FaHeart, FaShoppingCart,
   FaCog, FaUserCircle
 } from 'react-icons/fa';
 import api from '../../../services/api';
@@ -17,8 +17,7 @@ const ProfilPage = () => {
   const [livresAchetes, setLivresAchetes] = useState([]);
   const [favoris] = useState([]);
   const [commandes, setCommandes] = useState([]);
-  const [telechargements, setTelechargements] = useState([]);
-  const [stats, setStats] = useState({ livresAchetes: 0, commandes: 0, telechargements: 0, favoris: 0 });
+  const [stats, setStats] = useState({ livresAchetes: 0, commandes: 0, favoris: 0 });
 
   useEffect(() => {
     fetchAllData();
@@ -27,11 +26,10 @@ const ProfilPage = () => {
   const fetchAllData = async () => {
     setLoading(true);
     try {
-      const [userRes, accesRes, commandesRes, telechRes] = await Promise.all([
+      const [userRes, accesRes, commandesRes] = await Promise.all([
         api.get('/utilisateurs/me'),
         api.get('/acces-livres/mes-acces'),
         api.get('/commandes/mes-commandes'),
-        api.get('/historique-telechargements/mes-telechargements'),
       ]);
       setUser(userRes.data);
 
@@ -41,13 +39,9 @@ const ProfilPage = () => {
       const commandesData = commandesRes.data.commandes || [];
       setCommandes(commandesData);
 
-      const telechs = telechRes.data.historique || [];
-      setTelechargements(telechs);
-
       setStats({
         livresAchetes: livres.length,
         commandes: commandesData.length,
-        telechargements: telechs.length,
         favoris: 0,
       });
     } catch (error) {
@@ -63,7 +57,6 @@ const ProfilPage = () => {
     { id: 'bibliotheque', label: t('profil.onglets.bibliotheque'), icon: FaBook, count: stats.livresAchetes },
     { id: 'favoris', label: t('profil.onglets.favoris'), icon: FaHeart, count: stats.favoris },
     { id: 'commandes', label: t('profil.onglets.commandes'), icon: FaShoppingCart, count: stats.commandes },
-    { id: 'telechargements', label: t('profil.onglets.telechargements'), icon: FaDownload, count: stats.telechargements },
     { id: 'parametres', label: t('profil.onglets.parametres'), icon: FaCog },
   ];
 
@@ -73,7 +66,6 @@ const ProfilPage = () => {
       case 'bibliotheque': return <BibliothequeContent livres={livresAchetes} />;
       case 'favoris': return <FavorisContent />;
       case 'commandes': return <CommandesContent commandes={commandes} />;
-      case 'telechargements': return <TelechargementsContent telechargements={telechargements} />;
       case 'parametres': return <ParametresContent user={user} onUpdate={fetchAllData} />;
       default: return <ProfilContent user={user} />;
     }
@@ -162,33 +154,6 @@ const ProfilContent = ({ user }) => {
 
 const BibliothequeContent = ({ livres }) => {
   const { t } = useTranslation('dashboard');
-  const handleDownload = async (livreId, livreTitre) => {
-    try {
-      const fichiersRes = await api.get(`/fichiers-livres/${livreId}`);
-      const fichiers = fichiersRes.data.fichiers || [];
-      if (fichiers.length > 0) {
-        const response = await api.get(`/fichiers-livres/${livreId}/telecharger/${fichiers[0].id}`, {
-          params: { mode: 'telechargement' },
-          responseType: 'blob',
-        });
-        const url = window.URL.createObjectURL(new Blob([response.data]));
-        const link = document.createElement('a');
-        link.href = url;
-        link.setAttribute('download', `${livreTitre}.pdf`);
-        document.body.appendChild(link);
-        link.click();
-        link.remove();
-        window.URL.revokeObjectURL(url);
-        toast.success(t('profil.bibliothequeContent.messages.telechargementCommence'));
-      }
-    } catch (error) {
-      if (error?.response?.status === 429) {
-        toast.error(t('profil.bibliothequeContent.messages.limiteAtteinte'));
-      } else {
-        toast.error(t('profil.bibliothequeContent.messages.erreurTelechargement'));
-      }
-    }
-  };
 
   if (livres.length === 0) {
     return (
@@ -224,12 +189,9 @@ const BibliothequeContent = ({ livres }) => {
               </p>
             </div>
             <div className="flex gap-2">
-              <Link to={`/dashboard/livre/${access.livre_id}`} className="px-4 py-2 bg-amber-100 text-amber-700 rounded-lg text-sm hover:bg-amber-200 transition">
+              <Link to={`/dashboard/livre/${access.livre_id}`} className="px-4 py-2 bg-gradient-to-r from-amber-600 to-amber-700 text-white rounded-lg text-sm hover:shadow-lg transition">
                 {t('profil.bibliothequeContent.lire')}
               </Link>
-              <button onClick={() => handleDownload(access.livre_id, livre?.titre)} className="px-4 py-2 bg-gradient-to-r from-amber-600 to-amber-700 text-white rounded-lg text-sm hover:shadow-lg transition">
-                {t('profil.bibliothequeContent.telecharger')}
-              </button>
             </div>
           </div>
         );
@@ -303,55 +265,6 @@ const CommandesContent = ({ commandes }) => {
           </div>
         </div>
       ))}
-    </div>
-  );
-};
-
-const TelechargementsContent = ({ telechargements }) => {
-  const { t: tr } = useTranslation('dashboard');
-  if (telechargements.length === 0) {
-    return (
-      <div className="text-center py-12">
-        <FaDownload className="text-amber-300 text-6xl mx-auto mb-4" />
-        <h3 className="text-xl font-playfair text-amber-700 mb-2">{tr('profil.telechargementsContent.aucunTelechargement')}</h3>
-        <p className="text-gray-500">{tr('profil.telechargementsContent.pasEncoreTelecharge')}</p>
-      </div>
-    );
-  }
-
-  const entetes = tr('profil.telechargementsContent.entetes', { returnObjects: true });
-
-  return (
-    <div className="overflow-x-auto">
-      <table className="w-full">
-        <thead className="bg-amber-50">
-          <tr>
-            {[entetes.livre, entetes.format, entetes.date, entetes.appareil, entetes.action].map(h => (
-              <th key={h} className="text-left p-3 text-amber-700">{h}</th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {telechargements.map((dl) => (
-            <tr key={dl.id} className="border-b border-amber-100">
-              <td className="p-3">
-                <p className="font-medium text-amber-800">{dl.livre?.titre || tr('profil.telechargementsContent.inconnu')}</p>
-                <p className="text-xs text-gray-500">{dl.livre?.auteur}</p>
-              </td>
-              <td className="p-3">
-                <span className="text-xs px-2 py-1 bg-amber-100 text-amber-700 rounded-full">
-                  {dl.format?.toUpperCase() || 'PDF'}
-                </span>
-              </td>
-              <td className="p-3 text-gray-600">{new Date(dl.telecharge_le).toLocaleDateString('fr-FR')}</td>
-              <td className="p-3 text-gray-600">{dl.appareil || tr('profil.telechargementsContent.inconnu')}</td>
-              <td className="p-3 text-center">
-                <Link to={`/dashboard/livre/${dl.livre_id}`} className="text-amber-600 hover:text-amber-700">{tr('profil.telechargementsContent.voir')}</Link>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
     </div>
   );
 };

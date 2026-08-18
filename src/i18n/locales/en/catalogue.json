@@ -6,6 +6,8 @@
   "livreTrouve_other": "{{count}} books found",
   "aucunLivreTrouve": "No book found",
   "essayezModifierRecherche": "Try adjusting your search criteria",
+  "aucunLivreCollection": "No books in this collection available at the moment",
+  "revenirCatalogueComplet": "View the full catalog",
   "gratuit": "Free",
   "ajouter": "Add",
   "avis": "reviews",

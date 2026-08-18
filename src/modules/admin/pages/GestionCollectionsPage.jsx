@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Library, Plus, Edit2, Trash2, Search, Check, X } from 'lucide-react';
+import { Library, Plus, Edit2, Trash2, Search, Check, X, BookOpen, Minus } from 'lucide-react';
 import api from '../../../services/api';
 import toast from 'react-hot-toast';
 import AdminLayout from '../components/AdminLayout';
@@ -17,6 +17,13 @@ const GestionCollectionsPage = () => {
   const [formData, setFormData] = useState({ nom: '', description: '', collection_parent_id: '' });
   const [submitting, setSubmitting] = useState(false);
   const [parentCollections, setParentCollections] = useState([]);
+
+  const [showLivresModal, setShowLivresModal] = useState(false);
+  const [collectionLivres, setCollectionLivres] = useState(null);
+  const [tousLesLivres, setTousLesLivres] = useState([]);
+  const [loadingLivres, setLoadingLivres] = useState(false);
+  const [rechercheLivre, setRechercheLivre] = useState('');
+  const [livreActionEnCours, setLivreActionEnCours] = useState(null);
 
   useEffect(() => { fetchCollections(); fetchParentCollections(); }, [page]);
 
@@ -62,6 +69,48 @@ const GestionCollectionsPage = () => {
 
   const getParentName = (parentId) => parentCollections.find(p => p.id === parentId)?.nom || t('collections.principale');
 
+  const openLivresModal = async (col) => {
+    setCollectionLivres(col);
+    setRechercheLivre('');
+    setShowLivresModal(true);
+    setLoadingLivres(true);
+    try {
+      const r = await api.get('/livres/admin', { params: { page: 1, taille: 500 } });
+      setTousLesLivres(r.data.livres || []);
+    } catch { toast.error(t('collections.messages.erreurChargementLivres')); }
+    finally { setLoadingLivres(false); }
+  };
+
+  const handleAjouterLivre = async (livre) => {
+    setLivreActionEnCours(livre.id);
+    try {
+      await api.put(`/livres/${livre.id}`, { collection_id: collectionLivres.id });
+      setTousLesLivres(prev => prev.map(l => (l.id === livre.id ? { ...l, collection_id: collectionLivres.id } : l)));
+      toast.success(t('collections.messages.livreAjoute'));
+    } catch { toast.error(t('collections.messages.erreurAjoutLivre')); }
+    finally { setLivreActionEnCours(null); }
+  };
+
+  const handleRetirerLivre = async (livre) => {
+    setLivreActionEnCours(livre.id);
+    try {
+      await api.delete(`/livres/${livre.id}/collection`);
+      setTousLesLivres(prev => prev.map(l => (l.id === livre.id ? { ...l, collection_id: null } : l)));
+      toast.success(t('collections.messages.livreRetire'));
+    } catch { toast.error(t('collections.messages.erreurRetraitLivre')); }
+    finally { setLivreActionEnCours(null); }
+  };
+
+  const livresDansCollection = collectionLivres
+    ? tousLesLivres.filter(l => l.collection_id === collectionLivres.id)
+    : [];
+  const livresDisponibles = collectionLivres
+    ? tousLesLivres.filter(l =>
+        l.collection_id !== collectionLivres.id &&
+        l.titre?.toLowerCase().includes(rechercheLivre.toLowerCase())
+      )
+    : [];
+
   const filtered = collections.filter(c =>
     c.nom?.toLowerCase().includes(searchTerm.toLowerCase()) ||
     c.description?.toLowerCase().includes(searchTerm.toLowerCase())
@@ -101,6 +150,9 @@ const GestionCollectionsPage = () => {
                     <h3 className="font-playfair font-bold text-white text-base">{col.nom}</h3>
                   </div>
                   <div className="flex gap-1.5">
+                    <button onClick={() => openLivresModal(col)} className="p-1.5 rounded-lg bg-white/10 hover:bg-white/20 transition-colors" title={t('collections.gererLivresTitle')}>
+                      <BookOpen className="w-3.5 h-3.5 text-white" />
+                    </button>
                     <button onClick={() => openEditModal(col)} className="p-1.5 rounded-lg bg-white/10 hover:bg-white/20 transition-colors" title={t('collections.modifierTitle')}>
                       <Edit2 className="w-3.5 h-3.5 text-white" />
                     </button>
@@ -111,12 +163,15 @@ const GestionCollectionsPage = () => {
                 </div>
                 <div className="p-4">
                   <p className="text-brown-500 text-sm mb-3 min-h-[40px]">{col.description || t('collections.aucuneDescription')}</p>
-                  <div className="flex items-center justify-between text-xs">
+                  <div className="flex items-center justify-between text-xs mb-3">
                     <span className="text-brown-300">{t('collections.slug', { slug: col.slug || '—' })}</span>
                     <span className="text-terra-500 font-medium">
                       {col.collection_parent_id ? t('collections.sousCollection', { parent: getParentName(col.collection_parent_id) }) : t('collections.principale')}
                     </span>
                   </div>
+                  <button onClick={() => openLivresModal(col)} className="w-full flex items-center justify-center gap-1.5 py-2 rounded-lg bg-cream-100 hover:bg-cream-200 text-brown-600 text-xs font-semibold transition-colors">
+                    <BookOpen className="w-3.5 h-3.5" /> {t('collections.gererLivres')}
+                  </button>
                 </div>
               </div>
             ))}
@@ -163,6 +218,91 @@ const GestionCollectionsPage = () => {
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* Modal gestion des livres d'une collection */}
+      {showLivresModal && collectionLivres && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-2xl max-w-2xl w-full shadow-2xl max-h-[85vh] flex flex-col">
+            <div className="flex items-center justify-between p-6 border-b border-cream-200 flex-shrink-0">
+              <div>
+                <h2 className="font-playfair text-xl font-bold text-brown-950">{t('collections.modal.gererLivres')}</h2>
+                <p className="text-brown-400 text-sm mt-0.5">{collectionLivres.nom}</p>
+              </div>
+              <button onClick={() => setShowLivresModal(false)} className="p-1.5 rounded-lg hover:bg-cream-100"><X className="w-5 h-5 text-brown-500" /></button>
+            </div>
+
+            {loadingLivres ? (
+              <div className="flex justify-center py-16"><div className="w-10 h-10 border-4 border-terra-500 border-t-transparent rounded-full animate-spin" /></div>
+            ) : (
+              <div className="overflow-y-auto p-6 space-y-6">
+                {/* Livres déjà dans la collection */}
+                <div>
+                  <h3 className="text-sm font-semibold text-brown-700 uppercase tracking-wide mb-3">
+                    {t('collections.modal.livresDansCollection', { count: livresDansCollection.length })}
+                  </h3>
+                  {livresDansCollection.length === 0 ? (
+                    <p className="text-sm text-brown-300 italic">{t('collections.modal.aucunLivreDansCollection')}</p>
+                  ) : (
+                    <div className="space-y-2">
+                      {livresDansCollection.map(livre => (
+                        <div key={livre.id} className="flex items-center justify-between gap-3 bg-cream-50 rounded-lg px-3 py-2">
+                          <div className="min-w-0">
+                            <p className="text-sm font-medium text-brown-800 truncate">{livre.titre}</p>
+                            <p className="text-xs text-brown-400 truncate">{livre.auteur}</p>
+                          </div>
+                          <button
+                            onClick={() => handleRetirerLivre(livre)}
+                            disabled={livreActionEnCours === livre.id}
+                            className="flex-shrink-0 flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-white border border-cream-200 text-red-500 hover:bg-red-50 text-xs font-semibold transition-colors disabled:opacity-50"
+                          >
+                            <Minus className="w-3.5 h-3.5" /> {t('collections.modal.retirer')}
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+
+                {/* Ajouter des livres */}
+                <div>
+                  <h3 className="text-sm font-semibold text-brown-700 uppercase tracking-wide mb-3">{t('collections.modal.ajouterUnLivre')}</h3>
+                  <div className="relative mb-3">
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-brown-300" />
+                    <input
+                      type="text"
+                      placeholder={t('collections.modal.rechercherUnLivrePlaceholder')}
+                      value={rechercheLivre}
+                      onChange={(e) => setRechercheLivre(e.target.value)}
+                      className="input-field pl-10"
+                    />
+                  </div>
+                  {livresDisponibles.length === 0 ? (
+                    <p className="text-sm text-brown-300 italic">{t('collections.modal.aucunLivreDisponible')}</p>
+                  ) : (
+                    <div className="space-y-2 max-h-64 overflow-y-auto">
+                      {livresDisponibles.map(livre => (
+                        <div key={livre.id} className="flex items-center justify-between gap-3 bg-cream-50 rounded-lg px-3 py-2">
+                          <div className="min-w-0">
+                            <p className="text-sm font-medium text-brown-800 truncate">{livre.titre}</p>
+                            <p className="text-xs text-brown-400 truncate">{livre.auteur}</p>
+                          </div>
+                          <button
+                            onClick={() => handleAjouterLivre(livre)}
+                            disabled={livreActionEnCours === livre.id}
+                            className="flex-shrink-0 flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-terra-500 hover:bg-terra-600 text-white text-xs font-semibold transition-colors disabled:opacity-50"
+                          >
+                            <Plus className="w-3.5 h-3.5" /> {t('collections.modal.ajouter')}
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
           </div>
         </div>
       )}

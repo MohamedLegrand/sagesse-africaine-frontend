@@ -86,9 +86,9 @@ const ConnexionPage = () => {
           <div className="hidden lg:flex flex-col justify-between bg-brown-950 p-12 xl:p-16">
             <Link to="/" className="flex items-center gap-3">
               <img
-                src="/images/logo.png"
+                src="/images/logo.jpeg"
                 alt="SAGESSE AFRICAINE"
-                className="h-14 w-auto brightness-0 invert"
+                className="h-14 w-auto rounded-lg"
                 onError={(e) => { e.target.style.display = 'none'; }}
               />
               <div>

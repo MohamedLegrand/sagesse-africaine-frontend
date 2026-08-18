@@ -5,12 +5,12 @@ import { Mail, Phone, MapPin, BookOpen, ArrowUp } from 'lucide-react';
 import { FaFacebook, FaWhatsapp, FaYoutube, FaInstagram, FaLinkedin, FaTelegram } from 'react-icons/fa';
 
 const socialLinks = [
-  { icon: FaFacebook,  href: 'https://facebook.com',              label: 'Facebook'  },
-  { icon: FaWhatsapp,  href: 'https://wa.me/237677314412',        label: 'WhatsApp'  },
-  { icon: FaYoutube,   href: 'https://youtube.com',               label: 'YouTube'   },
-  { icon: FaInstagram, href: 'https://instagram.com',             label: 'Instagram' },
-  { icon: FaLinkedin,  href: 'https://linkedin.com',              label: 'LinkedIn'  },
-  { icon: FaTelegram,  href: 'https://t.me/sagesseafricaine',     label: 'Telegram'  },
+  { icon: FaFacebook,  label: 'Facebook'  },
+  { icon: FaWhatsapp,  label: 'WhatsApp'  },
+  { icon: FaYoutube,   label: 'YouTube'   },
+  { icon: FaInstagram, label: 'Instagram' },
+  { icon: FaLinkedin,  label: 'LinkedIn'  },
+  { icon: FaTelegram,  label: 'Telegram'  },
 ];
 
 const Footer = () => {
@@ -37,9 +37,9 @@ const Footer = () => {
           <div className="lg:col-span-1">
             <div className="flex items-center gap-3 mb-5">
               <img
-                src="/images/logo.png"
+                src="/images/logo.jpeg"
                 alt="SAGESSE AFRICAINE"
-                className="h-14 w-auto brightness-0 invert"
+                className="h-14 w-auto rounded-lg"
                 onError={(e) => { e.target.style.display = 'none'; }}
               />
               <div>
@@ -51,17 +51,14 @@ const Footer = () => {
               {t('footer.description')}
             </p>
             <div className="flex gap-2">
-              {socialLinks.map(({ icon: Icon, href, label }) => (
-                <a
+              {socialLinks.map(({ icon: Icon, label }) => (
+                <div
                   key={label}
-                  href={href}
-                  target="_blank"
-                  rel="noopener noreferrer"
                   aria-label={label}
-                  className="w-9 h-9 rounded-lg bg-brown-900 border border-brown-800 flex items-center justify-center text-brown-400 hover:text-white hover:border-terra-500 hover:bg-terra-500/20 transition-all duration-200"
+                  className="w-9 h-9 rounded-lg bg-brown-900 border border-brown-800 flex items-center justify-center text-brown-400"
                 >
                   <Icon className="w-4 h-4" />
-                </a>
+                </div>
               ))}
             </div>
           </div>
@@ -100,8 +97,8 @@ const Footer = () => {
               </li>
               <li className="flex items-center gap-3">
                 <Mail className="w-4 h-4 text-terra-400 flex-shrink-0" />
-                <a href="mailto:Marieconstantin51@yahoo.com" className="text-brown-400 hover:text-white text-sm transition-colors">
-                  Marieconstantin51@yahoo.com
+                <a href="mailto:contact@sagesseafricaine.org" className="text-brown-400 hover:text-white text-sm transition-colors">
+                  contact@sagesseafricaine.org
                 </a>
               </li>
               <li className="flex items-start gap-3">

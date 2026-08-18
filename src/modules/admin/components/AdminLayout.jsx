@@ -126,7 +126,7 @@ const AdminLayout = ({ children }) => {
             </button>
             <Link to="/admin" className="flex items-center gap-2.5">
               <img
-                src="/images/logo.png"
+                src="/images/logo.jpeg"
                 alt="SAGESSE AFRICAINE"
                 className="h-10 w-auto"
                 onError={(e) => { e.target.style.display = 'none'; }}

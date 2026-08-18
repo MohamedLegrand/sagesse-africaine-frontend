@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { FaBook, FaSearch, FaStar, FaStarHalfAlt, FaShoppingCart } from 'react-icons/fa';
 import Header from '../../visiteur/components/Header';
@@ -12,7 +12,10 @@ import { avecExtrait } from '../../../data/extraitsLivres';
 
 const NosLivresPage = () => {
   const { t } = useTranslation('catalogue');
+  const [searchParams] = useSearchParams();
+  const collectionId = searchParams.get('collection');
   const [livres, setLivres] = useState([]);
+  const [collections, setCollections] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [addingToCart, setAddingToCart] = useState(null);
@@ -22,7 +25,14 @@ const NosLivresPage = () => {
       .then((data) => setLivres((data.livres || []).map(avecExtrait)))
       .catch(() => toast.error(t('messages.impossibleChargerCatalogue')))
       .finally(() => setLoading(false));
+    api.get('/collections/')
+      .then((r) => setCollections(r.data.collections || []))
+      .catch(() => {});
   }, [t]);
+
+  const collectionActuelle = collectionId
+    ? collections.find((c) => c.id === collectionId)
+    : null;
 
   const handleAddToCart = async (livre) => {
     const token = localStorage.getItem('access_token');
@@ -62,8 +72,9 @@ const NosLivresPage = () => {
   };
 
   const livresFiltres = livres.filter(livre =>
-    livre.titre?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    livre.auteur?.toLowerCase().includes(searchTerm.toLowerCase())
+    (!collectionId || livre.collection_id === collectionId) &&
+    (livre.titre?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      livre.auteur?.toLowerCase().includes(searchTerm.toLowerCase()))
   );
 
   if (loading) {
@@ -87,10 +98,10 @@ const NosLivresPage = () => {
           {/* En-tête */}
           <div className="text-center mb-12">
             <h1 className="text-4xl md:text-5xl font-playfair font-bold text-amber-800 mb-4">
-              {t('titre')}
+              {collectionActuelle ? collectionActuelle.nom : t('titre')}
             </h1>
             <p className="text-amber-500 text-lg max-w-2xl mx-auto">
-              {t('sousTitre')}
+              {collectionActuelle?.description || t('sousTitre')}
             </p>
             <div className="flex items-center justify-center gap-2 mt-4">
               <div className="w-16 h-px bg-amber-300"></div>
@@ -124,8 +135,19 @@ const NosLivresPage = () => {
           {livresFiltres.length === 0 ? (
             <div className="bg-white rounded-2xl shadow-lg p-12 text-center">
               <FaBook className="text-amber-300 text-6xl mx-auto mb-4" />
-              <h2 className="text-2xl font-playfair text-amber-700 mb-2">{t('aucunLivreTrouve')}</h2>
-              <p className="text-gray-500">{t('essayezModifierRecherche')}</p>
+              {collectionId ? (
+                <>
+                  <h2 className="text-2xl font-playfair text-amber-700 mb-2">{t('aucunLivreCollection')}</h2>
+                  <Link to="/livres" className="text-amber-600 hover:text-amber-700 font-medium text-sm underline">
+                    {t('revenirCatalogueComplet')}
+                  </Link>
+                </>
+              ) : (
+                <>
+                  <h2 className="text-2xl font-playfair text-amber-700 mb-2">{t('aucunLivreTrouve')}</h2>
+                  <p className="text-gray-500">{t('essayezModifierRecherche')}</p>
+                </>
+              )}
             </div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">

@@ -71,7 +71,7 @@ const FormulaireInscription = ({ onSubmit, isLoading }) => {
               onChange={handleChange}
               required
               className="input-field pl-10"
-              placeholder="Jean"
+              placeholder="Madara"
               autoComplete="given-name"
             />
           </div>
@@ -88,7 +88,7 @@ const FormulaireInscription = ({ onSubmit, isLoading }) => {
               onChange={handleChange}
               required
               className="input-field pl-10"
-              placeholder="Dupont"
+              placeholder="Uchiwa"
               autoComplete="family-name"
             />
           </div>

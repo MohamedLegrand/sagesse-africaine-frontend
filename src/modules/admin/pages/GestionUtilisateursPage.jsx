@@ -1,9 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Users, Search, Edit2, Trash2, Check, X, UserCog, Ban, UserCheck } from 'lucide-react';
+import { Users, Search, Edit2, Trash2, Check, X, UserCog, Ban, UserCheck, ShieldPlus, Wand2, Eye, EyeOff, Copy } from 'lucide-react';
 import api from '../../../services/api';
 import toast from 'react-hot-toast';
 import AdminLayout from '../components/AdminLayout';
+
+const genererMotDePasseSecurise = () => {
+  const majuscules = 'ABCDEFGHJKLMNPQRSTUVWXYZ';
+  const minuscules = 'abcdefghjkmnpqrstuvwxyz';
+  const chiffres = '23456789';
+  const symboles = '!@#$%&*-_+=?';
+  const tousLesCaracteres = majuscules + minuscules + chiffres + symboles;
+  const tirerAuHasard = (jeu) => jeu[Math.floor(Math.random() * jeu.length)];
+  let motDePasse = [
+    tirerAuHasard(majuscules), tirerAuHasard(minuscules),
+    tirerAuHasard(chiffres), tirerAuHasard(symboles),
+  ];
+  for (let i = motDePasse.length; i < 14; i++) motDePasse.push(tirerAuHasard(tousLesCaracteres));
+  return motDePasse.sort(() => Math.random() - 0.5).join('');
+};
 
 const GestionUtilisateursPage = () => {
   const { t } = useTranslation('admin');
@@ -19,6 +34,10 @@ const GestionUtilisateursPage = () => {
   const [showRoleModal, setShowRoleModal] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
   const [newRole, setNewRole] = useState('');
+  const [showAdminModal, setShowAdminModal] = useState(false);
+  const [adminFormData, setAdminFormData] = useState({ prenom: '', nom: '', email: '', mot_de_passe: '' });
+  const [adminSubmitting, setAdminSubmitting] = useState(false);
+  const [motDePasseVisible, setMotDePasseVisible] = useState(false);
 
   useEffect(() => { fetchUtilisateurs(); }, [page]);
 
@@ -45,6 +64,38 @@ const GestionUtilisateursPage = () => {
   };
 
   const openRoleModal = (user) => { setSelectedUser(user); setNewRole(user.role); setShowRoleModal(true); };
+
+  const openAdminModal = () => {
+    setAdminFormData({ prenom: '', nom: '', email: '', mot_de_passe: '' });
+    setMotDePasseVisible(false);
+    setShowAdminModal(true);
+  };
+
+  const handleAdminInputChange = (e) => setAdminFormData(p => ({ ...p, [e.target.name]: e.target.value }));
+
+  const handleGenererMotDePasse = () => {
+    setAdminFormData(p => ({ ...p, mot_de_passe: genererMotDePasseSecurise() }));
+    setMotDePasseVisible(true);
+  };
+
+  const handleCopierMotDePasse = async () => {
+    try {
+      await navigator.clipboard.writeText(adminFormData.mot_de_passe);
+      toast.success(t('utilisateurs.messages.motDePasseCopie'));
+    } catch { /* presse-papiers indisponible, on ignore silencieusement */ }
+  };
+
+  const handleSubmitAdmin = async (e) => {
+    e.preventDefault(); setAdminSubmitting(true);
+    try {
+      await api.post('/utilisateurs/', {
+        email: adminFormData.email, mot_de_passe: adminFormData.mot_de_passe,
+        prenom: adminFormData.prenom, nom: adminFormData.nom, role: 'admin',
+      });
+      toast.success(t('utilisateurs.messages.adminCree'));
+      setShowAdminModal(false); fetchUtilisateurs();
+    } catch { toast.error(t('utilisateurs.messages.erreurSauvegarde')); } finally { setAdminSubmitting(false); }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault(); setSubmitting(true);
@@ -93,9 +144,14 @@ const GestionUtilisateursPage = () => {
           <h1 className="section-title mt-2">{t('utilisateurs.titre')}</h1>
           <p className="text-brown-400 text-sm mt-1">{t('utilisateurs.membreAuTotal', { count: total })}</p>
         </div>
-        <button onClick={openCreateModal} className="btn-primary text-sm flex-shrink-0">
-          <Users className="w-4 h-4" /> {t('utilisateurs.nouvelUtilisateur')}
-        </button>
+        <div className="flex gap-2 flex-shrink-0">
+          <button onClick={openAdminModal} className="btn-outline text-sm">
+            <ShieldPlus className="w-4 h-4" /> {t('utilisateurs.creerCompteAdmin')}
+          </button>
+          <button onClick={openCreateModal} className="btn-primary text-sm">
+            <Users className="w-4 h-4" /> {t('utilisateurs.nouvelUtilisateur')}
+          </button>
+        </div>
       </div>
 
       <div className="bg-white rounded-xl border border-cream-200 p-4 mb-6">
@@ -224,6 +280,65 @@ const GestionUtilisateursPage = () => {
                 </button>
               </div>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* Modal création compte admin */}
+      {showAdminModal && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-2xl max-w-md w-full shadow-2xl">
+            <div className="flex items-center justify-between p-6 border-b border-cream-200">
+              <div className="flex items-center gap-2.5">
+                <ShieldPlus className="w-5 h-5 text-terra-500" />
+                <h2 className="font-playfair text-xl font-bold text-brown-950">{t('utilisateurs.modalAdmin.titre')}</h2>
+              </div>
+              <button onClick={() => setShowAdminModal(false)} className="p-1.5 rounded-lg hover:bg-cream-100"><X className="w-5 h-5 text-brown-500" /></button>
+            </div>
+            <form onSubmit={handleSubmitAdmin} className="p-6 space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div><label className="input-label">{t('utilisateurs.modal.prenomLabel')}</label><input type="text" name="prenom" value={adminFormData.prenom} onChange={handleAdminInputChange} required className="input-field" /></div>
+                <div><label className="input-label">{t('utilisateurs.modal.nomLabel')}</label><input type="text" name="nom" value={adminFormData.nom} onChange={handleAdminInputChange} required className="input-field" /></div>
+              </div>
+              <div><label className="input-label">{t('utilisateurs.modal.emailLabel')}</label><input type="email" name="email" value={adminFormData.email} onChange={handleAdminInputChange} required className="input-field" /></div>
+              <div>
+                <div className="flex items-center justify-between">
+                  <label className="input-label">{t('utilisateurs.modal.motDePasseLabel')}</label>
+                  <button type="button" onClick={handleGenererMotDePasse} className="flex items-center gap-1 text-xs font-semibold text-terra-600 hover:text-terra-800">
+                    <Wand2 className="w-3.5 h-3.5" /> {t('utilisateurs.modalAdmin.genererMotDePasse')}
+                  </button>
+                </div>
+                <div className="relative">
+                  <input
+                    type={motDePasseVisible ? 'text' : 'password'}
+                    name="mot_de_passe"
+                    value={adminFormData.mot_de_passe}
+                    onChange={handleAdminInputChange}
+                    required
+                    minLength={8}
+                    className="input-field pr-20"
+                  />
+                  <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1">
+                    {adminFormData.mot_de_passe && (
+                      <button type="button" onClick={handleCopierMotDePasse} className="p-1.5 rounded-lg hover:bg-cream-100" title={t('utilisateurs.modalAdmin.copier')}>
+                        <Copy className="w-4 h-4 text-brown-400" />
+                      </button>
+                    )}
+                    <button type="button" onClick={() => setMotDePasseVisible(v => !v)} className="p-1.5 rounded-lg hover:bg-cream-100" title={t('utilisateurs.modalAdmin.afficherMasquer')}>
+                      {motDePasseVisible ? <EyeOff className="w-4 h-4 text-brown-400" /> : <Eye className="w-4 h-4 text-brown-400" />}
+                    </button>
+                  </div>
+                </div>
+                <p className="text-xs text-brown-300 mt-1.5">{t('utilisateurs.modalAdmin.motDePasseAide')}</p>
+              </div>
+              <div className="flex justify-end gap-3 pt-4 border-t border-cream-200">
+                <button type="button" onClick={() => setShowAdminModal(false)} className="btn-outline text-sm">{t('commun.annuler')}</button>
+                <button type="submit" disabled={adminSubmitting} className="btn-primary text-sm disabled:opacity-60">
+                  {adminSubmitting ? <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" /> : <ShieldPlus className="w-4 h-4" />}
+                  {t('utilisateurs.modalAdmin.creer')}
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       )}

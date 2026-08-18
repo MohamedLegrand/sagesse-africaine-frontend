@@ -157,6 +157,7 @@
     "membreAuTotal_one": "{{count}} member in total",
     "membreAuTotal_other": "{{count}} members in total",
     "nouvelUtilisateur": "New user",
+    "creerCompteAdmin": "Create admin account",
     "rechercherPlaceholder": "Search (name, first name, email)…",
     "entetes": {
       "utilisateur": "User",
@@ -190,10 +191,20 @@
       "utilisateur": "User",
       "administrateur": "Administrator"
     },
+    "modalAdmin": {
+      "titre": "Create admin account",
+      "genererMotDePasse": "Generate a secure password",
+      "motDePasseAide": "At least 8 characters. Use the generator for a strong password.",
+      "afficherMasquer": "Show / hide",
+      "copier": "Copy",
+      "creer": "Create admin account"
+    },
     "messages": {
       "erreurChargement": "Loading error",
       "utilisateurModifie": "User updated",
       "utilisateurCree": "User created",
+      "adminCree": "Admin account created",
+      "motDePasseCopie": "Password copied",
       "erreurSauvegarde": "Error saving",
       "roleChangeEn": "Role changed to {{role}}",
       "erreurChangementRole": "Error changing role",
@@ -269,6 +280,8 @@
     "sousCollection": "Under {{parent}}",
     "principale": "Main",
     "aucuneCollection": "No collection",
+    "gererLivres": "Manage books",
+    "gererLivresTitle": "Manage books",
     "modal": {
       "modifierLaCollection": "Edit collection",
       "ajouterUneCollection": "Add a collection",
@@ -277,7 +290,16 @@
       "descriptionLabel": "Description",
       "descriptionPlaceholder": "Collection description…",
       "collectionParenteLabel": "Parent collection",
-      "aucunePrincipale": "None (main)"
+      "aucunePrincipale": "None (main)",
+      "gererLivres": "Collection books",
+      "livresDansCollection_one": "{{count}} book in this collection",
+      "livresDansCollection_other": "{{count}} books in this collection",
+      "aucunLivreDansCollection": "No books in this collection yet",
+      "ajouterUnLivre": "Add a book",
+      "rechercherUnLivrePlaceholder": "Search a book by title…",
+      "aucunLivreDisponible": "No book available",
+      "retirer": "Remove",
+      "ajouter": "Add"
     },
     "messages": {
       "erreurChargement": "Loading error",
@@ -286,7 +308,12 @@
       "erreurSauvegarde": "Save error",
       "confirmSuppression": "Delete \"{{nom}}\"?",
       "supprimee": "Deleted",
-      "erreurSuppression": "Deletion error"
+      "erreurSuppression": "Deletion error",
+      "erreurChargementLivres": "Could not load books",
+      "livreAjoute": "Book added to the collection",
+      "livreRetire": "Book removed from the collection",
+      "erreurAjoutLivre": "Error adding the book",
+      "erreurRetraitLivre": "Error removing the book"
     }
   },
 
@@ -337,6 +364,15 @@
     "actualiser": "Refresh",
     "exporterPdf": "Export as PDF",
     "generationEnCours": "Generating…",
+    "periodeLabel": "Period:",
+    "periodes": {
+      "1m": "1 month",
+      "2m": "2 months",
+      "3m": "3 months",
+      "6m": "6 months",
+      "1a": "1 year",
+      "tout": "All time"
+    },
     "mois": ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
     "onglets": {
       "apercu": "Overview",
@@ -388,6 +424,11 @@
       "topRentables": "Top 5 — Most profitable books",
       "livresJamaisVendus": "Never-sold books",
       "tousVendus": "All books have sold at least once 🎉",
+      "aucuneVentePeriode": "No sales in this period",
+      "mieuxNotes": "Best-rated books",
+      "moinsBienNotes": "Lowest-rated books",
+      "aucunAvis": "No reviews yet on these books",
+      "aucuneVenteJamais": "published books with zero sales",
       "conversionParType": "Conversion by book type",
       "gratuitsConsultes": "Free books viewed/added",
       "payantsAchetes": "Paid books bought",
@@ -409,7 +450,9 @@
       "vendu_one": "{{count}} sold",
       "vendu_other": "{{count}} sold",
       "session_one": "{{count}} session",
-      "session_other": "{{count}} sessions"
+      "session_other": "{{count}} sessions",
+      "avis_one": "{{count}} review",
+      "avis_other": "{{count}} reviews"
     },
     "gratuit": "Free",
     "rapport": {

@@ -147,7 +147,7 @@ const DashboardLayout = ({ children }) => {
             </button>
             <Link to="/dashboard" className="flex items-center gap-2.5">
               <img
-                src="/images/logo.png"
+                src="/images/logo.jpeg"
                 alt="SAGESSE AFRICAINE"
                 className="h-11 w-auto"
                 onError={(e) => { e.target.style.display = 'none'; }}

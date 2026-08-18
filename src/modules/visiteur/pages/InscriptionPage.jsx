@@ -5,6 +5,7 @@ import { BookOpen, Shield, Star, Globe } from 'lucide-react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import FormulaireInscription from '../components/FormulaireInscription';
+import FormulaireOtp from '../components/FormulaireOtp';
 import toast from 'react-hot-toast';
 import api from '../../../services/api';
 
@@ -18,19 +19,27 @@ const PERKS_META = [
 const InscriptionPage = () => {
   const { t } = useTranslation('auth');
   const [isLoading, setIsLoading] = useState(false);
+  const [isRenvoiEnCours, setIsRenvoiEnCours] = useState(false);
+  const [etape, setEtape] = useState('formulaire');
+  const [donneesInscription, setDonneesInscription] = useState(null);
   const navigate = useNavigate();
+
+  const envoyerCodeOtp = async (formData) => {
+    await api.post('/auth/register', {
+      email: formData.email,
+      mot_de_passe: formData.mot_de_passe,
+      prenom: formData.prenom,
+      nom: formData.nom,
+    });
+  };
 
   const handleRegister = async (formData) => {
     setIsLoading(true);
     try {
-      await api.post('/auth/register', {
-        email: formData.email,
-        mot_de_passe: formData.mot_de_passe,
-        prenom: formData.prenom,
-        nom: formData.nom,
-      });
-      toast.success(t('messages.compteCree'));
-      navigate('/connexion');
+      await envoyerCodeOtp(formData);
+      setDonneesInscription(formData);
+      setEtape('otp');
+      toast.success(t('messages.codeOtpEnvoye'));
     } catch (error) {
       if (error.response?.status === 422) {
         toast.error(t('messages.donneesInvalidesEmail'));
@@ -41,6 +50,40 @@ const InscriptionPage = () => {
       }
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const handleConfirmerOtp = async (code) => {
+    setIsLoading(true);
+    try {
+      await api.post('/auth/confirmer-inscription', {
+        email: donneesInscription.email,
+        code_otp: code,
+      });
+      toast.success(t('messages.compteCree'));
+      navigate('/connexion');
+    } catch (error) {
+      const detail = error.response?.data?.detail;
+      if (typeof detail === 'string') {
+        toast.error(detail);
+      } else {
+        toast.error(t('messages.erreurConfirmationOtp'));
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleRenvoyerOtp = async () => {
+    if (!donneesInscription) return;
+    setIsRenvoiEnCours(true);
+    try {
+      await envoyerCodeOtp(donneesInscription);
+      toast.success(t('messages.codeOtpRenvoye'));
+    } catch {
+      toast.error(t('messages.erreurInscription'));
+    } finally {
+      setIsRenvoiEnCours(false);
     }
   };
 
@@ -56,15 +99,26 @@ const InscriptionPage = () => {
             <div className="w-full max-w-md">
               <div className="mb-8">
                 <h1 className="font-playfair text-3xl font-bold text-brown-950 mb-2">
-                  {t('inscription.titre')}
+                  {etape === 'otp' ? t('formulaireOtp.titre') : t('inscription.titre')}
                 </h1>
                 <p className="text-brown-500 text-sm">
-                  {t('inscription.sousTitre')}
+                  {etape === 'otp' ? t('formulaireOtp.sousTitre') : t('inscription.sousTitre')}
                 </p>
               </div>
 
               <div className="bg-white rounded-2xl border border-cream-200 p-6 sm:p-8 shadow-sm">
-                <FormulaireInscription onSubmit={handleRegister} isLoading={isLoading} />
+                {etape === 'otp' ? (
+                  <FormulaireOtp
+                    email={donneesInscription?.email}
+                    onConfirm={handleConfirmerOtp}
+                    onRenvoyer={handleRenvoyerOtp}
+                    onRetour={() => setEtape('formulaire')}
+                    isLoading={isLoading}
+                    isRenvoiEnCours={isRenvoiEnCours}
+                  />
+                ) : (
+                  <FormulaireInscription onSubmit={handleRegister} isLoading={isLoading} />
+                )}
               </div>
 
               <p className="text-center text-xs text-brown-400 mt-6 flex items-center justify-center gap-1.5">
@@ -78,9 +132,9 @@ const InscriptionPage = () => {
           <div className="hidden lg:flex flex-col justify-between bg-terra-600 p-12 xl:p-16 order-1 lg:order-2">
             <Link to="/" className="flex items-center gap-3">
               <img
-                src="/images/logo.png"
+                src="/images/logo.jpeg"
                 alt="SAGESSE AFRICAINE"
-                className="h-14 w-auto brightness-0 invert"
+                className="h-14 w-auto rounded-lg"
                 onError={(e) => { e.target.style.display = 'none'; }}
               />
               <div>
