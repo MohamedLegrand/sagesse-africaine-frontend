@@ -5,8 +5,8 @@ import Footer from '../../visiteur/components/Footer';
 
 const Section = ({ titre, children }) => (
   <div className="mb-10">
-    <h2 className="text-xl font-playfair font-bold text-amber-800 mb-4 flex items-center gap-2">
-      <span className="w-1 h-6 bg-amber-500 rounded-full inline-block" />
+    <h2 className="text-xl font-playfair font-bold text-brown-800 mb-4 flex items-center gap-2">
+      <span className="w-1 h-6 bg-terra-500 rounded-full inline-block" />
       {titre}
     </h2>
     <div className="text-gray-600 text-sm leading-relaxed space-y-3">
@@ -17,7 +17,7 @@ const Section = ({ titre, children }) => (
 
 const CGVPage = () => {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-white to-amber-100">
+    <div className="min-h-screen bg-gradient-to-br from-cream-50 via-white to-cream-100">
       <Header />
 
       <main className="pt-32 pb-20">
@@ -25,39 +25,39 @@ const CGVPage = () => {
 
           {/* En-tête */}
           <div className="text-center mb-14">
-            <div className="inline-flex items-center gap-2 bg-amber-100 text-amber-700 text-xs font-semibold tracking-widest uppercase px-4 py-2 rounded-full mb-6">
+            <div className="inline-flex items-center gap-2 bg-cream-100 text-terra-700 text-xs font-semibold tracking-widest uppercase px-4 py-2 rounded-full mb-6">
               <FaFileContract /> Conditions commerciales
             </div>
-            <h1 className="text-4xl md:text-5xl font-playfair font-bold text-amber-800 mb-4">
+            <h1 className="text-4xl md:text-5xl font-playfair font-bold text-brown-800 mb-4">
               Conditions Générales de Vente
             </h1>
             <div className="flex items-center justify-center gap-2 mb-4">
-              <div className="w-16 h-px bg-amber-300" />
-              <div className="w-2 h-2 bg-amber-400 rounded-full" />
-              <div className="w-16 h-px bg-amber-300" />
+              <div className="w-16 h-px bg-cream-300" />
+              <div className="w-2 h-2 bg-terra-400 rounded-full" />
+              <div className="w-16 h-px bg-cream-300" />
             </div>
-            <p className="text-amber-500 text-sm">Dernière mise à jour : juin 2026</p>
+            <p className="text-terra-500 text-sm">Dernière mise à jour : juin 2026</p>
           </div>
 
           <div className="max-w-3xl mx-auto bg-white rounded-2xl shadow-lg p-8 md:p-12">
 
-            <div className="bg-amber-50 border border-amber-200 rounded-xl p-5 mb-10 text-sm text-amber-700 leading-relaxed">
+            <div className="bg-cream-50 border border-cream-200 rounded-xl p-5 mb-10 text-sm text-terra-700 leading-relaxed">
               Les présentes Conditions Générales de Vente (CGV) régissent l'ensemble des ventes
               de produits numériques (livres électroniques) et physiques effectuées via la plateforme
               SAGESSE AFRICAINE. Tout achat implique l'acceptation sans réserve de ces CGV.
             </div>
 
             <Section titre="1. Identité du vendeur">
-              <div className="bg-amber-50 rounded-xl p-5 space-y-2">
-                <div><span className="font-semibold text-amber-700">Vendeur :</span> SAGESSE AFRICAINE</div>
-                <div><span className="font-semibold text-amber-700">Siège :</span> Yaoundé, Cameroun</div>
+              <div className="bg-cream-50 rounded-xl p-5 space-y-2">
+                <div><span className="font-semibold text-terra-700">Vendeur :</span> SAGESSE AFRICAINE</div>
+                <div><span className="font-semibold text-terra-700">Siège :</span> Yaoundé, Cameroun</div>
                 <div>
-                  <span className="font-semibold text-amber-700">Email :</span>{' '}
-                  <a href="mailto:contact@sagesseafricaine.org" className="text-amber-600 hover:underline">
+                  <span className="font-semibold text-terra-700">Email :</span>{' '}
+                  <a href="mailto:contact@sagesseafricaine.org" className="text-terra-600 hover:underline">
                     contact@sagesseafricaine.org
                   </a>
                 </div>
-                <div><span className="font-semibold text-amber-700">Téléphone :</span> (+237) 677 31 44 12</div>
+                <div><span className="font-semibold text-terra-700">Téléphone :</span> (+237) 677 31 44 12</div>
               </div>
             </Section>
 
@@ -161,7 +161,7 @@ const CGVPage = () => {
               <ul className="list-none space-y-2 mt-2">
                 <li>
                   <span className="font-semibold">Email :</span>{' '}
-                  <a href="mailto:contact@sagesseafricaine.org" className="text-amber-600 hover:underline">
+                  <a href="mailto:contact@sagesseafricaine.org" className="text-terra-600 hover:underline">
                     contact@sagesseafricaine.org
                   </a>
                 </li>
@@ -179,14 +179,14 @@ const CGVPage = () => {
             </Section>
 
             {/* Badge sécurité */}
-            <div className="mt-10 bg-amber-50 border border-amber-200 rounded-xl p-5 flex items-start gap-4">
-              <FaShieldAlt className="text-amber-500 text-2xl flex-shrink-0 mt-0.5" />
+            <div className="mt-10 bg-cream-50 border border-cream-200 rounded-xl p-5 flex items-start gap-4">
+              <FaShieldAlt className="text-terra-500 text-2xl flex-shrink-0 mt-0.5" />
               <div>
-                <p className="font-semibold text-amber-800 text-sm">Achats 100% sécurisés</p>
+                <p className="font-semibold text-brown-800 text-sm">Achats 100% sécurisés</p>
                 <p className="text-gray-500 text-sm mt-1">
                   Vos transactions sont protégées par des protocoles de chiffrement avancés.
                   Pour toute question : {' '}
-                  <a href="mailto:contact@sagesseafricaine.org" className="text-amber-600 hover:underline">
+                  <a href="mailto:contact@sagesseafricaine.org" className="text-terra-600 hover:underline">
                     contact@sagesseafricaine.org
                   </a>
                 </p>

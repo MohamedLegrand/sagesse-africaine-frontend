@@ -134,7 +134,7 @@ const DetailLivrePage = () => {
     return Array.from({ length: 5 }, (_, i) => (
       <FaStar
         key={i}
-        className={`${i < note ? 'text-amber-500' : 'text-gray-300'} ${interactive ? 'cursor-pointer hover:text-amber-400 text-xl' : ''}`}
+        className={`${i < note ? 'text-terra-500' : 'text-gray-300'} ${interactive ? 'cursor-pointer hover:text-terra-400 text-xl' : ''}`}
         onClick={interactive && onSelect ? () => onSelect(i + 1) : undefined}
       />
     ));
@@ -149,14 +149,14 @@ const DetailLivrePage = () => {
       <div className="container mx-auto max-w-5xl">
         {loading ? (
           <div className="flex justify-center items-center py-20">
-            <FaSpinner className="text-amber-500 text-4xl animate-spin" />
+            <FaSpinner className="text-terra-500 text-4xl animate-spin" />
           </div>
         ) : !livre ? null : (
           <>
           {/* Bouton retour */}
           <button
             onClick={() => navigate(-1)}
-            className="flex items-center gap-2 text-amber-600 hover:text-amber-700 transition mb-5 font-medium"
+            className="flex items-center gap-2 text-terra-600 hover:text-terra-700 transition mb-5 font-medium"
           >
             <FaArrowLeft />
             {t('detailLivre.retour')}
@@ -164,18 +164,18 @@ const DetailLivrePage = () => {
 
           {/* Infos livre */}
           <div className="bg-white rounded-2xl shadow-lg p-6 mb-6 flex flex-col md:flex-row gap-6">
-            <div className="w-40 h-56 bg-amber-100 rounded-xl overflow-hidden flex-shrink-0">
+            <div className="w-40 h-56 bg-cream-100 rounded-xl overflow-hidden flex-shrink-0">
               {livre.couverture_url ? (
                 <img src={livre.couverture_url} alt={livre.titre} className="w-full h-full object-cover" />
               ) : (
                 <div className="w-full h-full flex items-center justify-center">
-                  <FaBook className="text-amber-300 text-5xl" />
+                  <FaBook className="text-cream-300 text-5xl" />
                 </div>
               )}
             </div>
             <div className="flex-1">
-              <h2 className="text-2xl font-playfair font-bold text-amber-800 mb-1">{livre.titre}</h2>
-              <p className="text-amber-500 mb-2">{livre.auteur}</p>
+              <h2 className="text-2xl font-playfair font-bold text-brown-800 mb-1">{livre.titre}</h2>
+              <p className="text-terra-500 mb-2">{livre.auteur}</p>
               <div className="flex items-center gap-2 mb-3">
                 <div className="flex gap-0.5">{renderEtoiles(noteMoyenne)}</div>
                 <span className="text-sm text-gray-500">({avis.length} {t('detailLivre.avis')})</span>
@@ -183,12 +183,12 @@ const DetailLivrePage = () => {
               <p className="text-gray-600 text-sm mb-4 line-clamp-3">{livre.description}</p>
               <div className="flex flex-wrap gap-2 mb-4">
                 {livre.langue && (
-                  <span className="text-xs px-3 py-1 bg-amber-100 text-amber-700 rounded-full">{livre.langue}</span>
+                  <span className="text-xs px-3 py-1 bg-cream-100 text-terra-700 rounded-full">{livre.langue}</span>
                 )}
                 {livre.isbn && (
                   <span className="text-xs px-3 py-1 bg-gray-100 text-gray-600 rounded-full">{t('detailLivre.isbn')} {livre.isbn}</span>
                 )}
-                <span className={`text-xs px-3 py-1 rounded-full ${livre.est_gratuit ? 'bg-green-100 text-green-700' : 'bg-amber-100 text-amber-700'}`}>
+                <span className={`text-xs px-3 py-1 rounded-full ${livre.est_gratuit ? 'bg-green-100 text-green-700' : 'bg-cream-100 text-terra-700'}`}>
                   {livre.est_gratuit ? t('detailLivre.gratuit') : `${livre.prix?.toLocaleString('fr-FR')} XAF`}
                 </span>
               </div>
@@ -203,7 +203,7 @@ const DetailLivrePage = () => {
                   {fichiers.length > 0 && (
                     <Link
                       to={`/dashboard/livre/${id}/lire`}
-                      className="flex items-center gap-2 bg-gradient-to-r from-amber-600 to-amber-700 text-white px-4 py-2 rounded-xl text-sm hover:shadow-lg transition"
+                      className="flex items-center gap-2 bg-gradient-to-r from-terra-600 to-terra-700 text-white px-4 py-2 rounded-xl text-sm hover:shadow-lg transition"
                     >
                       <FaBookOpen />
                       {progression ? t('detailLivre.continuerLecture') : t('detailLivre.commencerLecture')}
@@ -219,14 +219,14 @@ const DetailLivrePage = () => {
                   <div className="flex flex-wrap gap-3">
                     <Link
                       to="/dashboard/boutique"
-                      className="bg-gradient-to-r from-amber-600 to-amber-700 text-white px-4 py-2 rounded-xl text-sm hover:shadow-lg transition"
+                      className="bg-gradient-to-r from-terra-600 to-terra-700 text-white px-4 py-2 rounded-xl text-sm hover:shadow-lg transition"
                     >
                       {t('detailLivre.acheter')}
                     </Link>
                     {livre.extrait_url && (
                       <button
                         onClick={() => setExtraitOuvert(true)}
-                        className="flex items-center gap-2 border border-amber-300 text-amber-700 px-4 py-2 rounded-xl text-sm hover:bg-amber-50 transition"
+                        className="flex items-center gap-2 border border-cream-300 text-terra-700 px-4 py-2 rounded-xl text-sm hover:bg-cream-50 transition"
                       >
                         <FaBookReader />
                         {t('detailLivre.lireUnExtrait')}
@@ -246,8 +246,8 @@ const DetailLivrePage = () => {
                 onClick={() => setActiveTab(tab)}
                 className={`px-5 py-2 rounded-full font-medium transition-all duration-300 capitalize ${
                   activeTab === tab
-                    ? 'bg-gradient-to-r from-amber-600 to-amber-700 text-white shadow-lg'
-                    : 'bg-white text-amber-700 hover:bg-amber-100'
+                    ? 'bg-gradient-to-r from-terra-600 to-terra-700 text-white shadow-lg'
+                    : 'bg-white text-terra-700 hover:bg-cream-100'
                 }`}
               >
                 {t(`detailLivre.onglets.${tab}`)}
@@ -260,14 +260,14 @@ const DetailLivrePage = () => {
             {/* Détails */}
             {activeTab === 'details' && (
               <div className="space-y-4">
-                <h3 className="text-lg font-playfair font-bold text-amber-800">{t('detailLivre.details.descriptionComplete')}</h3>
+                <h3 className="text-lg font-playfair font-bold text-brown-800">{t('detailLivre.details.descriptionComplete')}</h3>
                 <p className="text-gray-600 leading-relaxed">{livre.description || t('detailLivre.details.aucuneDescription')}</p>
                 {fichiers.length > 0 && (
                   <div>
-                    <h4 className="font-semibold text-amber-700 mb-2">{t('detailLivre.details.formatsDisponibles')}</h4>
+                    <h4 className="font-semibold text-terra-700 mb-2">{t('detailLivre.details.formatsDisponibles')}</h4>
                     <div className="flex gap-2 flex-wrap">
                       {fichiers.map(f => (
-                        <span key={f.id} className="text-xs px-3 py-1 bg-amber-100 text-amber-700 rounded-full uppercase">
+                        <span key={f.id} className="text-xs px-3 py-1 bg-cream-100 text-terra-700 rounded-full uppercase">
                           {f.format} — {t('detailLivre.details.taille', { taille: (f.taille_octets / 1024 / 1024).toFixed(1) })}
                         </span>
                       ))}
@@ -280,19 +280,19 @@ const DetailLivrePage = () => {
             {/* Progression */}
             {activeTab === 'progression' && (
               <div className="space-y-6">
-                <h3 className="text-lg font-playfair font-bold text-amber-800">{t('detailLivre.progression.titre')}</h3>
+                <h3 className="text-lg font-playfair font-bold text-brown-800">{t('detailLivre.progression.titre')}</h3>
                 {!aAcces ? (
                   <p className="text-gray-500">{t('detailLivre.progression.achetezPourSuivre')}</p>
                 ) : progression ? (
                   <div className="space-y-4">
-                    <div className="bg-amber-50 rounded-xl p-4">
-                      <div className="flex justify-between text-sm text-amber-700 mb-2">
+                    <div className="bg-cream-50 rounded-xl p-4">
+                      <div className="flex justify-between text-sm text-terra-700 mb-2">
                         <span>{t('detailLivre.progression.page', { page: progression.page_actuelle, total: progression.total_pages })}</span>
                         <span>{progression.pourcentage}%</span>
                       </div>
-                      <div className="w-full bg-amber-200 rounded-full h-3">
+                      <div className="w-full bg-cream-200 rounded-full h-3">
                         <div
-                          className="bg-gradient-to-r from-amber-500 to-amber-600 h-3 rounded-full transition-all duration-500"
+                          className="bg-gradient-to-r from-terra-500 to-terra-600 h-3 rounded-full transition-all duration-500"
                           style={{ width: `${progression.pourcentage}%` }}
                         />
                       </div>
@@ -302,7 +302,7 @@ const DetailLivrePage = () => {
                     </div>
                     <Link
                       to={`/dashboard/livre/${id}/lire`}
-                      className="inline-flex items-center gap-2 bg-gradient-to-r from-amber-600 to-amber-700 text-white px-4 py-2 rounded-xl text-sm hover:shadow-lg transition"
+                      className="inline-flex items-center gap-2 bg-gradient-to-r from-terra-600 to-terra-700 text-white px-4 py-2 rounded-xl text-sm hover:shadow-lg transition"
                     >
                       <FaBookOpen />
                       {t('detailLivre.continuerLecture')}
@@ -313,7 +313,7 @@ const DetailLivrePage = () => {
                     <p className="text-gray-500 mb-4">{t('detailLivre.progression.pasEncoreCommence')}</p>
                     <Link
                       to={`/dashboard/livre/${id}/lire`}
-                      className="inline-flex items-center gap-2 bg-gradient-to-r from-amber-600 to-amber-700 text-white px-4 py-2 rounded-xl text-sm hover:shadow-lg transition"
+                      className="inline-flex items-center gap-2 bg-gradient-to-r from-terra-600 to-terra-700 text-white px-4 py-2 rounded-xl text-sm hover:shadow-lg transition"
                     >
                       <FaBookOpen />
                       {t('detailLivre.commencerLecture')}
@@ -327,12 +327,12 @@ const DetailLivrePage = () => {
             {activeTab === 'signets' && (
               <div className="space-y-6">
                 <div className="flex justify-between items-center">
-                  <h3 className="text-lg font-playfair font-bold text-amber-800">{t('detailLivre.signets.titre')}</h3>
+                  <h3 className="text-lg font-playfair font-bold text-brown-800">{t('detailLivre.signets.titre')}</h3>
                   {aAcces && (
                     <button
                       onClick={handleAjouterSignet}
                       disabled={ajouterSignet}
-                      className="flex items-center gap-2 bg-amber-600 text-white px-4 py-2 rounded-xl text-sm hover:bg-amber-700 transition disabled:opacity-50"
+                      className="flex items-center gap-2 bg-terra-600 text-white px-4 py-2 rounded-xl text-sm hover:bg-terra-700 transition disabled:opacity-50"
                     >
                       {ajouterSignet ? <FaSpinner className="animate-spin" /> : <FaPlus />}
                       {t('detailLivre.signets.ajouterALaPage', { page: progression?.page_actuelle || 1 })}
@@ -343,7 +343,7 @@ const DetailLivrePage = () => {
                   <p className="text-gray-500">{t('detailLivre.signets.achetezPourAjouter')}</p>
                 ) : signets.length === 0 ? (
                   <div className="text-center py-8">
-                    <FaBookmark className="text-amber-300 text-5xl mx-auto mb-3" />
+                    <FaBookmark className="text-cream-300 text-5xl mx-auto mb-3" />
                     <p className="text-gray-500">{t('detailLivre.signets.aucunSignet')}</p>
                   </div>
                 ) : (
@@ -354,15 +354,15 @@ const DetailLivrePage = () => {
                         value={noteSignet}
                         onChange={(e) => setNoteSignet(e.target.value)}
                         placeholder={t('detailLivre.signets.notePlaceholder')}
-                        className="w-full px-4 py-2 border border-amber-200 rounded-xl focus:border-amber-500 outline-none text-sm"
+                        className="w-full px-4 py-2 border border-cream-200 rounded-xl focus:border-terra-500 outline-none text-sm"
                       />
                     </div>
                     {signets.map(signet => (
-                      <div key={signet.id} className="flex items-start justify-between p-4 bg-amber-50 rounded-xl">
+                      <div key={signet.id} className="flex items-start justify-between p-4 bg-cream-50 rounded-xl">
                         <div className="flex items-start gap-3">
-                          <FaBookmark className="text-amber-500 mt-1" />
+                          <FaBookmark className="text-terra-500 mt-1" />
                           <div>
-                            <p className="font-medium text-amber-800">{t('detailLivre.signets.page', { page: signet.numero_page })}</p>
+                            <p className="font-medium text-brown-800">{t('detailLivre.signets.page', { page: signet.numero_page })}</p>
                             {signet.note && <p className="text-sm text-gray-600">{signet.note}</p>}
                             <p className="text-xs text-gray-400">
                               {new Date(signet.cree_le).toLocaleDateString('fr-FR')}
@@ -386,7 +386,7 @@ const DetailLivrePage = () => {
                       value={noteSignet}
                       onChange={(e) => setNoteSignet(e.target.value)}
                       placeholder={t('detailLivre.signets.notePlaceholderSeul')}
-                      className="w-full px-4 py-2 border border-amber-200 rounded-xl focus:border-amber-500 outline-none text-sm"
+                      className="w-full px-4 py-2 border border-cream-200 rounded-xl focus:border-terra-500 outline-none text-sm"
                     />
                   </div>
                 )}
@@ -396,14 +396,14 @@ const DetailLivrePage = () => {
             {/* Avis */}
             {activeTab === 'avis' && (
               <div className="space-y-6">
-                <h3 className="text-lg font-playfair font-bold text-amber-800">
+                <h3 className="text-lg font-playfair font-bold text-brown-800">
                   {t('detailLivre.avis.titreAvecMoyenne', { count: avis.length, note: noteMoyenne })}
                 </h3>
 
                 {/* Formulaire avis */}
                 {aAcces && (
-                  <form onSubmit={handleSoumettreAvis} className="bg-amber-50 rounded-xl p-4 space-y-4">
-                    <h4 className="font-semibold text-amber-700">{t('detailLivre.avis.laisserUnAvis')}</h4>
+                  <form onSubmit={handleSoumettreAvis} className="bg-cream-50 rounded-xl p-4 space-y-4">
+                    <h4 className="font-semibold text-terra-700">{t('detailLivre.avis.laisserUnAvis')}</h4>
                     <div>
                       <p className="text-sm text-gray-600 mb-1">{t('detailLivre.avis.note')}</p>
                       <div className="flex gap-1">
@@ -416,12 +416,12 @@ const DetailLivrePage = () => {
                       onChange={(e) => setCommentaireAvis(e.target.value)}
                       rows={3}
                       placeholder={t('detailLivre.avis.partagezAvis')}
-                      className="w-full px-4 py-3 border border-amber-200 rounded-xl focus:border-amber-500 outline-none text-sm resize-none"
+                      className="w-full px-4 py-3 border border-cream-200 rounded-xl focus:border-terra-500 outline-none text-sm resize-none"
                     />
                     <button
                       type="submit"
                       disabled={soumettreAvis}
-                      className="bg-gradient-to-r from-amber-600 to-amber-700 text-white px-6 py-2 rounded-xl text-sm hover:shadow-lg transition disabled:opacity-50"
+                      className="bg-gradient-to-r from-terra-600 to-terra-700 text-white px-6 py-2 rounded-xl text-sm hover:shadow-lg transition disabled:opacity-50"
                     >
                       {soumettreAvis ? t('detailLivre.avis.envoiEnCours') : t('detailLivre.avis.soumettreAvis')}
                     </button>
@@ -431,13 +431,13 @@ const DetailLivrePage = () => {
                 {/* Liste avis */}
                 {avis.length === 0 ? (
                   <div className="text-center py-8">
-                    <FaStar className="text-amber-300 text-5xl mx-auto mb-3" />
+                    <FaStar className="text-cream-300 text-5xl mx-auto mb-3" />
                     <p className="text-gray-500">{t('detailLivre.avis.aucunAvisSoyezPremier')}</p>
                   </div>
                 ) : (
                   <div className="space-y-4">
                     {avis.filter(a => a.est_approuve).map(avisItem => (
-                      <div key={avisItem.id} className="border border-amber-100 rounded-xl p-4">
+                      <div key={avisItem.id} className="border border-cream-100 rounded-xl p-4">
                         <div className="flex justify-between items-start mb-2">
                           <div className="flex gap-0.5">{renderEtoiles(avisItem.note)}</div>
                           <span className="text-xs text-gray-400">

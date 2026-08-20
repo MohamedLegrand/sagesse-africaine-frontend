@@ -41,22 +41,22 @@ const ContactPage = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-white to-amber-100">
+    <div className="min-h-screen bg-gradient-to-br from-cream-50 via-white to-cream-100">
       <Header />
       
       <main className="pt-32 pb-20">
         <div className="container mx-auto px-4">
           {/* En-tête */}
           <div className="text-center mb-12">
-            <h1 className="text-4xl md:text-5xl font-playfair font-bold text-amber-800 mb-4">
+            <h1 className="text-4xl md:text-5xl font-playfair font-bold text-brown-800 mb-4">
               Contactez-nous
             </h1>
             <div className="flex items-center justify-center gap-2 mb-6">
-              <div className="w-16 h-px bg-amber-300"></div>
-              <div className="w-2 h-2 bg-amber-400 rounded-full"></div>
-              <div className="w-16 h-px bg-amber-300"></div>
+              <div className="w-16 h-px bg-cream-300"></div>
+              <div className="w-2 h-2 bg-terra-400 rounded-full"></div>
+              <div className="w-16 h-px bg-cream-300"></div>
             </div>
-            <p className="text-lg text-amber-600 max-w-2xl mx-auto">
+            <p className="text-lg text-terra-600 max-w-2xl mx-auto">
               Une question ? Un projet d'édition ? N'hésitez pas à nous contacter
             </p>
           </div>
@@ -64,58 +64,58 @@ const ContactPage = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
             {/* Formulaire de contact */}
             <div className="bg-white rounded-2xl shadow-lg p-8">
-              <h2 className="text-2xl font-playfair font-bold text-amber-800 mb-6">
+              <h2 className="text-2xl font-playfair font-bold text-brown-800 mb-6">
                 Envoyez-nous un message
               </h2>
               <form onSubmit={handleSubmit} className="space-y-5">
                 <div>
-                  <label className="block text-amber-700 mb-2">Nom complet *</label>
+                  <label className="block text-terra-700 mb-2">Nom complet *</label>
                   <input
                     type="text"
                     name="nom"
                     value={formData.nom}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-3 border border-amber-200 rounded-xl focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 outline-none"
+                    className="w-full px-4 py-3 border border-cream-200 rounded-xl focus:border-terra-500 focus:ring-2 focus:ring-terra-500/20 outline-none"
                   />
                 </div>
                 <div>
-                  <label className="block text-amber-700 mb-2">Email *</label>
+                  <label className="block text-terra-700 mb-2">Email *</label>
                   <input
                     type="email"
                     name="email"
                     value={formData.email}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-3 border border-amber-200 rounded-xl focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 outline-none"
+                    className="w-full px-4 py-3 border border-cream-200 rounded-xl focus:border-terra-500 focus:ring-2 focus:ring-terra-500/20 outline-none"
                   />
                 </div>
                 <div>
-                  <label className="block text-amber-700 mb-2">Sujet *</label>
+                  <label className="block text-terra-700 mb-2">Sujet *</label>
                   <input
                     type="text"
                     name="sujet"
                     value={formData.sujet}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-3 border border-amber-200 rounded-xl focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 outline-none"
+                    className="w-full px-4 py-3 border border-cream-200 rounded-xl focus:border-terra-500 focus:ring-2 focus:ring-terra-500/20 outline-none"
                   />
                 </div>
                 <div>
-                  <label className="block text-amber-700 mb-2">Message *</label>
+                  <label className="block text-terra-700 mb-2">Message *</label>
                   <textarea
                     name="message"
                     value={formData.message}
                     onChange={handleChange}
                     required
                     rows="5"
-                    className="w-full px-4 py-3 border border-amber-200 rounded-xl focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 outline-none"
+                    className="w-full px-4 py-3 border border-cream-200 rounded-xl focus:border-terra-500 focus:ring-2 focus:ring-terra-500/20 outline-none"
                   ></textarea>
                 </div>
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full bg-gradient-to-r from-amber-600 to-amber-700 text-white py-3 rounded-xl font-semibold hover:shadow-lg transition disabled:opacity-50"
+                  className="w-full bg-gradient-to-r from-terra-600 to-terra-700 text-white py-3 rounded-xl font-semibold hover:shadow-lg transition disabled:opacity-50"
                 >
                   {loading ? 'Envoi en cours...' : 'Envoyer le message'}
                 </button>
@@ -126,30 +126,30 @@ const ContactPage = () => {
             <div className="space-y-8">
               {/* Coordonnées */}
               <div className="bg-white rounded-2xl shadow-lg p-8">
-                <h2 className="text-2xl font-playfair font-bold text-amber-800 mb-6">
+                <h2 className="text-2xl font-playfair font-bold text-brown-800 mb-6">
                   Nos coordonnées
                 </h2>
                 <div className="space-y-4">
                   <div className="flex items-start gap-4">
-                    <FaMapMarkerAlt className="text-amber-600 text-xl mt-1" />
+                    <FaMapMarkerAlt className="text-terra-600 text-xl mt-1" />
                     <div>
-                      <p className="font-semibold text-amber-800">Adresse</p>
+                      <p className="font-semibold text-brown-800">Adresse</p>
                       <p className="text-gray-600">Yaoundé - Cameroun</p>
                     </div>
                   </div>
                   <div className="flex items-start gap-4">
-                    <FaEnvelope className="text-amber-600 text-xl mt-1" />
+                    <FaEnvelope className="text-terra-600 text-xl mt-1" />
                     <div>
-                      <p className="font-semibold text-amber-800">Email</p>
-                      <a href="mailto:contact@sagesseafricaine.org" className="text-gray-600 hover:text-amber-600 transition">
+                      <p className="font-semibold text-brown-800">Email</p>
+                      <a href="mailto:contact@sagesseafricaine.org" className="text-gray-600 hover:text-terra-600 transition">
                         contact@sagesseafricaine.org
                       </a>
                     </div>
                   </div>
                   <div className="flex items-start gap-4">
-                    <FaPhone className="text-amber-600 text-xl mt-1" />
+                    <FaPhone className="text-terra-600 text-xl mt-1" />
                     <div>
-                      <p className="font-semibold text-amber-800">Téléphone</p>
+                      <p className="font-semibold text-brown-800">Téléphone</p>
                       <p className="text-gray-600">(+237) 641 42 99 18</p>
                       <p className="text-gray-600">(+237) 677 75 73 56</p>
                     </div>
@@ -159,7 +159,7 @@ const ContactPage = () => {
 
               {/* Réseaux sociaux */}
               <div className="bg-white rounded-2xl shadow-lg p-8">
-                <h2 className="text-2xl font-playfair font-bold text-amber-800 mb-6">
+                <h2 className="text-2xl font-playfair font-bold text-brown-800 mb-6">
                   Suivez-nous
                 </h2>
                 <div className="flex flex-wrap gap-4">
@@ -169,7 +169,7 @@ const ContactPage = () => {
                       href={social.href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center gap-2 px-4 py-2 bg-amber-50 rounded-xl text-amber-700 hover:bg-amber-100 transition"
+                      className="flex items-center gap-2 px-4 py-2 bg-cream-50 rounded-xl text-terra-700 hover:bg-cream-100 transition"
                     >
                       <social.icon />
                       <span>{social.label}</span>

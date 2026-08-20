@@ -75,11 +75,11 @@ const ProfilPage = () => {
     <DashboardLayout>
       <div className="container mx-auto max-w-5xl">
         <div className="text-center mb-8">
-          <h1 className="text-3xl md:text-4xl font-playfair font-bold text-amber-800 mb-4">{t('profil.titre')}</h1>
+          <h1 className="text-3xl md:text-4xl font-playfair font-bold text-brown-800 mb-4">{t('profil.titre')}</h1>
           <div className="flex items-center justify-center gap-2">
-            <div className="w-16 h-px bg-amber-300"></div>
-            <div className="w-2 h-2 bg-amber-400 rounded-full"></div>
-            <div className="w-16 h-px bg-amber-300"></div>
+            <div className="w-16 h-px bg-cream-300"></div>
+            <div className="w-2 h-2 bg-terra-400 rounded-full"></div>
+            <div className="w-16 h-px bg-cream-300"></div>
           </div>
         </div>
 
@@ -91,14 +91,14 @@ const ProfilPage = () => {
               onClick={() => setActiveTab(tab.id)}
               className={`px-5 py-2 rounded-full font-medium transition-all duration-300 flex items-center gap-2 ${
                 activeTab === tab.id
-                  ? 'bg-gradient-to-r from-amber-600 to-amber-700 text-white shadow-lg'
-                  : 'bg-white text-amber-700 hover:bg-amber-100'
+                  ? 'bg-gradient-to-r from-terra-600 to-terra-700 text-white shadow-lg'
+                  : 'bg-white text-terra-700 hover:bg-cream-100'
               }`}
             >
               <tab.icon className="text-sm" />
               {tab.label}
               {tab.count !== undefined && tab.count > 0 && (
-                <span className="ml-1 text-xs bg-amber-200 text-amber-800 px-1.5 py-0.5 rounded-full">
+                <span className="ml-1 text-xs bg-cream-200 text-brown-800 px-1.5 py-0.5 rounded-full">
                   {tab.count}
                 </span>
               )}
@@ -107,10 +107,10 @@ const ProfilPage = () => {
         </div>
 
         {/* Contenu */}
-        <div className="bg-white/60 backdrop-blur-sm rounded-2xl shadow-xl border border-amber-100 p-6">
+        <div className="bg-white rounded-2xl shadow-xl border border-cream-100 p-6">
           {loading ? (
             <div className="flex justify-center items-center py-12">
-              <div className="w-12 h-12 border-4 border-amber-500 border-t-transparent rounded-full animate-spin"></div>
+              <div className="w-12 h-12 border-4 border-terra-500 border-t-transparent rounded-full animate-spin"></div>
             </div>
           ) : (
             renderContent()
@@ -128,16 +128,16 @@ const ProfilContent = ({ user }) => {
   return (
   <div className="space-y-6">
     <div className="flex flex-col md:flex-row items-center gap-6">
-      <div className="w-24 h-24 bg-amber-100 rounded-full flex items-center justify-center overflow-hidden">
+      <div className="w-24 h-24 bg-cream-100 rounded-full flex items-center justify-center overflow-hidden">
         {user?.avatar_url ? (
           <img src={user.avatar_url} alt="" className="w-full h-full object-cover" />
         ) : (
-          <FaUserCircle className="text-amber-500 text-5xl" />
+          <FaUserCircle className="text-terra-500 text-5xl" />
         )}
       </div>
       <div className="text-center md:text-left">
-        <h2 className="text-2xl font-playfair font-bold text-amber-800">{user?.prenom} {user?.nom}</h2>
-        <p className="text-amber-500">{user?.email}</p>
+        <h2 className="text-2xl font-playfair font-bold text-brown-800">{user?.prenom} {user?.nom}</h2>
+        <p className="text-terra-500">{user?.email}</p>
         <p className="text-sm text-gray-400">
           {t('profil.membreDepuis', { date: user?.cree_le ? new Date(user.cree_le).toLocaleDateString('fr-FR') : '—' })}
         </p>
@@ -158,10 +158,10 @@ const BibliothequeContent = ({ livres }) => {
   if (livres.length === 0) {
     return (
       <div className="text-center py-12">
-        <FaBook className="text-amber-300 text-6xl mx-auto mb-4" />
-        <h3 className="text-xl font-playfair text-amber-700 mb-2">{t('profil.bibliothequeContent.aucunLivre')}</h3>
+        <FaBook className="text-cream-300 text-6xl mx-auto mb-4" />
+        <h3 className="text-xl font-playfair text-terra-700 mb-2">{t('profil.bibliothequeContent.aucunLivre')}</h3>
         <p className="text-gray-500">{t('profil.bibliothequeContent.pasEncoreAchete')}</p>
-        <Link to="/dashboard/boutique" className="inline-block mt-4 bg-gradient-to-r from-amber-600 to-amber-700 text-white px-6 py-2 rounded-full">
+        <Link to="/dashboard/boutique" className="inline-block mt-4 bg-gradient-to-r from-terra-600 to-terra-700 text-white px-6 py-2 rounded-full">
           {t('profil.bibliothequeContent.decouvrirBoutique')}
         </Link>
       </div>
@@ -174,22 +174,22 @@ const BibliothequeContent = ({ livres }) => {
         const livre = access.livre;
         return (
           <div key={access.id} className="flex items-center gap-4 p-4 bg-white rounded-xl shadow hover:shadow-md transition">
-            <div className="w-16 h-20 bg-amber-100 rounded-lg flex items-center justify-center overflow-hidden">
+            <div className="w-16 h-20 bg-cream-100 rounded-lg flex items-center justify-center overflow-hidden">
               {livre?.couverture_url ? (
                 <img src={livre.couverture_url} alt={livre.titre} className="w-full h-full object-cover" />
               ) : (
-                <FaBook className="text-amber-400 text-2xl" />
+                <FaBook className="text-terra-400 text-2xl" />
               )}
             </div>
             <div className="flex-1">
-              <h3 className="font-semibold text-amber-800">{livre?.titre || t('profil.bibliothequeContent.titreInconnu')}</h3>
-              <p className="text-sm text-amber-500">{livre?.auteur || t('profil.bibliothequeContent.auteurInconnu')}</p>
+              <h3 className="font-semibold text-brown-800">{livre?.titre || t('profil.bibliothequeContent.titreInconnu')}</h3>
+              <p className="text-sm text-terra-500">{livre?.auteur || t('profil.bibliothequeContent.auteurInconnu')}</p>
               <p className="text-xs text-gray-400">
                 {t('profil.bibliothequeContent.ajouteLe', { date: new Date(access.accorde_le).toLocaleDateString('fr-FR') })}
               </p>
             </div>
             <div className="flex gap-2">
-              <Link to={`/dashboard/livre/${access.livre_id}`} className="px-4 py-2 bg-gradient-to-r from-amber-600 to-amber-700 text-white rounded-lg text-sm hover:shadow-lg transition">
+              <Link to={`/dashboard/livre/${access.livre_id}`} className="px-4 py-2 bg-gradient-to-r from-terra-600 to-terra-700 text-white rounded-lg text-sm hover:shadow-lg transition">
                 {t('profil.bibliothequeContent.lire')}
               </Link>
             </div>
@@ -204,8 +204,8 @@ const FavorisContent = () => {
   const { t } = useTranslation('dashboard');
   return (
   <div className="text-center py-12">
-    <FaHeart className="text-amber-300 text-6xl mx-auto mb-4" />
-    <h3 className="text-xl font-playfair text-amber-700 mb-2">{t('profil.favorisContent.titre')}</h3>
+    <FaHeart className="text-cream-300 text-6xl mx-auto mb-4" />
+    <h3 className="text-xl font-playfair text-terra-700 mb-2">{t('profil.favorisContent.titre')}</h3>
     <p className="text-gray-500">{t('profil.favorisContent.fonctionnaliteAVenir')}</p>
   </div>
   );
@@ -217,7 +217,7 @@ const CommandesContent = ({ commandes }) => {
     const colors = {
       'payé': 'bg-green-100 text-green-700',
       'livré': 'bg-blue-100 text-blue-700',
-      'en_attente': 'bg-amber-100 text-amber-700',
+      'en_attente': 'bg-cream-100 text-terra-700',
       'annulé': 'bg-red-100 text-red-700',
     };
     return colors[statut] || 'bg-gray-100 text-gray-700';
@@ -226,10 +226,10 @@ const CommandesContent = ({ commandes }) => {
   if (commandes.length === 0) {
     return (
       <div className="text-center py-12">
-        <FaShoppingCart className="text-amber-300 text-6xl mx-auto mb-4" />
-        <h3 className="text-xl font-playfair text-amber-700 mb-2">{t('profil.commandesContent.aucunAchat')}</h3>
+        <FaShoppingCart className="text-cream-300 text-6xl mx-auto mb-4" />
+        <h3 className="text-xl font-playfair text-terra-700 mb-2">{t('profil.commandesContent.aucunAchat')}</h3>
         <p className="text-gray-500">{t('profil.commandesContent.pasEncoreAchat')}</p>
-        <Link to="/dashboard/boutique" className="inline-block mt-4 bg-gradient-to-r from-amber-600 to-amber-700 text-white px-6 py-2 rounded-full">
+        <Link to="/dashboard/boutique" className="inline-block mt-4 bg-gradient-to-r from-terra-600 to-terra-700 text-white px-6 py-2 rounded-full">
           {t('profil.commandesContent.acheterMaintenant')}
         </Link>
       </div>
@@ -239,26 +239,26 @@ const CommandesContent = ({ commandes }) => {
   return (
     <div className="space-y-4">
       {commandes.map((commande) => (
-        <div key={commande.id} className="border border-amber-100 rounded-xl p-4">
+        <div key={commande.id} className="border border-cream-100 rounded-xl p-4">
           <div className="flex justify-between items-center mb-3">
             <div>
-              <p className="font-mono text-sm text-amber-800">{commande.id?.slice(0, 8)}...</p>
+              <p className="font-mono text-sm text-brown-800">{commande.id?.slice(0, 8)}...</p>
               <p className="text-xs text-gray-400">{new Date(commande.cree_le).toLocaleDateString('fr-FR')}</p>
             </div>
             <div className="text-right">
-              <p className="text-xl font-bold text-amber-700">{commande.montant_total?.toLocaleString('fr-FR')} XAF</p>
+              <p className="text-xl font-bold text-terra-700">{commande.montant_total?.toLocaleString('fr-FR')} XAF</p>
               <span className={`text-xs px-2 py-1 rounded-full ${getStatusColor(commande.statut)}`}>
                 {commande.statut || t('profil.commandesContent.enCours')}
               </span>
             </div>
           </div>
-          <div className="border-t border-amber-100 pt-3">
+          <div className="border-t border-cream-100 pt-3">
             <p className="text-sm text-gray-500 mb-2">{t('profil.commandesContent.articlesCommandes')}</p>
             <div className="space-y-1">
               {commande.lignes?.map((ligne) => (
                 <div key={ligne.id} className="flex justify-between text-sm">
                   <span className="text-gray-600">{ligne.livre?.titre} x{ligne.quantite}</span>
-                  <span className="text-amber-600">{(ligne.prix_unitaire * ligne.quantite)?.toLocaleString('fr-FR')} XAF</span>
+                  <span className="text-terra-600">{(ligne.prix_unitaire * ligne.quantite)?.toLocaleString('fr-FR')} XAF</span>
                 </div>
               ))}
             </div>
@@ -330,52 +330,52 @@ const ParametresContent = ({ user, onUpdate }) => {
     <div className="space-y-8">
       {/* Avatar */}
       <div>
-        <h3 className="text-lg font-playfair font-bold text-amber-800 mb-4">{t('profil.parametresContent.photoDeProfil')}</h3>
+        <h3 className="text-lg font-playfair font-bold text-brown-800 mb-4">{t('profil.parametresContent.photoDeProfil')}</h3>
         <form onSubmit={handleAvatarUpdate} className="flex gap-3 max-w-md items-center">
           <input
             type="url"
             value={avatarUrl}
             onChange={(e) => setAvatarUrl(e.target.value)}
             placeholder={t('profil.parametresContent.avatarUrlPlaceholder')}
-            className="flex-1 px-4 py-2 border border-amber-200 rounded-lg focus:border-amber-500 outline-none text-sm"
+            className="flex-1 px-4 py-2 border border-cream-200 rounded-lg focus:border-terra-500 outline-none text-sm"
           />
-          <button type="submit" disabled={updating} className="bg-amber-600 text-white px-4 py-2 rounded-lg hover:bg-amber-700 transition text-sm">
+          <button type="submit" disabled={updating} className="bg-terra-600 text-white px-4 py-2 rounded-lg hover:bg-terra-700 transition text-sm">
             {t('profil.parametresContent.mettreAJour')}
           </button>
         </form>
       </div>
 
-      <div className="border-t border-amber-100 pt-6">
-        <h3 className="text-lg font-playfair font-bold text-amber-800 mb-4">{t('profil.parametresContent.informationsPersonnelles')}</h3>
+      <div className="border-t border-cream-100 pt-6">
+        <h3 className="text-lg font-playfair font-bold text-brown-800 mb-4">{t('profil.parametresContent.informationsPersonnelles')}</h3>
         <form onSubmit={handleProfileUpdate} className="space-y-4 max-w-md">
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-amber-700 text-sm mb-1">{t('profil.parametresContent.prenom')}</label>
+              <label className="block text-terra-700 text-sm mb-1">{t('profil.parametresContent.prenom')}</label>
               <input
                 type="text"
                 value={formData.prenom}
                 onChange={(e) => setFormData({ ...formData, prenom: e.target.value })}
-                className="w-full px-4 py-2 border border-amber-200 rounded-lg focus:border-amber-500 outline-none"
+                className="w-full px-4 py-2 border border-cream-200 rounded-lg focus:border-terra-500 outline-none"
               />
             </div>
             <div>
-              <label className="block text-amber-700 text-sm mb-1">{t('profil.parametresContent.nom')}</label>
+              <label className="block text-terra-700 text-sm mb-1">{t('profil.parametresContent.nom')}</label>
               <input
                 type="text"
                 value={formData.nom}
                 onChange={(e) => setFormData({ ...formData, nom: e.target.value })}
-                className="w-full px-4 py-2 border border-amber-200 rounded-lg focus:border-amber-500 outline-none"
+                className="w-full px-4 py-2 border border-cream-200 rounded-lg focus:border-terra-500 outline-none"
               />
             </div>
           </div>
-          <button type="submit" disabled={updating} className="bg-amber-600 text-white px-6 py-2 rounded-lg hover:bg-amber-700 transition">
+          <button type="submit" disabled={updating} className="bg-terra-600 text-white px-6 py-2 rounded-lg hover:bg-terra-700 transition">
             {updating ? t('profil.parametresContent.enregistrementEnCours') : t('profil.parametresContent.enregistrer')}
           </button>
         </form>
       </div>
 
-      <div className="border-t border-amber-100 pt-6">
-        <h3 className="text-lg font-playfair font-bold text-amber-800 mb-4">{t('profil.parametresContent.changerMotDePasse')}</h3>
+      <div className="border-t border-cream-100 pt-6">
+        <h3 className="text-lg font-playfair font-bold text-brown-800 mb-4">{t('profil.parametresContent.changerMotDePasse')}</h3>
         <form onSubmit={handlePasswordUpdate} className="space-y-4 max-w-md">
           {[
             { field: 'ancien_mot_de_passe', label: t('profil.parametresContent.ancienMotDePasse') },
@@ -383,17 +383,17 @@ const ParametresContent = ({ user, onUpdate }) => {
             { field: 'confirmation', label: t('profil.parametresContent.confirmerMotDePasse') },
           ].map(({ field, label }) => (
             <div key={field}>
-              <label className="block text-amber-700 text-sm mb-1">{label}</label>
+              <label className="block text-terra-700 text-sm mb-1">{label}</label>
               <input
                 type="password"
                 value={passwordData[field]}
                 onChange={(e) => setPasswordData({ ...passwordData, [field]: e.target.value })}
-                className="w-full px-4 py-2 border border-amber-200 rounded-lg focus:border-amber-500 outline-none"
+                className="w-full px-4 py-2 border border-cream-200 rounded-lg focus:border-terra-500 outline-none"
                 required
               />
             </div>
           ))}
-          <button type="submit" disabled={updating} className="bg-amber-600 text-white px-6 py-2 rounded-lg hover:bg-amber-700 transition">
+          <button type="submit" disabled={updating} className="bg-terra-600 text-white px-6 py-2 rounded-lg hover:bg-terra-700 transition">
             {updating ? t('profil.parametresContent.modificationEnCours') : t('profil.parametresContent.modifierMotDePasse')}
           </button>
         </form>

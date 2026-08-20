@@ -17,13 +17,13 @@ const PAR_PAGE = 10;
 const DetailModal = ({ notification, onClose }) => {
   const { t } = useTranslation('notifications');
   const TYPE_CONFIG = {
-    livre: { icon: <FaBook className="text-amber-600 text-xl" />, bg: 'bg-amber-100', label: t('mesNotifications.type.livre') },
+    livre: { icon: <FaBook className="text-terra-600 text-xl" />, bg: 'bg-cream-100', label: t('mesNotifications.type.livre') },
     paiement: { icon: <FaCreditCard className="text-green-600 text-xl" />, bg: 'bg-green-100', label: t('mesNotifications.type.paiement') },
   };
   if (!notification) return null;
   const config = TYPE_CONFIG[notification.type] || {
-    icon: <FaBell className="text-amber-600 text-xl" />,
-    bg: 'bg-amber-100',
+    icon: <FaBell className="text-terra-600 text-xl" />,
+    bg: 'bg-cream-100',
     label: t('mesNotifications.type.notification'),
   };
   const { titre, message } = traduireNotification(notification);
@@ -49,8 +49,8 @@ const DetailModal = ({ notification, onClose }) => {
             {config.icon}
           </div>
           <div>
-            <span className="text-xs font-semibold text-amber-600 uppercase tracking-wider">{config.label}</span>
-            <h2 className="text-xl font-bold text-amber-900 leading-tight mt-0.5">{titre}</h2>
+            <span className="text-xs font-semibold text-terra-600 uppercase tracking-wider">{config.label}</span>
+            <h2 className="text-xl font-bold text-brown-900 leading-tight mt-0.5">{titre}</h2>
           </div>
         </div>
 
@@ -65,7 +65,7 @@ const DetailModal = ({ notification, onClose }) => {
             <Link
               to={notification.lien}
               onClick={onClose}
-              className="inline-flex items-center gap-2 px-4 py-2.5 bg-amber-600 hover:bg-amber-700 text-white rounded-xl text-sm font-semibold transition shadow-sm"
+              className="inline-flex items-center gap-2 px-4 py-2.5 bg-terra-600 hover:bg-terra-700 text-white rounded-xl text-sm font-semibold transition shadow-sm"
             >
               <FaExternalLinkAlt className="text-xs" />
               {t('mesNotifications.voirLeContenu')}
@@ -178,10 +178,10 @@ const MesNotificationsPage = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-amber-50 via-white to-amber-100">
+      <div className="min-h-screen bg-gradient-to-br from-cream-50 via-white to-cream-100">
         <Header />
         <div className="flex justify-center items-center pt-40">
-          <div className="w-12 h-12 border-4 border-amber-500 border-t-transparent rounded-full animate-spin" />
+          <div className="w-12 h-12 border-4 border-terra-500 border-t-transparent rounded-full animate-spin" />
         </div>
         <Footer />
       </div>
@@ -189,7 +189,7 @@ const MesNotificationsPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-white to-amber-100">
+    <div className="min-h-screen bg-gradient-to-br from-cream-50 via-white to-cream-100">
       <Header />
 
       <main className="pt-32 pb-20">
@@ -197,25 +197,25 @@ const MesNotificationsPage = () => {
 
           {/* En-tête */}
           <div className="text-center mb-8">
-            <h1 className="text-4xl md:text-5xl font-playfair font-bold text-amber-800 mb-3">
+            <h1 className="text-4xl md:text-5xl font-playfair font-bold text-brown-800 mb-3">
               {t('mesNotifications.titre')}
             </h1>
             {nonLuesCount > 0 ? (
-              <p className="text-amber-500 font-medium">
+              <p className="text-terra-500 font-medium">
                 {t('mesNotifications.nonLue', { count: nonLuesCount })}
               </p>
             ) : (
               <p className="text-gray-400">{t('mesNotifications.aJour')}</p>
             )}
             <div className="flex items-center justify-center gap-2 mt-4">
-              <div className="w-16 h-px bg-amber-300" />
-              <div className="w-2 h-2 bg-amber-400 rounded-full" />
-              <div className="w-16 h-px bg-amber-300" />
+              <div className="w-16 h-px bg-cream-300" />
+              <div className="w-2 h-2 bg-terra-400 rounded-full" />
+              <div className="w-16 h-px bg-cream-300" />
             </div>
           </div>
 
           {/* Barre filtres + actions */}
-          <div className="bg-white rounded-2xl shadow-sm border border-amber-100 p-4 mb-6">
+          <div className="bg-white rounded-2xl shadow-sm border border-cream-100 p-4 mb-6">
             <div className="flex flex-wrap justify-between items-center gap-3">
               {/* Filtres */}
               <div className="flex gap-2 flex-wrap">
@@ -229,7 +229,7 @@ const MesNotificationsPage = () => {
                     onClick={() => handleFiltreChange(key)}
                     className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium transition ${
                       filtre === key
-                        ? 'bg-amber-600 text-white shadow-sm'
+                        ? 'bg-terra-600 text-white shadow-sm'
                         : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                     }`}
                   >
@@ -248,7 +248,7 @@ const MesNotificationsPage = () => {
                 {nonLuesCount > 0 && (
                   <button
                     onClick={marquerToutLu}
-                    className="flex items-center gap-2 px-3 py-1.5 bg-amber-100 text-amber-700 rounded-lg text-sm font-medium hover:bg-amber-200 transition"
+                    className="flex items-center gap-2 px-3 py-1.5 bg-cream-100 text-terra-700 rounded-lg text-sm font-medium hover:bg-cream-200 transition"
                   >
                     <FaCheckDouble className="text-xs" />
                     {t('mesNotifications.toutMarquerLu')}
@@ -270,15 +270,15 @@ const MesNotificationsPage = () => {
           {/* Loader détail */}
           {loadingDetail && (
             <div className="fixed inset-0 z-40 flex items-center justify-center bg-black/20 backdrop-blur-sm">
-              <div className="w-10 h-10 border-4 border-amber-500 border-t-transparent rounded-full animate-spin" />
+              <div className="w-10 h-10 border-4 border-terra-500 border-t-transparent rounded-full animate-spin" />
             </div>
           )}
 
           {/* Liste */}
           {notifPage.length === 0 ? (
-            <div className="bg-white rounded-2xl shadow-sm border border-amber-100 p-16 text-center">
-              <FaBell className="text-amber-200 text-7xl mx-auto mb-4" />
-              <h2 className="text-2xl font-playfair text-amber-700 mb-2">{t('mesNotifications.aucuneNotification')}</h2>
+            <div className="bg-white rounded-2xl shadow-sm border border-cream-100 p-16 text-center">
+              <FaBell className="text-cream-200 text-7xl mx-auto mb-4" />
+              <h2 className="text-2xl font-playfair text-terra-700 mb-2">{t('mesNotifications.aucuneNotification')}</h2>
               <p className="text-gray-400">
                 {filtre === 'non_lues' ? t('mesNotifications.toutesLues') :
                  filtre === 'lues' ? t('mesNotifications.aucuneLue') :
@@ -305,7 +305,7 @@ const MesNotificationsPage = () => {
               <button
                 onClick={() => setPage(p => Math.max(1, p - 1))}
                 disabled={page === 1}
-                className="p-2 rounded-lg bg-white border border-amber-200 text-amber-600 hover:bg-amber-50 disabled:opacity-40 disabled:cursor-not-allowed transition"
+                className="p-2 rounded-lg bg-white border border-cream-200 text-terra-600 hover:bg-cream-50 disabled:opacity-40 disabled:cursor-not-allowed transition"
               >
                 <FaChevronLeft className="text-sm" />
               </button>
@@ -315,8 +315,8 @@ const MesNotificationsPage = () => {
                   onClick={() => setPage(p)}
                   className={`w-9 h-9 rounded-lg text-sm font-semibold transition ${
                     page === p
-                      ? 'bg-amber-600 text-white shadow-sm'
-                      : 'bg-white border border-amber-200 text-amber-700 hover:bg-amber-50'
+                      ? 'bg-terra-600 text-white shadow-sm'
+                      : 'bg-white border border-cream-200 text-terra-700 hover:bg-cream-50'
                   }`}
                 >
                   {p}
@@ -325,7 +325,7 @@ const MesNotificationsPage = () => {
               <button
                 onClick={() => setPage(p => Math.min(totalPages, p + 1))}
                 disabled={page === totalPages}
-                className="p-2 rounded-lg bg-white border border-amber-200 text-amber-600 hover:bg-amber-50 disabled:opacity-40 disabled:cursor-not-allowed transition"
+                className="p-2 rounded-lg bg-white border border-cream-200 text-terra-600 hover:bg-cream-50 disabled:opacity-40 disabled:cursor-not-allowed transition"
               >
                 <FaChevronRight className="text-sm" />
               </button>

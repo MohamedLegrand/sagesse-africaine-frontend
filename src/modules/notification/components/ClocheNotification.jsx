@@ -75,7 +75,7 @@ const ClocheNotification = ({ className = '' }) => {
                   key={notif.id}
                   onClick={() => handleClickNotif(notif)}
                   className={`w-full text-left px-4 py-3 hover:bg-cream-50 transition-colors flex items-start gap-3 ${
-                    !notif.est_lu ? 'bg-amber-50/60' : ''
+                    !notif.est_lu ? 'bg-cream-50/60' : ''
                   }`}
                 >
                   <span className="text-lg flex-shrink-0 mt-0.5">

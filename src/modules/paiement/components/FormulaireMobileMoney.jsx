@@ -23,8 +23,8 @@ const FormulaireMobileMoney = ({ onSubmit, loading, montantXaf }) => {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
-      <div className="bg-amber-50 rounded-xl p-4">
-        <p className="text-amber-700 text-sm">
+      <div className="bg-cream-50 rounded-xl p-4">
+        <p className="text-terra-700 text-sm">
           {t('notificationTelephone')}
         </p>
       </div>
@@ -38,18 +38,18 @@ const FormulaireMobileMoney = ({ onSubmit, loading, montantXaf }) => {
       />
 
       <div>
-        <label className="block text-amber-700 text-sm font-medium mb-2">
+        <label className="block text-terra-700 text-sm font-medium mb-2">
           {t('numeroMobileMoney')}
         </label>
         <div className="relative">
-          <FaMobileAlt className="absolute left-3 top-1/2 transform -translate-y-1/2 text-amber-400" />
+          <FaMobileAlt className="absolute left-3 top-1/2 transform -translate-y-1/2 text-terra-400" />
           <input
             type="tel"
             value={telephone}
             onChange={(e) => setTelephone(e.target.value)}
             required
             pattern="[0-9]{8,10}"
-            className="w-full pl-10 pr-4 py-3 border border-amber-200 rounded-xl focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 outline-none"
+            className="w-full pl-10 pr-4 py-3 border border-cream-200 rounded-xl focus:border-terra-500 focus:ring-2 focus:ring-terra-500/20 outline-none"
             placeholder={t('numeroPlaceholder')}
           />
         </div>
@@ -59,7 +59,7 @@ const FormulaireMobileMoney = ({ onSubmit, loading, montantXaf }) => {
       <button
         type="submit"
         disabled={loading || !operator}
-        className="w-full bg-gradient-to-r from-amber-600 to-amber-700 text-white py-3 rounded-xl font-semibold hover:shadow-lg transition flex items-center justify-center gap-2 disabled:opacity-50"
+        className="w-full bg-gradient-to-r from-terra-600 to-terra-700 text-white py-3 rounded-xl font-semibold hover:shadow-lg transition flex items-center justify-center gap-2 disabled:opacity-50"
       >
         {loading ? (
           <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>

@@ -5,8 +5,8 @@ import Footer from '../../visiteur/components/Footer';
 
 const Section = ({ titre, children }) => (
   <div className="mb-10">
-    <h2 className="text-xl font-playfair font-bold text-amber-800 mb-4 flex items-center gap-2">
-      <span className="w-1 h-6 bg-amber-500 rounded-full inline-block" />
+    <h2 className="text-xl font-playfair font-bold text-brown-800 mb-4 flex items-center gap-2">
+      <span className="w-1 h-6 bg-terra-500 rounded-full inline-block" />
       {titre}
     </h2>
     <div className="text-gray-600 text-sm leading-relaxed space-y-3">
@@ -17,7 +17,7 @@ const Section = ({ titre, children }) => (
 
 const ConfidentialitePage = () => {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-white to-amber-100">
+    <div className="min-h-screen bg-gradient-to-br from-cream-50 via-white to-cream-100">
       <Header />
 
       <main className="pt-32 pb-20">
@@ -25,24 +25,24 @@ const ConfidentialitePage = () => {
 
           {/* En-tête */}
           <div className="text-center mb-14">
-            <div className="inline-flex items-center gap-2 bg-amber-100 text-amber-700 text-xs font-semibold tracking-widest uppercase px-4 py-2 rounded-full mb-6">
+            <div className="inline-flex items-center gap-2 bg-cream-100 text-terra-700 text-xs font-semibold tracking-widest uppercase px-4 py-2 rounded-full mb-6">
               <FaShieldAlt /> Vie privée
             </div>
-            <h1 className="text-4xl md:text-5xl font-playfair font-bold text-amber-800 mb-4">
+            <h1 className="text-4xl md:text-5xl font-playfair font-bold text-brown-800 mb-4">
               Politique de confidentialité
             </h1>
             <div className="flex items-center justify-center gap-2 mb-4">
-              <div className="w-16 h-px bg-amber-300" />
-              <div className="w-2 h-2 bg-amber-400 rounded-full" />
-              <div className="w-16 h-px bg-amber-300" />
+              <div className="w-16 h-px bg-cream-300" />
+              <div className="w-2 h-2 bg-terra-400 rounded-full" />
+              <div className="w-16 h-px bg-cream-300" />
             </div>
-            <p className="text-amber-500 text-sm">Dernière mise à jour : juin 2026</p>
+            <p className="text-terra-500 text-sm">Dernière mise à jour : juin 2026</p>
           </div>
 
           <div className="max-w-3xl mx-auto bg-white rounded-2xl shadow-lg p-8 md:p-12">
 
             {/* Intro */}
-            <div className="bg-amber-50 border border-amber-200 rounded-xl p-5 mb-10 text-sm text-amber-700 leading-relaxed">
+            <div className="bg-cream-50 border border-cream-200 rounded-xl p-5 mb-10 text-sm text-terra-700 leading-relaxed">
               SAGESSE AFRICAINE s'engage à protéger la vie privée de ses utilisateurs.
               Cette politique décrit comment nous collectons, utilisons et protégeons vos données personnelles
               conformément aux lois en vigueur.
@@ -54,7 +54,7 @@ const ConfidentialitePage = () => {
                 groupe panafricain de presses, d'édition et de diffusion culturelle, dont le siège social
                 est situé à Yaoundé, Cameroun.
               </p>
-              <p>Contact : <a href="mailto:contact@sagesseafricaine.org" className="text-amber-600 hover:underline">contact@sagesseafricaine.org</a></p>
+              <p>Contact : <a href="mailto:contact@sagesseafricaine.org" className="text-terra-600 hover:underline">contact@sagesseafricaine.org</a></p>
             </Section>
 
             <Section titre="2. Données collectées">
@@ -68,7 +68,7 @@ const ConfidentialitePage = () => {
                   'Données que vous nous fournissez : messages de contact, soumissions de manuscrits',
                 ].map((item, i) => (
                   <li key={i} className="flex items-start gap-2">
-                    <FaLock className="text-amber-400 mt-0.5 flex-shrink-0 text-xs" />
+                    <FaLock className="text-terra-400 mt-0.5 flex-shrink-0 text-xs" />
                     <span>{item}</span>
                   </li>
                 ))}
@@ -123,7 +123,7 @@ const ConfidentialitePage = () => {
 
             <Section titre="7. Cookies">
               <div className="flex items-start gap-3">
-                <FaCookie className="text-amber-400 text-2xl flex-shrink-0 mt-1" />
+                <FaCookie className="text-terra-400 text-2xl flex-shrink-0 mt-1" />
                 <div>
                   <p>
                     Notre site utilise des cookies pour améliorer votre expérience de navigation,
@@ -149,14 +149,14 @@ const ConfidentialitePage = () => {
                   'Droit de retirer votre consentement à tout moment',
                 ].map((droit, i) => (
                   <li key={i} className="flex items-start gap-2">
-                    <FaUserSecret className="text-amber-400 mt-0.5 flex-shrink-0 text-xs" />
+                    <FaUserSecret className="text-terra-400 mt-0.5 flex-shrink-0 text-xs" />
                     <span>{droit}</span>
                   </li>
                 ))}
               </ul>
               <p className="mt-4">
                 Pour exercer vos droits, contactez-nous à :{' '}
-                <a href="mailto:contact@sagesseafricaine.org" className="text-amber-600 hover:underline">
+                <a href="mailto:contact@sagesseafricaine.org" className="text-terra-600 hover:underline">
                   contact@sagesseafricaine.org
                 </a>
               </p>
@@ -179,13 +179,13 @@ const ConfidentialitePage = () => {
             </Section>
 
             {/* Contact */}
-            <div className="mt-10 bg-amber-50 border border-amber-200 rounded-xl p-5 flex items-start gap-4">
-              <FaEnvelope className="text-amber-500 text-xl flex-shrink-0 mt-0.5" />
+            <div className="mt-10 bg-cream-50 border border-cream-200 rounded-xl p-5 flex items-start gap-4">
+              <FaEnvelope className="text-terra-500 text-xl flex-shrink-0 mt-0.5" />
               <div>
-                <p className="font-semibold text-amber-800 text-sm">Des questions sur cette politique ?</p>
+                <p className="font-semibold text-brown-800 text-sm">Des questions sur cette politique ?</p>
                 <p className="text-gray-500 text-sm mt-1">
                   Contactez notre responsable protection des données à :{' '}
-                  <a href="mailto:contact@sagesseafricaine.org" className="text-amber-600 hover:underline">
+                  <a href="mailto:contact@sagesseafricaine.org" className="text-terra-600 hover:underline">
                     contact@sagesseafricaine.org
                   </a>
                 </p>

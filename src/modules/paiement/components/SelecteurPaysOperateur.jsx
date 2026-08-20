@@ -49,7 +49,7 @@ const SelecteurPaysOperateur = ({ country, operator, onChangeCountry, onChangeOp
   if (chargement) {
     return (
       <div className="flex justify-center py-6">
-        <div className="w-8 h-8 border-4 border-amber-500 border-t-transparent rounded-full animate-spin" />
+        <div className="w-8 h-8 border-4 border-terra-500 border-t-transparent rounded-full animate-spin" />
       </div>
     );
   }
@@ -57,7 +57,7 @@ const SelecteurPaysOperateur = ({ country, operator, onChangeCountry, onChangeOp
   return (
     <div className="space-y-5">
       <div>
-        <label className="block text-amber-700 text-sm font-medium mb-2">{t('pays')}</label>
+        <label className="block text-terra-700 text-sm font-medium mb-2">{t('pays')}</label>
         <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
           {paysListe.map((p) => (
             <motion.button
@@ -69,8 +69,8 @@ const SelecteurPaysOperateur = ({ country, operator, onChangeCountry, onChangeOp
               transition={{ type: 'spring', stiffness: 400, damping: 22 }}
               className={`flex flex-col items-center gap-1 p-3 rounded-xl border-2 transition-colors ${
                 country === p.pays
-                  ? 'border-amber-500 bg-amber-50'
-                  : 'border-amber-100 hover:border-amber-300'
+                  ? 'border-terra-500 bg-cream-50'
+                  : 'border-cream-100 hover:border-cream-300'
               }`}
             >
               <span className="text-2xl leading-none">{drapeauEmoji(p.pays)}</span>
@@ -81,7 +81,7 @@ const SelecteurPaysOperateur = ({ country, operator, onChangeCountry, onChangeOp
       </div>
 
       <div>
-        <label className="block text-amber-700 text-sm font-medium mb-2">{t('operateur')}</label>
+        <label className="block text-terra-700 text-sm font-medium mb-2">{t('operateur')}</label>
         <AnimatePresence mode="wait">
           <motion.div
             key={country}
@@ -102,7 +102,7 @@ const SelecteurPaysOperateur = ({ country, operator, onChangeCountry, onChangeOp
                   whileTap={{ scale: 0.96 }}
                   animate={{ scale: selectionne ? 1.03 : 1 }}
                   className={`px-3 py-3 rounded-xl font-semibold text-sm border-2 transition-shadow ${
-                    selectionne ? 'border-amber-500 shadow-md' : 'border-transparent opacity-85 hover:opacity-100'
+                    selectionne ? 'border-terra-500 shadow-md' : 'border-transparent opacity-85 hover:opacity-100'
                   }`}
                   style={{ backgroundColor: info.bg, color: info.texte }}
                 >
@@ -119,7 +119,7 @@ const SelecteurPaysOperateur = ({ country, operator, onChangeCountry, onChangeOp
           key={paysActuel.devise}
           initial={{ opacity: 0, y: 4 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-amber-50 rounded-xl p-3 text-sm text-amber-700 flex justify-between items-center"
+          className="bg-cream-50 rounded-xl p-3 text-sm text-terra-700 flex justify-between items-center"
         >
           <span>{t('montantAPayer')}</span>
           <span className="font-bold text-base">

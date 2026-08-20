@@ -83,7 +83,7 @@ const DetailLivrePubliquePage = () => {
 
   const renderEtoiles = (note) =>
     Array.from({ length: 5 }, (_, i) => (
-      <FaStar key={i} className={i < note ? 'text-amber-500' : 'text-gray-300'} />
+      <FaStar key={i} className={i < note ? 'text-terra-500' : 'text-gray-300'} />
     ));
 
   const noteMoyenne = avis.length > 0
@@ -92,10 +92,10 @@ const DetailLivrePubliquePage = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-amber-50 via-white to-amber-100">
+      <div className="min-h-screen bg-gradient-to-br from-cream-50 via-white to-cream-100">
         <Header />
         <div className="flex justify-center items-center pt-40">
-          <div className="w-12 h-12 border-4 border-amber-500 border-t-transparent rounded-full animate-spin" />
+          <div className="w-12 h-12 border-4 border-terra-500 border-t-transparent rounded-full animate-spin" />
         </div>
         <Footer />
       </div>
@@ -105,7 +105,7 @@ const DetailLivrePubliquePage = () => {
   if (!livre) return null;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-white to-amber-100">
+    <div className="min-h-screen bg-gradient-to-br from-cream-50 via-white to-cream-100">
       <Header />
 
       <main className="pt-32 pb-20">
@@ -114,7 +114,7 @@ const DetailLivrePubliquePage = () => {
           {/* Retour */}
           <button
             onClick={() => navigate(-1)}
-            className="flex items-center gap-2 text-amber-600 hover:text-amber-700 transition mb-6 font-medium"
+            className="flex items-center gap-2 text-terra-600 hover:text-terra-700 transition mb-6 font-medium"
           >
             <FaArrowLeft />
             {t('retour')}
@@ -124,7 +124,7 @@ const DetailLivrePubliquePage = () => {
           <div className="bg-white rounded-2xl shadow-lg p-6 md:p-8 mb-8 flex flex-col md:flex-row gap-8">
             {/* Couverture */}
             <div className="w-full md:w-48 flex-shrink-0">
-              <div className="w-full md:w-48 h-64 bg-amber-100 rounded-xl overflow-hidden flex items-center justify-center">
+              <div className="w-full md:w-48 h-64 bg-cream-100 rounded-xl overflow-hidden flex items-center justify-center">
                 {livre.couverture_url ? (
                   <img
                     src={livre.couverture_url}
@@ -133,17 +133,17 @@ const DetailLivrePubliquePage = () => {
                     onError={(e) => { e.target.onerror = null; e.target.src = '/images/default-book.png'; }}
                   />
                 ) : (
-                  <FaBook className="text-amber-300 text-6xl" />
+                  <FaBook className="text-cream-300 text-6xl" />
                 )}
               </div>
             </div>
 
             {/* Infos */}
             <div className="flex-1">
-              <h1 className="text-2xl md:text-3xl font-playfair font-bold text-amber-800 mb-2">
+              <h1 className="text-2xl md:text-3xl font-playfair font-bold text-brown-800 mb-2">
                 {livre.titre}
               </h1>
-              <p className="text-amber-500 text-lg mb-3">{livre.auteur}</p>
+              <p className="text-terra-500 text-lg mb-3">{livre.auteur}</p>
 
               {/* Note */}
               {avis.length > 0 && (
@@ -156,7 +156,7 @@ const DetailLivrePubliquePage = () => {
               {/* Tags */}
               <div className="flex flex-wrap gap-2 mb-4">
                 {livre.langue && (
-                  <span className="text-xs px-3 py-1 bg-amber-100 text-amber-700 rounded-full capitalize">
+                  <span className="text-xs px-3 py-1 bg-cream-100 text-terra-700 rounded-full capitalize">
                     {livre.langue}
                   </span>
                 )}
@@ -166,7 +166,7 @@ const DetailLivrePubliquePage = () => {
                   </span>
                 )}
                 <span className={`text-xs px-3 py-1 rounded-full font-medium ${
-                  livre.est_gratuit ? 'bg-green-100 text-green-700' : 'bg-amber-100 text-amber-700'
+                  livre.est_gratuit ? 'bg-green-100 text-green-700' : 'bg-cream-100 text-terra-700'
                 }`}>
                   {livre.est_gratuit ? t('gratuit') : `${livre.prix?.toLocaleString('fr-FR')} XAF`}
                 </span>
@@ -180,8 +180,8 @@ const DetailLivrePubliquePage = () => {
               )}
 
               {/* Prix + actions */}
-              <div className="border-t border-amber-100 pt-5 flex flex-col sm:flex-row gap-3 items-start sm:items-center">
-                <span className="text-3xl font-bold text-amber-700">
+              <div className="border-t border-cream-100 pt-5 flex flex-col sm:flex-row gap-3 items-start sm:items-center">
+                <span className="text-3xl font-bold text-terra-700">
                   {livre.est_gratuit ? t('gratuit') : `${livre.prix?.toLocaleString('fr-FR')} XAF`}
                 </span>
                 <div className="flex gap-3 flex-wrap">
@@ -198,7 +198,7 @@ const DetailLivrePubliquePage = () => {
                       <Link
                         to="/connexion"
                         onClick={() => localStorage.setItem('auth_return_to', `/dashboard/livre/${livre.id}`)}
-                        className="flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-amber-600 to-amber-700 text-white rounded-xl font-semibold transition hover:shadow-lg"
+                        className="flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-terra-600 to-terra-700 text-white rounded-xl font-semibold transition hover:shadow-lg"
                       >
                         <FaBookOpen />
                         {t('seConnecterPourLireGratuitement')}
@@ -212,7 +212,7 @@ const DetailLivrePubliquePage = () => {
                         className={`flex items-center gap-2 px-5 py-2.5 rounded-xl font-semibold transition hover:shadow-lg ${
                           added
                             ? 'bg-green-500 text-white'
-                            : 'bg-gradient-to-r from-amber-600 to-amber-700 text-white disabled:opacity-50'
+                            : 'bg-gradient-to-r from-terra-600 to-terra-700 text-white disabled:opacity-50'
                         }`}
                       >
                         {adding ? (
@@ -228,7 +228,7 @@ const DetailLivrePubliquePage = () => {
                       {!livre.est_gratuit && (
                         <button
                           onClick={handlePayer}
-                          className="flex items-center gap-2 px-5 py-2.5 rounded-xl font-semibold border-2 border-amber-600 text-amber-700 hover:bg-amber-600 hover:text-white transition"
+                          className="flex items-center gap-2 px-5 py-2.5 rounded-xl font-semibold border-2 border-terra-600 text-terra-700 hover:bg-terra-600 hover:text-white transition"
                         >
                           <FaLock className="text-sm" />
                           {t('acheterMaintenant')}
@@ -241,7 +241,7 @@ const DetailLivrePubliquePage = () => {
                     <button
                       type="button"
                       onClick={() => setExtraitOuvert(true)}
-                      className="flex items-center gap-2 px-5 py-2.5 rounded-xl font-semibold border-2 border-amber-300 text-amber-700 hover:bg-amber-50 transition"
+                      className="flex items-center gap-2 px-5 py-2.5 rounded-xl font-semibold border-2 border-cream-300 text-terra-700 hover:bg-cream-50 transition"
                     >
                       <FaBookOpen className="text-sm" />
                       {t('lireUnExtrait')}
@@ -252,7 +252,7 @@ const DetailLivrePubliquePage = () => {
 
               {/* Info connexion */}
               {!localStorage.getItem('access_token') && (
-                <p className="text-xs text-amber-500 mt-3 flex items-center gap-1">
+                <p className="text-xs text-terra-500 mt-3 flex items-center gap-1">
                   <FaLock className="text-xs" />
                   {t('connexionRequisePourPaiement')}
                 </p>
@@ -262,7 +262,7 @@ const DetailLivrePubliquePage = () => {
 
           {/* Galerie : couverture, sommaire, 4e de couverture */}
           <div className="bg-white rounded-2xl shadow-lg p-6 md:p-8 mb-8">
-            <h2 className="text-xl font-playfair font-bold text-amber-800 mb-5">
+            <h2 className="text-xl font-playfair font-bold text-brown-800 mb-5">
               {t('apercuLivre')}
             </h2>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
@@ -280,7 +280,7 @@ const DetailLivrePubliquePage = () => {
                   key={img.label}
                   type="button"
                   onClick={() => setImageAgrandie(img)}
-                  className="group relative rounded-xl overflow-hidden border border-amber-100 bg-amber-50"
+                  className="group relative rounded-xl overflow-hidden border border-cream-100 bg-cream-50"
                 >
                   <img
                     src={img.url}
@@ -327,22 +327,22 @@ const DetailLivrePubliquePage = () => {
 
           {/* Section avis */}
           <div className="bg-white rounded-2xl shadow-lg p-6">
-            <h2 className="text-xl font-playfair font-bold text-amber-800 mb-5">
+            <h2 className="text-xl font-playfair font-bold text-brown-800 mb-5">
               {t('avisDesLecteurs')} {avis.length > 0 && `(${avis.length})`}
             </h2>
 
             {avis.length === 0 ? (
               <div className="text-center py-10">
-                <FaStar className="text-amber-300 text-5xl mx-auto mb-3" />
+                <FaStar className="text-cream-300 text-5xl mx-auto mb-3" />
                 <p className="text-gray-500">{t('aucunAvis')}</p>
-                <Link to="/connexion" className="text-amber-600 text-sm hover:underline mt-2 inline-block">
+                <Link to="/connexion" className="text-terra-600 text-sm hover:underline mt-2 inline-block">
                   {t('connectezVousPourAvis')}
                 </Link>
               </div>
             ) : (
               <div className="space-y-4">
                 {avis.map((avisItem) => (
-                  <div key={avisItem.id} className="border border-amber-100 rounded-xl p-4">
+                  <div key={avisItem.id} className="border border-cream-100 rounded-xl p-4">
                     <div className="flex justify-between items-start mb-2">
                       <div className="flex gap-0.5">{renderEtoiles(avisItem.note)}</div>
                       <span className="text-xs text-gray-400">
@@ -362,7 +362,7 @@ const DetailLivrePubliquePage = () => {
               <div className="mt-6 text-center">
                 <Link
                   to="/connexion"
-                  className="text-sm text-amber-600 hover:text-amber-700 underline"
+                  className="text-sm text-terra-600 hover:text-terra-700 underline"
                 >
                   {t('connectezVousPourLaisserAvis')}
                 </Link>

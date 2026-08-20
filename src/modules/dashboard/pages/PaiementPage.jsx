@@ -53,7 +53,7 @@ const PaiementPage = () => {
     return (
       <DashboardLayout>
         <div className="flex justify-center items-center py-20">
-          <div className="w-12 h-12 border-4 border-amber-500 border-t-transparent rounded-full animate-spin"></div>
+          <div className="w-12 h-12 border-4 border-terra-500 border-t-transparent rounded-full animate-spin"></div>
         </div>
       </DashboardLayout>
     );
@@ -68,7 +68,7 @@ const PaiementPage = () => {
   return (
     <DashboardLayout>
       <div className="container mx-auto max-w-5xl">
-        <h1 className="text-2xl font-playfair font-bold text-amber-800 mb-6">
+        <h1 className="text-2xl font-playfair font-bold text-brown-800 mb-6">
           {t('titre')}
         </h1>
 
@@ -76,7 +76,7 @@ const PaiementPage = () => {
           {/* Formulaire de paiement */}
           <div className="lg:col-span-2">
             <div className="bg-white rounded-2xl shadow-lg p-6 sm:p-8 mb-6">
-              <h2 className="text-xl font-playfair font-bold text-amber-800 mb-6">
+              <h2 className="text-xl font-playfair font-bold text-brown-800 mb-6">
                 {t('mobileMoney')}
               </h2>
               <FormulaireMobileMoney
@@ -99,7 +99,7 @@ const PaiementPage = () => {
           {/* Résumé de la commande */}
           <div className="lg:col-span-1">
             <div className="bg-white rounded-2xl shadow-lg p-6 sticky top-24">
-              <h3 className="text-xl font-playfair font-bold text-amber-800 mb-4">
+              <h3 className="text-xl font-playfair font-bold text-brown-800 mb-4">
                 {t('resumeCommande')}
               </h3>
 
@@ -109,17 +109,17 @@ const PaiementPage = () => {
                     <span className="text-gray-600">
                       {ligne.livre?.titre} x{ligne.quantite}
                     </span>
-                    <span className="text-amber-700 font-medium">
+                    <span className="text-terra-700 font-medium">
                       {((ligne.prix_unitaire ?? ligne.livre?.prix ?? 0) * ligne.quantite).toLocaleString()} XAF
                     </span>
                   </div>
                 ))}
               </div>
 
-              <div className="border-t border-amber-100 pt-4 mb-4">
+              <div className="border-t border-cream-100 pt-4 mb-4">
                 <div className="flex justify-between mb-2">
                   <span className="text-gray-600">{t('sousTotal')}</span>
-                  <span className="text-amber-700">{total.toLocaleString()} XAF</span>
+                  <span className="text-terra-700">{total.toLocaleString()} XAF</span>
                 </div>
                 <div className="flex justify-between mb-2">
                   <span className="text-gray-600">{t('fraisLivraison')}</span>
@@ -127,10 +127,10 @@ const PaiementPage = () => {
                 </div>
               </div>
 
-              <div className="border-t border-amber-200 pt-4">
+              <div className="border-t border-cream-200 pt-4">
                 <div className="flex justify-between">
-                  <span className="text-lg font-bold text-amber-800">{t('totalAPayer')}</span>
-                  <span className="text-2xl font-bold text-amber-700">{total.toLocaleString()} XAF</span>
+                  <span className="text-lg font-bold text-brown-800">{t('totalAPayer')}</span>
+                  <span className="text-2xl font-bold text-terra-700">{total.toLocaleString()} XAF</span>
                 </div>
               </div>
             </div>

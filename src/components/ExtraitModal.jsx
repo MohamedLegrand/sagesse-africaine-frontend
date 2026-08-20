@@ -49,8 +49,8 @@ const ExtraitModal = ({ livre, onClose }) => {
         className="bg-white rounded-2xl shadow-2xl w-full max-w-4xl h-[85vh] flex flex-col overflow-hidden"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex items-center justify-between px-6 py-4 border-b border-amber-100 flex-shrink-0">
-          <h3 className="font-playfair font-bold text-amber-800 truncate pr-4">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-cream-100 flex-shrink-0">
+          <h3 className="font-playfair font-bold text-brown-800 truncate pr-4">
             Extrait — {livre.titre}
           </h3>
           <button
@@ -65,7 +65,7 @@ const ExtraitModal = ({ livre, onClose }) => {
         <div className="flex-1 overflow-auto bg-gray-100 p-4 sm:p-8">
           {chargement && (
             <div className="flex flex-col items-center justify-center h-full gap-3">
-              <div className="w-10 h-10 border-4 border-amber-500 border-t-transparent rounded-full animate-spin" />
+              <div className="w-10 h-10 border-4 border-terra-500 border-t-transparent rounded-full animate-spin" />
               <p className="text-gray-500 text-sm">Chargement de l'extrait...</p>
             </div>
           )}

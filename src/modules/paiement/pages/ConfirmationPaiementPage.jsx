@@ -35,13 +35,13 @@ const BarreProgression = ({ tempsRestantMs }) => {
 
   return (
     <div className="w-full mb-6">
-      <div className="flex justify-between text-xs text-amber-600 mb-1 font-medium">
+      <div className="flex justify-between text-xs text-terra-600 mb-1 font-medium">
         <span>{t('confirmation.confirmationAutomatique')}</span>
         <span>{label} {t('confirmation.restant')}</span>
       </div>
-      <div className="w-full h-2 bg-amber-100 rounded-full overflow-hidden">
+      <div className="w-full h-2 bg-cream-100 rounded-full overflow-hidden">
         <div
-          className="h-full bg-gradient-to-r from-amber-400 to-amber-600 rounded-full transition-all duration-1000 ease-linear"
+          className="h-full bg-gradient-to-r from-terra-400 to-terra-600 rounded-full transition-all duration-1000 ease-linear"
           style={{ width: `${pct}%` }}
         />
       </div>
@@ -56,18 +56,18 @@ const PanneauAttente = ({ tempsRestantMs, tentatives, erreur }) => {
     <div className="flex flex-col items-center">
       {/* Icône animée */}
       <div className="relative w-24 h-24 flex items-center justify-center mb-6">
-        <div className="absolute inset-0 rounded-full bg-amber-100 animate-ping opacity-40" />
-        <div className="w-24 h-24 rounded-full bg-amber-100 flex items-center justify-center">
-          <FaHourglassHalf className="text-amber-500 text-4xl animate-pulse" />
+        <div className="absolute inset-0 rounded-full bg-cream-100 animate-ping opacity-40" />
+        <div className="w-24 h-24 rounded-full bg-cream-100 flex items-center justify-center">
+          <FaHourglassHalf className="text-terra-500 text-4xl animate-pulse" />
         </div>
       </div>
 
-      <h1 className="text-3xl md:text-4xl font-playfair font-bold text-amber-800 mb-3">
+      <h1 className="text-3xl md:text-4xl font-playfair font-bold text-brown-800 mb-3">
         {t('confirmation.paiementEnCours')}
       </h1>
 
       {/* Instruction mobile money */}
-      <div className="flex items-center gap-2 bg-amber-50 border border-amber-200 rounded-xl px-4 py-3 mb-4 text-amber-700">
+      <div className="flex items-center gap-2 bg-cream-50 border border-cream-200 rounded-xl px-4 py-3 mb-4 text-terra-700">
         <FaMobileAlt className="text-xl shrink-0" />
         <p className="text-sm font-medium">
           {t('confirmation.accepterDemandeTelephone')}
@@ -96,7 +96,7 @@ const PanneauReussi = ({ commande, telecharger, telechargementFacture }) => {
         <FaCheckCircle className="text-green-600 text-5xl" />
       </div>
 
-      <h1 className="text-3xl md:text-4xl font-playfair font-bold text-amber-800 mb-4">
+      <h1 className="text-3xl md:text-4xl font-playfair font-bold text-brown-800 mb-4">
         {t('confirmation.paiementReussi')}
       </h1>
       <p className="text-gray-600 mb-6">
@@ -106,22 +106,22 @@ const PanneauReussi = ({ commande, telecharger, telechargementFacture }) => {
       {/* Récapitulatif commande */}
       <div className="bg-white rounded-2xl shadow-lg p-6 mb-8 text-left w-full">
         <div className="flex justify-between items-center mb-4">
-          <h2 className="font-semibold text-amber-800">{t('confirmation.commande')}</h2>
+          <h2 className="font-semibold text-brown-800">{t('confirmation.commande')}</h2>
           <span className="font-mono text-xs text-gray-400">{commande.id}</span>
         </div>
         <div className="space-y-3 mb-4">
           {commande.lignes?.map((ligne) => (
             <div key={ligne.id} className="flex justify-between text-sm">
               <span className="text-gray-600">{t('confirmation.livreQuantite', { n: ligne.quantite })}</span>
-              <span className="text-amber-700 font-medium">
+              <span className="text-terra-700 font-medium">
                 {(ligne.prix_unitaire * ligne.quantite).toLocaleString()} {commande.devise}
               </span>
             </div>
           ))}
         </div>
-        <div className="border-t border-amber-100 pt-4 flex justify-between items-center">
-          <span className="font-semibold text-amber-800">{t('confirmation.totalPaye')}</span>
-          <span className="text-xl font-bold text-amber-700">
+        <div className="border-t border-cream-100 pt-4 flex justify-between items-center">
+          <span className="font-semibold text-brown-800">{t('confirmation.totalPaye')}</span>
+          <span className="text-xl font-bold text-terra-700">
             {commande.montant_total?.toLocaleString()} {commande.devise}
           </span>
         </div>
@@ -131,7 +131,7 @@ const PanneauReussi = ({ commande, telecharger, telechargementFacture }) => {
       <div className="flex flex-col sm:flex-row gap-4 justify-center mb-6 w-full">
         <Link
           to="/dashboard/bibliotheque"
-          className="bg-gradient-to-r from-amber-600 to-amber-700 text-white px-6 py-3 rounded-xl font-semibold hover:shadow-lg transition flex items-center justify-center gap-2"
+          className="bg-gradient-to-r from-terra-600 to-terra-700 text-white px-6 py-3 rounded-xl font-semibold hover:shadow-lg transition flex items-center justify-center gap-2"
         >
           <FaBook />
           {t('confirmation.voirBibliotheque')}
@@ -139,14 +139,14 @@ const PanneauReussi = ({ commande, telecharger, telechargementFacture }) => {
         <button
           onClick={() => telecharger(commande.id)}
           disabled={telechargementFacture}
-          className="border border-amber-600 text-amber-700 px-6 py-3 rounded-xl font-semibold hover:bg-amber-600 hover:text-white transition flex items-center justify-center gap-2 disabled:opacity-50"
+          className="border border-terra-600 text-terra-700 px-6 py-3 rounded-xl font-semibold hover:bg-terra-600 hover:text-white transition flex items-center justify-center gap-2 disabled:opacity-50"
         >
           {telechargementFacture ? <FaSpinner className="animate-spin" /> : <FaFileDownload />}
           {t('confirmation.telechargerFacture')}
         </button>
       </div>
 
-      <Link to="/" className="text-amber-600 hover:text-amber-700 transition inline-flex items-center gap-2 text-sm">
+      <Link to="/" className="text-terra-600 hover:text-terra-700 transition inline-flex items-center gap-2 text-sm">
         <FaHome />
         {t('confirmation.retourAccueil')}
       </Link>
@@ -163,7 +163,7 @@ const PanneauEchec = ({ estExpire, navigate }) => {
         <FaTimesCircle className="text-red-500 text-5xl" />
       </div>
 
-      <h1 className="text-3xl md:text-4xl font-playfair font-bold text-amber-800 mb-4">
+      <h1 className="text-3xl md:text-4xl font-playfair font-bold text-brown-800 mb-4">
         {estExpire ? t('confirmation.delaiDepasse') : t('confirmation.paiementNonAbouti')}
       </h1>
       <p className="text-gray-600 mb-8">
@@ -172,13 +172,13 @@ const PanneauEchec = ({ estExpire, navigate }) => {
 
       <button
         onClick={() => navigate('/paiement')}
-        className="bg-gradient-to-r from-amber-600 to-amber-700 text-white px-8 py-3 rounded-xl font-semibold hover:shadow-lg transition flex items-center justify-center gap-3 mb-4"
+        className="bg-gradient-to-r from-terra-600 to-terra-700 text-white px-8 py-3 rounded-xl font-semibold hover:shadow-lg transition flex items-center justify-center gap-3 mb-4"
       >
         <FaRedo />
         {t('confirmation.reessayerPaiement')}
       </button>
 
-      <Link to="/" className="text-amber-600 hover:text-amber-700 transition inline-flex items-center gap-2 text-sm">
+      <Link to="/" className="text-terra-600 hover:text-terra-700 transition inline-flex items-center gap-2 text-sm">
         <FaHome />
         {t('confirmation.retourAccueil')}
       </Link>
@@ -244,7 +244,7 @@ const ConfirmationPaiementPage = () => {
   }, [commandeId, navigate, t]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-white to-amber-100">
+    <div className="min-h-screen bg-gradient-to-br from-cream-50 via-white to-cream-100">
       <Header />
 
       <main className="pt-40 pb-20">
@@ -253,7 +253,7 @@ const ConfirmationPaiementPage = () => {
 
             {/* Chargement initial */}
             {loadingInit && (
-              <FaSpinner className="text-amber-500 text-4xl animate-spin mx-auto" />
+              <FaSpinner className="text-terra-500 text-4xl animate-spin mx-auto" />
             )}
 
             {/* Commande introuvable */}

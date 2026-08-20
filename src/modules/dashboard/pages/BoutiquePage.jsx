@@ -162,7 +162,7 @@ const BoutiquePage = () => {
                     {livre.extrait_url && (
                       <button
                         onClick={() => setExtraitLivre(livre)}
-                        className="flex items-center gap-1 px-2.5 py-1.5 text-xs font-semibold rounded-lg border border-amber-300 text-amber-700 hover:bg-amber-50 transition-colors flex-shrink-0"
+                        className="flex items-center gap-1 px-2.5 py-1.5 text-xs font-semibold rounded-lg border border-cream-300 text-terra-700 hover:bg-cream-50 transition-colors flex-shrink-0"
                         title={t('carteLivre.lireUnExtrait')}
                       >
                         <BookOpenText className="w-3 h-3" />

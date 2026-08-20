@@ -7,7 +7,7 @@ import { fr } from 'date-fns/locale';
 import { traduireNotification } from '../services/traduireNotification';
 
 const TYPE_CONFIG = {
-  livre: { icon: <FaBook className="text-amber-600" />, bg: 'bg-amber-100' },
+  livre: { icon: <FaBook className="text-terra-600" />, bg: 'bg-cream-100' },
   paiement: { icon: <FaCreditCard className="text-green-600" />, bg: 'bg-green-100' },
 };
 
@@ -22,7 +22,7 @@ const CarteNotification = ({ notification, onMarquerLu, onSupprimer, onClick }) 
   return (
     <div
       className={`rounded-xl shadow-sm p-4 hover:shadow-md transition-all duration-200 cursor-pointer ${
-        notification.est_lu ? 'bg-white' : 'bg-amber-50 border-l-4 border-l-amber-500'
+        notification.est_lu ? 'bg-white' : 'bg-cream-50 border-l-4 border-l-terra-500'
       }`}
       onClick={() => onClick?.(notification)}
     >
@@ -37,11 +37,11 @@ const CarteNotification = ({ notification, onMarquerLu, onSupprimer, onClick }) 
           <div className="flex justify-between items-start gap-2">
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2">
-                <h3 className={`font-semibold truncate ${notification.est_lu ? 'text-brown-700' : 'text-amber-900'}`}>
+                <h3 className={`font-semibold truncate ${notification.est_lu ? 'text-brown-700' : 'text-brown-900'}`}>
                   {titre}
                 </h3>
                 {!notification.est_lu && (
-                  <div className="w-2 h-2 bg-amber-500 rounded-full flex-shrink-0" />
+                  <div className="w-2 h-2 bg-terra-500 rounded-full flex-shrink-0" />
                 )}
               </div>
               <p className="text-gray-600 text-sm mt-1 line-clamp-2">{message}</p>
@@ -54,7 +54,7 @@ const CarteNotification = ({ notification, onMarquerLu, onSupprimer, onClick }) 
               {!notification.est_lu && (
                 <button
                   onClick={(e) => { e.stopPropagation(); onMarquerLu(notification.id); }}
-                  className="p-1.5 rounded-lg hover:bg-amber-100 transition"
+                  className="p-1.5 rounded-lg hover:bg-cream-100 transition"
                   title={t('carte.marquerCommeLu')}
                 >
                   <FaCheck className="text-green-600 text-sm" />
@@ -74,7 +74,7 @@ const CarteNotification = ({ notification, onMarquerLu, onSupprimer, onClick }) 
             <Link
               to={notification.lien}
               onClick={(e) => e.stopPropagation()}
-              className="inline-block mt-2 text-xs font-medium text-amber-600 hover:text-amber-800 bg-amber-100 hover:bg-amber-200 px-3 py-1 rounded-full transition"
+              className="inline-block mt-2 text-xs font-medium text-terra-600 hover:text-brown-800 bg-cream-100 hover:bg-cream-200 px-3 py-1 rounded-full transition"
             >
               {t('carte.voir')}
             </Link>

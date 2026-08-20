@@ -9,7 +9,7 @@ const RecapitulatifPaiement = ({ panier, total }) => {
 
   return (
     <div className="bg-white rounded-2xl shadow-lg p-6 sticky top-32">
-      <h3 className="text-xl font-playfair font-bold text-amber-800 mb-4">
+      <h3 className="text-xl font-playfair font-bold text-brown-800 mb-4">
         {t('recapitulatif')}
       </h3>
       
@@ -17,22 +17,22 @@ const RecapitulatifPaiement = ({ panier, total }) => {
         {lignes.map((ligne) => (
           <div key={ligne.id} className="flex justify-between items-center text-sm">
             <div className="flex items-center gap-2">
-              <FaBook className="text-amber-500 text-sm" />
+              <FaBook className="text-terra-500 text-sm" />
               <span className="text-gray-600 line-clamp-1">
                 {ligne.livre?.titre} x{ligne.quantite}
               </span>
             </div>
-            <span className="text-amber-700 font-medium">
+            <span className="text-terra-700 font-medium">
               {(ligne.livre?.prix * ligne.quantite).toLocaleString('fr-FR')} XAF
             </span>
           </div>
         ))}
       </div>
       
-      <div className="border-t border-amber-100 pt-4 mb-4">
+      <div className="border-t border-cream-100 pt-4 mb-4">
         <div className="flex justify-between mb-2">
           <span className="text-gray-600">{t('sousTotal')}</span>
-          <span className="text-amber-700">{total?.toLocaleString('fr-FR')} XAF</span>
+          <span className="text-terra-700">{total?.toLocaleString('fr-FR')} XAF</span>
         </div>
         <div className="flex justify-between mb-2">
           <span className="text-gray-600">{t('fraisLivraison')}</span>
@@ -40,17 +40,17 @@ const RecapitulatifPaiement = ({ panier, total }) => {
         </div>
       </div>
 
-      <div className="border-t border-amber-200 pt-4">
+      <div className="border-t border-cream-200 pt-4">
         <div className="flex justify-between">
-          <span className="text-lg font-bold text-amber-800">{t('totalAPayer')}</span>
-          <span className="text-2xl font-bold text-amber-700">
+          <span className="text-lg font-bold text-brown-800">{t('totalAPayer')}</span>
+          <span className="text-2xl font-bold text-terra-700">
             {total?.toLocaleString('fr-FR')} XAF
           </span>
         </div>
       </div>
 
-      <div className="mt-4 p-3 bg-amber-50 rounded-xl">
-        <div className="flex items-center gap-2 text-sm text-amber-700">
+      <div className="mt-4 p-3 bg-cream-50 rounded-xl">
+        <div className="flex items-center gap-2 text-sm text-terra-700">
           <FaMoneyBillWave />
           <span>{t('paiementMobileMoneySecurise')}</span>
         </div>

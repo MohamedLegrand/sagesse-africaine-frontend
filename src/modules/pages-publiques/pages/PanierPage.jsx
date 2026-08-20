@@ -154,10 +154,10 @@ const PanierPage = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-amber-50 via-white to-amber-100">
+      <div className="min-h-screen bg-gradient-to-br from-cream-50 via-white to-cream-100">
         <Header />
         <div className="flex justify-center items-center pt-40">
-          <div className="w-12 h-12 border-4 border-amber-500 border-t-transparent rounded-full animate-spin"></div>
+          <div className="w-12 h-12 border-4 border-terra-500 border-t-transparent rounded-full animate-spin"></div>
         </div>
         <Footer />
       </div>
@@ -165,36 +165,36 @@ const PanierPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-white to-amber-100">
+    <div className="min-h-screen bg-gradient-to-br from-cream-50 via-white to-cream-100">
       <Header />
 
       <main className="pt-32 pb-20">
         <div className="container mx-auto px-4">
           <div className="text-center mb-8">
-            <h1 className="text-4xl md:text-5xl font-playfair font-bold text-amber-800 mb-4">
+            <h1 className="text-4xl md:text-5xl font-playfair font-bold text-brown-800 mb-4">
               {t('titre')}
             </h1>
             {nombreLivres > 0 && (
-              <p className="text-amber-500">{t('livreDansPanier', { count: nombreLivres })}</p>
+              <p className="text-terra-500">{t('livreDansPanier', { count: nombreLivres })}</p>
             )}
             {!isAuthenticated && lignes.length > 0 && (
-              <p className="text-sm text-amber-700 mt-3 bg-amber-50 border border-amber-200 rounded-lg px-4 py-2 inline-block">
+              <p className="text-sm text-terra-700 mt-3 bg-cream-50 border border-cream-200 rounded-lg px-4 py-2 inline-block">
                 {t('connectezVousFinaliserAchatConserve')}
               </p>
             )}
             <div className="flex items-center justify-center gap-2 mt-4">
-              <div className="w-16 h-px bg-amber-300"></div>
-              <div className="w-2 h-2 bg-amber-400 rounded-full"></div>
-              <div className="w-16 h-px bg-amber-300"></div>
+              <div className="w-16 h-px bg-cream-300"></div>
+              <div className="w-2 h-2 bg-terra-400 rounded-full"></div>
+              <div className="w-16 h-px bg-cream-300"></div>
             </div>
           </div>
 
           {lignes.length === 0 ? (
             <div className="bg-white rounded-2xl shadow-lg p-12 text-center">
-              <FaShoppingCart className="text-amber-300 text-6xl mx-auto mb-4" />
-              <h2 className="text-2xl font-playfair text-amber-700 mb-2">{t('panierVide')}</h2>
+              <FaShoppingCart className="text-cream-300 text-6xl mx-auto mb-4" />
+              <h2 className="text-2xl font-playfair text-terra-700 mb-2">{t('panierVide')}</h2>
               <p className="text-gray-500 mb-6">{t('decouvrezCatalogue')}</p>
-              <Link to="/livres" className="bg-gradient-to-r from-amber-600 to-amber-700 text-white px-6 py-3 rounded-xl font-semibold hover:shadow-lg transition inline-block">
+              <Link to="/livres" className="bg-gradient-to-r from-terra-600 to-terra-700 text-white px-6 py-3 rounded-xl font-semibold hover:shadow-lg transition inline-block">
                 {t('decouvrirLivres')}
               </Link>
             </div>
@@ -209,7 +209,7 @@ const PanierPage = () => {
                     <div key={ligne.id} className="bg-white rounded-2xl shadow-lg p-4 flex gap-4 hover:shadow-xl transition">
                       {/* Couverture */}
                       <div className="flex-shrink-0">
-                        <div className="w-24 h-32 bg-amber-100 rounded-lg flex items-center justify-center overflow-hidden">
+                        <div className="w-24 h-32 bg-cream-100 rounded-lg flex items-center justify-center overflow-hidden">
                           {ligne.livre?.couverture_url ? (
                             <img
                               src={ligne.livre.couverture_url}
@@ -218,29 +218,29 @@ const PanierPage = () => {
                               onError={(e) => { e.target.onerror = null; e.target.src = '/images/default-book.png'; }}
                             />
                           ) : (
-                            <FaBook className="text-amber-300 text-4xl" />
+                            <FaBook className="text-cream-300 text-4xl" />
                           )}
                         </div>
                       </div>
 
                       {/* Infos livre */}
                       <div className="flex-1 min-w-0">
-                        <h3 className="font-playfair font-bold text-amber-800 text-lg line-clamp-2">
+                        <h3 className="font-playfair font-bold text-brown-800 text-lg line-clamp-2">
                           {ligne.livre?.titre || t('titreInconnu')}
                         </h3>
                         {ligne.livre?.auteur && (
-                          <p className="text-amber-500 text-sm mt-0.5">{ligne.livre.auteur}</p>
+                          <p className="text-terra-500 text-sm mt-0.5">{ligne.livre.auteur}</p>
                         )}
                         <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1">
                           {prixUnitaire > 0 ? (
-                            <span className="text-amber-600 text-sm">
+                            <span className="text-terra-600 text-sm">
                               {t('prixUnitaire')} <strong>{prixUnitaire.toLocaleString('fr-FR')} XAF</strong>
                             </span>
                           ) : (
                             <span className="inline-block text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full">{t('gratuit')}</span>
                           )}
                           {ligne.quantite > 1 && prixUnitaire > 0 && (
-                            <span className="text-amber-700 text-sm font-bold">
+                            <span className="text-terra-700 text-sm font-bold">
                               {t('sousTotal')} {sousTotal.toLocaleString('fr-FR')} XAF
                             </span>
                           )}
@@ -249,7 +249,7 @@ const PanierPage = () => {
 
                       {/* Quantité + actions */}
                       <div className="text-right flex-shrink-0">
-                        <div className="mb-3 text-amber-700 text-sm font-medium">
+                        <div className="mb-3 text-terra-700 text-sm font-medium">
                           {t('quantite')}
                         </div>
                         <button
@@ -278,11 +278,11 @@ const PanierPage = () => {
               {/* Récapitulatif */}
               <div className="lg:col-span-1">
                 <div className="bg-white rounded-2xl shadow-lg p-6 sticky top-32">
-                  <h3 className="text-xl font-playfair font-bold text-amber-800 mb-4">{t('recapitulatif')}</h3>
-                  <div className="space-y-3 border-b border-amber-100 pb-4 mb-4">
+                  <h3 className="text-xl font-playfair font-bold text-brown-800 mb-4">{t('recapitulatif')}</h3>
+                  <div className="space-y-3 border-b border-cream-100 pb-4 mb-4">
                     <div className="flex justify-between">
                       <span className="text-gray-600">{t('sousTotal')}</span>
-                      <span className="text-amber-800 font-medium">{total.toLocaleString('fr-FR')} XAF</span>
+                      <span className="text-brown-800 font-medium">{total.toLocaleString('fr-FR')} XAF</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-gray-600">{t('fraisLivraison')}</span>
@@ -290,22 +290,22 @@ const PanierPage = () => {
                     </div>
                   </div>
                   <div className="flex justify-between mb-6">
-                    <span className="text-lg font-bold text-amber-800">{t('total')}</span>
-                    <span className="text-2xl font-bold text-amber-700">{total.toLocaleString('fr-FR')} XAF</span>
+                    <span className="text-lg font-bold text-brown-800">{t('total')}</span>
+                    <span className="text-2xl font-bold text-terra-700">{total.toLocaleString('fr-FR')} XAF</span>
                   </div>
                   <button
                     onClick={procederAuPaiement}
-                    className="w-full bg-gradient-to-r from-amber-600 to-amber-700 text-white py-3 rounded-xl font-semibold hover:shadow-lg transition flex items-center justify-center gap-2"
+                    className="w-full bg-gradient-to-r from-terra-600 to-terra-700 text-white py-3 rounded-xl font-semibold hover:shadow-lg transition flex items-center justify-center gap-2"
                   >
                     <FaCreditCard />
                     {t('procederAuPaiement')}
                   </button>
                   {!isAuthenticated && (
-                    <p className="text-xs text-amber-500 text-center mt-3">
+                    <p className="text-xs text-terra-500 text-center mt-3">
                       {t('connexionSeraDemandee')}
                     </p>
                   )}
-                  <Link to="/livres" className="block text-center text-amber-600 text-sm mt-4 hover:text-amber-700 transition">
+                  <Link to="/livres" className="block text-center text-terra-600 text-sm mt-4 hover:text-terra-700 transition">
                     {t('continuerAchats')}
                   </Link>
                 </div>

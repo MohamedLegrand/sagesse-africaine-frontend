@@ -63,23 +63,23 @@ const ParametresNotificationPage = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-white to-amber-100">
+    <div className="min-h-screen bg-gradient-to-br from-cream-50 via-white to-cream-100">
       <Header />
       
       <main className="pt-32 pb-20">
         <div className="container mx-auto px-4 max-w-3xl">
           {/* En-tête */}
           <div className="text-center mb-8">
-            <h1 className="text-4xl md:text-5xl font-playfair font-bold text-amber-800 mb-4">
+            <h1 className="text-4xl md:text-5xl font-playfair font-bold text-brown-800 mb-4">
               {t('parametres.titre')}
             </h1>
-            <p className="text-amber-500 text-lg">
+            <p className="text-terra-500 text-lg">
               {t('parametres.sousTitre')}
             </p>
             <div className="flex items-center justify-center gap-2 mt-4">
-              <div className="w-16 h-px bg-amber-300"></div>
-              <div className="w-2 h-2 bg-amber-400 rounded-full"></div>
-              <div className="w-16 h-px bg-amber-300"></div>
+              <div className="w-16 h-px bg-cream-300"></div>
+              <div className="w-2 h-2 bg-terra-400 rounded-full"></div>
+              <div className="w-16 h-px bg-cream-300"></div>
             </div>
           </div>
 
@@ -87,17 +87,17 @@ const ParametresNotificationPage = () => {
             {sections.map((section, idx) => (
               <div key={idx} className="bg-white rounded-2xl shadow-lg p-6">
                 <div className="flex items-center gap-3 mb-6">
-                  <div className="p-2 bg-amber-100 rounded-lg">
-                    <section.icon className="text-amber-600 text-xl" />
+                  <div className="p-2 bg-cream-100 rounded-lg">
+                    <section.icon className="text-terra-600 text-xl" />
                   </div>
-                  <h2 className="text-xl font-playfair font-bold text-amber-800">
+                  <h2 className="text-xl font-playfair font-bold text-brown-800">
                     {section.title}
                   </h2>
                 </div>
                 
                 <div className="space-y-4">
                   {section.items.map((item) => (
-                    <label key={item.key} className="flex justify-between items-center cursor-pointer p-3 rounded-xl hover:bg-amber-50 transition">
+                    <label key={item.key} className="flex justify-between items-center cursor-pointer p-3 rounded-xl hover:bg-cream-50 transition">
                       <div>
                         <p className="font-medium text-gray-700">{item.label}</p>
                         <p className="text-sm text-gray-400">{item.description}</p>
@@ -105,7 +105,7 @@ const ParametresNotificationPage = () => {
                       <div
                         onClick={() => handleToggle(item.key)}
                         className={`relative w-12 h-6 rounded-full transition-colors duration-300 cursor-pointer ${
-                          settings[item.key] ? 'bg-amber-600' : 'bg-gray-300'
+                          settings[item.key] ? 'bg-terra-600' : 'bg-gray-300'
                         }`}
                       >
                         <div className={`absolute top-1 w-4 h-4 bg-white rounded-full transition-transform duration-300 ${
@@ -122,7 +122,7 @@ const ParametresNotificationPage = () => {
               <button
                 type="submit"
                 disabled={loading}
-                className="bg-gradient-to-r from-amber-600 to-amber-700 text-white px-8 py-3 rounded-xl font-semibold hover:shadow-lg transition disabled:opacity-50"
+                className="bg-gradient-to-r from-terra-600 to-terra-700 text-white px-8 py-3 rounded-xl font-semibold hover:shadow-lg transition disabled:opacity-50"
               >
                 {loading ? t('parametres.enregistrementEnCours') : t('parametres.enregistrer')}
               </button>

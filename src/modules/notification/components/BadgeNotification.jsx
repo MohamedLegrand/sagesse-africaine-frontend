@@ -21,8 +21,8 @@ const BadgeNotification = () => {
 
   return (
     <Link to="/mes-notifications" className="relative">
-      <div className="p-2 rounded-full bg-amber-50 hover:bg-amber-100 transition-all duration-300">
-        <FaBell className="text-xl text-amber-700 hover:text-amber-500 transition-colors" />
+      <div className="p-2 rounded-full bg-cream-50 hover:bg-cream-100 transition-all duration-300">
+        <FaBell className="text-xl text-terra-700 hover:text-terra-500 transition-colors" />
       </div>
       {nonLues > 0 && (
         <span className="absolute -top-1 -right-1 bg-gradient-to-r from-red-500 to-red-600 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full shadow-lg animate-pulse">

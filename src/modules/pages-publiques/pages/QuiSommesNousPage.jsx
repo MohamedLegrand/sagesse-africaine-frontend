@@ -21,30 +21,30 @@ const QuiSommesNousPage = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-white to-amber-100">
+    <div className="min-h-screen bg-gradient-to-br from-cream-50 via-white to-cream-100">
       <Header />
       
       <main className="pt-32 pb-20">
         <div className="container mx-auto px-4">
           {/* Hero */}
           <div className="text-center mb-16">
-            <h1 className="text-4xl md:text-5xl font-playfair font-bold text-amber-800 mb-4">
+            <h1 className="text-4xl md:text-5xl font-playfair font-bold text-brown-800 mb-4">
               Qui sommes-nous ?
             </h1>
             <div className="flex items-center justify-center gap-2 mb-6">
-              <div className="w-16 h-px bg-amber-300"></div>
-              <div className="w-2 h-2 bg-amber-400 rounded-full"></div>
-              <div className="w-16 h-px bg-amber-300"></div>
+              <div className="w-16 h-px bg-cream-300"></div>
+              <div className="w-2 h-2 bg-terra-400 rounded-full"></div>
+              <div className="w-16 h-px bg-cream-300"></div>
             </div>
-            <p className="text-xl text-amber-600 max-w-3xl mx-auto">
+            <p className="text-xl text-terra-600 max-w-3xl mx-auto">
               Une plateforme panafricaine de production intellectuelle, scientifique, 
               culturelle et éducative
             </p>
           </div>
 
           {/* Citation */}
-          <div className="bg-amber-800/10 rounded-2xl p-8 mb-16 text-center">
-            <p className="text-2xl md:text-3xl font-playfair italic text-amber-800">
+          <div className="bg-brown-800/10 rounded-2xl p-8 mb-16 text-center">
+            <p className="text-2xl md:text-3xl font-playfair italic text-brown-800">
               « un peuple qui maîtrise ses savoirs, maîtrise aussi son destin »
             </p>
           </div>
@@ -52,7 +52,7 @@ const QuiSommesNousPage = () => {
           {/* Histoire */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mb-16">
             <div>
-              <h2 className="text-2xl font-playfair font-bold text-amber-800 mb-4">
+              <h2 className="text-2xl font-playfair font-bold text-brown-800 mb-4">
                 Notre histoire
               </h2>
               <p className="text-gray-700 leading-relaxed mb-4">
@@ -66,20 +66,20 @@ const QuiSommesNousPage = () => {
               </p>
             </div>
             <div>
-              <h2 className="text-2xl font-playfair font-bold text-amber-800 mb-4">
+              <h2 className="text-2xl font-playfair font-bold text-brown-800 mb-4">
                 Notre mission
               </h2>
               <ul className="space-y-3">
                 <li className="flex items-start gap-3">
-                  <FaBook className="text-amber-600 mt-1" />
+                  <FaBook className="text-terra-600 mt-1" />
                   <span className="text-gray-700">Produire des contenus scientifiques et culturels de haute qualité</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <FaGlobe className="text-amber-600 mt-1" />
+                  <FaGlobe className="text-terra-600 mt-1" />
                   <span className="text-gray-700">Valoriser les patrimoines africains à l'échelle mondiale</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <FaUsers className="text-amber-600 mt-1" />
+                  <FaUsers className="text-terra-600 mt-1" />
                   <span className="text-gray-700">Former une nouvelle génération d'auteurs et de leaders africains</span>
                 </li>
               </ul>
@@ -88,16 +88,16 @@ const QuiSommesNousPage = () => {
 
           {/* Valeurs */}
           <div className="mb-16">
-            <h2 className="text-2xl font-playfair font-bold text-amber-800 text-center mb-8">
+            <h2 className="text-2xl font-playfair font-bold text-brown-800 text-center mb-8">
               Nos valeurs
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
               {values.map((value, index) => (
                 <div key={index} className="bg-white rounded-xl p-6 text-center shadow-lg hover:shadow-xl transition">
-                  <div className="w-12 h-12 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <value.icon className="text-amber-600 text-xl" />
+                  <div className="w-12 h-12 bg-cream-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <value.icon className="text-terra-600 text-xl" />
                   </div>
-                  <h3 className="font-bold text-amber-800 mb-2">{value.title}</h3>
+                  <h3 className="font-bold text-brown-800 mb-2">{value.title}</h3>
                   <p className="text-sm text-gray-600">{value.description}</p>
                 </div>
               ))}
@@ -105,14 +105,14 @@ const QuiSommesNousPage = () => {
           </div>
 
           {/* Chiffres clés */}
-          <div className="bg-amber-800 rounded-2xl p-8 mb-16">
+          <div className="bg-brown-800 rounded-2xl p-8 mb-16">
             <h2 className="text-2xl font-playfair font-bold text-white text-center mb-8">
               Sagesse africaine en chiffres
             </h2>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
               {stats.map((stat, index) => (
                 <div key={index} className="text-center">
-                  <div className="text-3xl md:text-4xl font-bold text-amber-300">{stat.value}</div>
+                  <div className="text-3xl md:text-4xl font-bold text-cream-300">{stat.value}</div>
                   <div className="text-white/80 text-sm">{stat.label}</div>
                 </div>
               ))}
@@ -121,13 +121,13 @@ const QuiSommesNousPage = () => {
 
           {/* CTA */}
           <div className="text-center">
-            <h2 className="text-2xl font-playfair font-bold text-amber-800 mb-4">
+            <h2 className="text-2xl font-playfair font-bold text-brown-800 mb-4">
               Rejoignez l'aventure Sagesse africaine
             </h2>
             <p className="text-gray-600 mb-6">
               Publiez avec nous, devenez auteur ou simplement lecteur
             </p>
-            <Link to="/etre-edite" className="bg-gradient-to-r from-amber-600 to-amber-700 text-white px-8 py-3 rounded-full font-semibold hover:shadow-lg transition inline-block">
+            <Link to="/etre-edite" className="bg-gradient-to-r from-terra-600 to-terra-700 text-white px-8 py-3 rounded-full font-semibold hover:shadow-lg transition inline-block">
               Être édité chez nous
             </Link>
           </div>

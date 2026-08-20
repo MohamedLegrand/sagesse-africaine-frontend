@@ -100,24 +100,24 @@ const PanierPage = () => {
     <DashboardLayout>
       <div className="container mx-auto max-w-6xl">
         <div className="mb-6">
-          <h1 className="text-2xl font-playfair font-bold text-amber-800">
+          <h1 className="text-2xl font-playfair font-bold text-brown-800">
             {t('titre')}
             {nombreLivres > 0 && (
-              <span className="text-lg text-amber-500 ml-2">{t('article', { count: nombreLivres })}</span>
+              <span className="text-lg text-terra-500 ml-2">{t('article', { count: nombreLivres })}</span>
             )}
           </h1>
         </div>
 
         {loading ? (
           <div className="flex justify-center items-center py-20">
-            <div className="w-12 h-12 border-4 border-amber-500 border-t-transparent rounded-full animate-spin"></div>
+            <div className="w-12 h-12 border-4 border-terra-500 border-t-transparent rounded-full animate-spin"></div>
           </div>
         ) : lignes.length === 0 ? (
           <div className="bg-white rounded-2xl shadow-lg p-12 text-center">
-            <FaShoppingCart className="text-amber-300 text-6xl mx-auto mb-4" />
-            <h2 className="text-2xl font-playfair text-amber-700 mb-2">{t('panierVide')}</h2>
+            <FaShoppingCart className="text-cream-300 text-6xl mx-auto mb-4" />
+            <h2 className="text-2xl font-playfair text-terra-700 mb-2">{t('panierVide')}</h2>
             <p className="text-gray-500 mb-6">{t('decouvrezCatalogue')}</p>
-            <Link to="/dashboard/boutique" className="bg-gradient-to-r from-amber-600 to-amber-700 text-white px-6 py-3 rounded-xl font-semibold hover:shadow-lg transition inline-block">
+            <Link to="/dashboard/boutique" className="bg-gradient-to-r from-terra-600 to-terra-700 text-white px-6 py-3 rounded-xl font-semibold hover:shadow-lg transition inline-block">
               {t('decouvrirBoutique')}
             </Link>
           </div>
@@ -132,7 +132,7 @@ const PanierPage = () => {
                   <div key={ligne.id} className="bg-white rounded-2xl shadow-lg p-4 flex gap-4 hover:shadow-xl transition">
                     {/* Couverture */}
                     <Link to={`/dashboard/livre/${ligne.livre_id}`} className="flex-shrink-0">
-                      <div className="w-20 h-28 bg-amber-100 rounded-lg flex items-center justify-center overflow-hidden">
+                      <div className="w-20 h-28 bg-cream-100 rounded-lg flex items-center justify-center overflow-hidden">
                         {ligne.livre?.couverture_url ? (
                           <img
                             src={ligne.livre.couverture_url}
@@ -141,7 +141,7 @@ const PanierPage = () => {
                             onError={(e) => { e.target.onerror = null; e.target.src = '/images/default-book.png'; }}
                           />
                         ) : (
-                          <FaBook className="text-amber-300 text-3xl" />
+                          <FaBook className="text-cream-300 text-3xl" />
                         )}
                       </div>
                     </Link>
@@ -149,19 +149,19 @@ const PanierPage = () => {
                     {/* Infos */}
                     <div className="flex-1 min-w-0">
                       <Link to={`/dashboard/livre/${ligne.livre_id}`}>
-                        <h3 className="font-playfair font-bold text-amber-800 hover:text-amber-600 transition line-clamp-2">
+                        <h3 className="font-playfair font-bold text-brown-800 hover:text-terra-600 transition line-clamp-2">
                           {ligne.livre?.titre || t('titreInconnu')}
                         </h3>
                       </Link>
                       {ligne.livre?.auteur && (
-                        <p className="text-amber-500 text-sm mt-0.5">{ligne.livre.auteur}</p>
+                        <p className="text-terra-500 text-sm mt-0.5">{ligne.livre.auteur}</p>
                       )}
                       <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1">
-                        <span className="text-amber-600 text-sm">
+                        <span className="text-terra-600 text-sm">
                           {t('prixUnitaire')} <strong>{prixUnitaire.toLocaleString('fr-FR')} XAF</strong>
                         </span>
                         {ligne.quantite > 1 && (
-                          <span className="text-amber-700 text-sm font-bold">
+                          <span className="text-terra-700 text-sm font-bold">
                             {t('sousTotal')} {sousTotal.toLocaleString('fr-FR')} XAF
                           </span>
                         )}
@@ -170,7 +170,7 @@ const PanierPage = () => {
 
                     {/* Quantité + Actions */}
                     <div className="text-right flex-shrink-0">
-                      <div className="mb-3 text-amber-700 text-sm font-medium">
+                      <div className="mb-3 text-terra-700 text-sm font-medium">
                         {t('quantite')}
                       </div>
                       <button
@@ -199,11 +199,11 @@ const PanierPage = () => {
             {/* Récapitulatif */}
             <div className="lg:col-span-1">
               <div className="bg-white rounded-2xl shadow-lg p-6 sticky top-24">
-                <h3 className="text-xl font-playfair font-bold text-amber-800 mb-4">{t('recapitulatif')}</h3>
-                <div className="space-y-3 border-b border-amber-100 pb-4 mb-4">
+                <h3 className="text-xl font-playfair font-bold text-brown-800 mb-4">{t('recapitulatif')}</h3>
+                <div className="space-y-3 border-b border-cream-100 pb-4 mb-4">
                   <div className="flex justify-between">
                     <span className="text-gray-600">{t('sousTotal')}</span>
-                    <span className="text-amber-800 font-medium">{total?.toLocaleString('fr-FR') || 0} XAF</span>
+                    <span className="text-brown-800 font-medium">{total?.toLocaleString('fr-FR') || 0} XAF</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-gray-600">{t('fraisLivraison')}</span>
@@ -211,17 +211,17 @@ const PanierPage = () => {
                   </div>
                 </div>
                 <div className="flex justify-between mb-6">
-                  <span className="text-lg font-bold text-amber-800">{t('total')}</span>
-                  <span className="text-2xl font-bold text-amber-700">{total?.toLocaleString('fr-FR') || 0} XAF</span>
+                  <span className="text-lg font-bold text-brown-800">{t('total')}</span>
+                  <span className="text-2xl font-bold text-terra-700">{total?.toLocaleString('fr-FR') || 0} XAF</span>
                 </div>
                 <button
                   onClick={() => navigate('/dashboard/paiement')}
-                  className="w-full bg-gradient-to-r from-amber-600 to-amber-700 text-white py-3 rounded-xl font-semibold hover:shadow-lg transition flex items-center justify-center gap-2"
+                  className="w-full bg-gradient-to-r from-terra-600 to-terra-700 text-white py-3 rounded-xl font-semibold hover:shadow-lg transition flex items-center justify-center gap-2"
                 >
                   <FaCreditCard />
                   {t('procederAuPaiement')}
                 </button>
-                <Link to="/dashboard/boutique" className="block text-center text-amber-600 text-sm mt-4 hover:text-amber-700 transition">
+                <Link to="/dashboard/boutique" className="block text-center text-terra-600 text-sm mt-4 hover:text-terra-700 transition">
                   {t('continuerAchats')}
                 </Link>
               </div>

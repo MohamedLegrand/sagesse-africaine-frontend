@@ -60,10 +60,10 @@ const NosLivresPage = () => {
     const hasHalfStar = note % 1 >= 0.5;
     
     for (let i = 0; i < fullStars; i++) {
-      stars.push(<FaStar key={i} className="text-amber-500" />);
+      stars.push(<FaStar key={i} className="text-terra-500" />);
     }
     if (hasHalfStar) {
-      stars.push(<FaStarHalfAlt key="half" className="text-amber-500" />);
+      stars.push(<FaStarHalfAlt key="half" className="text-terra-500" />);
     }
     while (stars.length < 5) {
       stars.push(<FaStar key={stars.length} className="text-gray-300" />);
@@ -79,10 +79,10 @@ const NosLivresPage = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-amber-50 via-white to-amber-100">
+      <div className="min-h-screen bg-gradient-to-br from-cream-50 via-white to-cream-100">
         <Header />
         <div className="flex justify-center items-center pt-40">
-          <div className="w-12 h-12 border-4 border-amber-500 border-t-transparent rounded-full animate-spin"></div>
+          <div className="w-12 h-12 border-4 border-terra-500 border-t-transparent rounded-full animate-spin"></div>
         </div>
         <Footer />
       </div>
@@ -90,43 +90,43 @@ const NosLivresPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-white to-amber-100">
+    <div className="min-h-screen bg-gradient-to-br from-cream-50 via-white to-cream-100">
       <Header />
       
       <main className="pt-32 pb-20">
         <div className="container mx-auto px-4">
           {/* En-tête */}
           <div className="text-center mb-12">
-            <h1 className="text-4xl md:text-5xl font-playfair font-bold text-amber-800 mb-4">
+            <h1 className="text-4xl md:text-5xl font-playfair font-bold text-brown-800 mb-4">
               {collectionActuelle ? collectionActuelle.nom : t('titre')}
             </h1>
-            <p className="text-amber-500 text-lg max-w-2xl mx-auto">
+            <p className="text-terra-500 text-lg max-w-2xl mx-auto">
               {collectionActuelle?.description || t('sousTitre')}
             </p>
             <div className="flex items-center justify-center gap-2 mt-4">
-              <div className="w-16 h-px bg-amber-300"></div>
-              <div className="w-2 h-2 bg-amber-400 rounded-full"></div>
-              <div className="w-16 h-px bg-amber-300"></div>
+              <div className="w-16 h-px bg-cream-300"></div>
+              <div className="w-2 h-2 bg-terra-400 rounded-full"></div>
+              <div className="w-16 h-px bg-cream-300"></div>
             </div>
           </div>
 
           {/* Recherche */}
           <div className="bg-white rounded-2xl shadow-lg p-6 mb-8">
             <div className="relative">
-              <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-amber-400" />
+              <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-terra-400" />
               <input
                 type="text"
                 placeholder={t('rechercherPlaceholder')}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 border border-amber-200 rounded-xl focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 outline-none"
+                className="w-full pl-10 pr-4 py-3 border border-cream-200 rounded-xl focus:border-terra-500 focus:ring-2 focus:ring-terra-500/20 outline-none"
               />
             </div>
           </div>
 
           {/* Nombre de livres trouvés */}
           <div className="mb-4">
-            <p className="text-amber-600">
+            <p className="text-terra-600">
               {t('livreTrouve', { count: livresFiltres.length })}
             </p>
           </div>
@@ -134,17 +134,17 @@ const NosLivresPage = () => {
           {/* Grille des livres */}
           {livresFiltres.length === 0 ? (
             <div className="bg-white rounded-2xl shadow-lg p-12 text-center">
-              <FaBook className="text-amber-300 text-6xl mx-auto mb-4" />
+              <FaBook className="text-cream-300 text-6xl mx-auto mb-4" />
               {collectionId ? (
                 <>
-                  <h2 className="text-2xl font-playfair text-amber-700 mb-2">{t('aucunLivreCollection')}</h2>
-                  <Link to="/livres" className="text-amber-600 hover:text-amber-700 font-medium text-sm underline">
+                  <h2 className="text-2xl font-playfair text-terra-700 mb-2">{t('aucunLivreCollection')}</h2>
+                  <Link to="/livres" className="text-terra-600 hover:text-terra-700 font-medium text-sm underline">
                     {t('revenirCatalogueComplet')}
                   </Link>
                 </>
               ) : (
                 <>
-                  <h2 className="text-2xl font-playfair text-amber-700 mb-2">{t('aucunLivreTrouve')}</h2>
+                  <h2 className="text-2xl font-playfair text-terra-700 mb-2">{t('aucunLivreTrouve')}</h2>
                   <p className="text-gray-500">{t('essayezModifierRecherche')}</p>
                 </>
               )}
@@ -155,7 +155,7 @@ const NosLivresPage = () => {
                 <div key={livre.id} className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 group">
                   {/* Couverture avec image PNG */}
                   <Link to={`/livre/${livre.id}`} className="block">
-                    <div className="relative h-64 bg-amber-100 flex items-center justify-center overflow-hidden">
+                    <div className="relative h-64 bg-cream-100 flex items-center justify-center overflow-hidden">
                       {livre.couverture_url ? (
                         <img 
                           src={livre.couverture_url} 
@@ -167,7 +167,7 @@ const NosLivresPage = () => {
                           }}
                         />
                       ) : (
-                        <FaBook className="text-amber-300 text-6xl" />
+                        <FaBook className="text-cream-300 text-6xl" />
                       )}
                       {livre.est_gratuit && (
                         <span className="absolute top-3 right-3 bg-green-500 text-white text-xs px-2 py-1 rounded-full">
@@ -179,11 +179,11 @@ const NosLivresPage = () => {
                   
                   <div className="p-4">
                     <Link to={`/livre/${livre.id}`}>
-                      <h3 className="font-playfair font-bold text-amber-800 text-lg mb-1 hover:text-amber-600 transition line-clamp-1">
+                      <h3 className="font-playfair font-bold text-brown-800 text-lg mb-1 hover:text-terra-600 transition line-clamp-1">
                         {livre.titre}
                       </h3>
                     </Link>
-                    <p className="text-amber-500 text-sm mb-2">{livre.auteur}</p>
+                    <p className="text-terra-500 text-sm mb-2">{livre.auteur}</p>
                     
                     <div className="flex items-center gap-1 mb-3">
                       {renderStars(4.5)}
@@ -191,13 +191,13 @@ const NosLivresPage = () => {
                     </div>
 
                     <div className="flex justify-between items-center">
-                      <span className="text-2xl font-bold text-amber-700">
+                      <span className="text-2xl font-bold text-terra-700">
                         {livre.est_gratuit ? t('gratuit') : `${livre.prix.toLocaleString('fr-FR')} XAF`}
                       </span>
                       <button
                         onClick={() => handleAddToCart(livre)}
                         disabled={addingToCart === livre.id}
-                        className="bg-gradient-to-r from-amber-600 to-amber-700 text-white px-4 py-2 rounded-xl text-sm font-medium hover:shadow-lg transition flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="bg-gradient-to-r from-terra-600 to-terra-700 text-white px-4 py-2 rounded-xl text-sm font-medium hover:shadow-lg transition flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                       >
                         {addingToCart === livre.id ? (
                           <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
