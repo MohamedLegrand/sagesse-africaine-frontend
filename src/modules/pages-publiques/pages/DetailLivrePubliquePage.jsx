@@ -17,7 +17,7 @@ const DetailLivrePubliquePage = () => {
   const navigate = useNavigate();
 
   const [livre, setLivre] = useState(null);
-  const [avis] = useState([]);
+  const [avis, setAvis] = useState([]);
   const [loading, setLoading] = useState(true);
   const [adding, setAdding] = useState(false);
   const [added, setAdded] = useState(false);
@@ -38,6 +38,9 @@ const DetailLivrePubliquePage = () => {
         setLivre(avecExtrait(data));
         const owned = accesList.some(a => a.livre_id === data.id);
         setAAcces(owned);
+        api.get(`/avis/livre/${data.id}`, { params: { taille: 50 } })
+          .then(r => setAvis(r.data.avis || []))
+          .catch(() => {});
       })
       .catch(() => {
         toast.error(t('messages.livreIntrouvable'));

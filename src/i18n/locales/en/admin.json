@@ -61,6 +61,25 @@
     "ajouterLivre": { "titre": "Add a book", "desc": "New publication" },
     "gererMembres": { "titre": "Manage members", "desc": "Change roles" },
     "modererAvis": { "titre": "Moderate reviews", "desc": "{{count}} pending" },
+    "retrait": {
+      "soldeDisponible": "Available balance",
+      "soldeIndisponible": "Balance unavailable right now",
+      "faireRetrait": "Withdraw",
+      "modal": {
+        "titre": "Make a withdrawal",
+        "soldeRappel": "Available balance: {{montant}} {{devise}}",
+        "paysLabel": "Country",
+        "operateurLabel": "Operator",
+        "telephoneLabel": "Mobile Money number",
+        "montantLabel": "Amount",
+        "descriptionLabel": "Description (optional)",
+        "confirmer": "Confirm withdrawal"
+      },
+      "messages": {
+        "succes": "Withdrawal initiated — reference {{reference}}",
+        "erreur": "Error processing the withdrawal"
+      }
+    },
     "messages": {
       "erreurChargementDonnees": "Error loading data"
     }

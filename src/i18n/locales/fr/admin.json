@@ -61,6 +61,25 @@
     "ajouterLivre": { "titre": "Ajouter un livre", "desc": "Nouvelle publication" },
     "gererMembres": { "titre": "Gérer les membres", "desc": "Modifier les rôles" },
     "modererAvis": { "titre": "Modérer les avis", "desc": "{{count}} en attente" },
+    "retrait": {
+      "soldeDisponible": "Solde disponible",
+      "soldeIndisponible": "Solde indisponible pour le moment",
+      "faireRetrait": "Faire un retrait",
+      "modal": {
+        "titre": "Faire un retrait",
+        "soldeRappel": "Solde disponible : {{montant}} {{devise}}",
+        "paysLabel": "Pays",
+        "operateurLabel": "Opérateur",
+        "telephoneLabel": "Numéro Mobile Money",
+        "montantLabel": "Montant",
+        "descriptionLabel": "Description (optionnel)",
+        "confirmer": "Confirmer le retrait"
+      },
+      "messages": {
+        "succes": "Retrait initié — référence {{reference}}",
+        "erreur": "Erreur lors du retrait"
+      }
+    },
     "messages": {
       "erreurChargementDonnees": "Erreur chargement des données"
     }

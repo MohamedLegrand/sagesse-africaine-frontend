@@ -3,11 +3,15 @@ import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import {
   BookOpen, Users, ShoppingBag, TrendingUp, Eye, Star,
-  Plus, ArrowRight, BarChart2, Clock, CheckCircle
+  Plus, ArrowRight, BarChart2, Wallet, X, Send, Loader2, Check
 } from 'lucide-react';
 import api from '../../../services/api';
 import toast from 'react-hot-toast';
 import AdminLayout from '../components/AdminLayout';
+import paiementsService from '../../../services/paiementsService';
+import { traduireErreurApi } from '../../../services/erreurApi';
+
+const RETRAIT_VIDE = { pays: 'CM', operateur: '', telephone: '', montant: '', description: '' };
 
 const DashboardAdminPage = () => {
   const { t } = useTranslation('admin');
@@ -18,6 +22,63 @@ const DashboardAdminPage = () => {
   const [recentOrders, setRecentOrders] = useState([]);
   const [recentUsers, setRecentUsers] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  const [solde, setSolde] = useState(null);
+  const [soldeChargement, setSoldeChargement] = useState(true);
+  const [showRetraitModal, setShowRetraitModal] = useState(false);
+  const [paysListe, setPaysListe] = useState([]);
+  const [retraitForm, setRetraitForm] = useState(RETRAIT_VIDE);
+  const [retraitSubmitting, setRetraitSubmitting] = useState(false);
+
+  const fetchSolde = () => {
+    setSoldeChargement(true);
+    api.get('/paiements/solde')
+      .then((r) => setSolde(r.data))
+      .catch(() => setSolde(null))
+      .finally(() => setSoldeChargement(false));
+  };
+
+  useEffect(() => {
+    fetchSolde();
+    paiementsService.getPaysOperateurs().then(setPaysListe).catch(() => {});
+  }, []);
+
+  const operateursDisponibles = paysListe.find((p) => p.pays === retraitForm.pays)?.operateurs || [];
+
+  const openRetraitModal = () => {
+    setRetraitForm(RETRAIT_VIDE);
+    setShowRetraitModal(true);
+  };
+
+  const handleRetraitChange = (e) => {
+    const { name, value } = e.target;
+    setRetraitForm((p) => ({
+      ...p,
+      [name]: value,
+      ...(name === 'pays' ? { operateur: '' } : {}),
+    }));
+  };
+
+  const handleRetraitSubmit = async (e) => {
+    e.preventDefault();
+    setRetraitSubmitting(true);
+    try {
+      const r = await api.post('/paiements/retrait', {
+        pays: retraitForm.pays,
+        operateur: retraitForm.operateur,
+        telephone: retraitForm.telephone,
+        montant: Number(retraitForm.montant),
+        description: retraitForm.description || undefined,
+      });
+      toast.success(t('dashboard.retrait.messages.succes', { reference: r.data.reference }));
+      setShowRetraitModal(false);
+      fetchSolde();
+    } catch (error) {
+      toast.error(traduireErreurApi(error, 'dashboard.retrait.messages.erreur', 'admin'));
+    } finally {
+      setRetraitSubmitting(false);
+    }
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -116,6 +177,30 @@ const DashboardAdminPage = () => {
             <p className="text-xs text-brown-400 mt-0.5 font-medium">{label}</p>
           </Link>
         ))}
+      </div>
+
+      {/* Portefeuille & retrait */}
+      <div className="bg-brown-950 rounded-xl p-6 mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div className="flex items-center gap-4">
+          <div className="w-11 h-11 rounded-xl bg-white/10 flex items-center justify-center flex-shrink-0">
+            <Wallet className="w-5 h-5 text-gold-400" />
+          </div>
+          <div>
+            <p className="text-xs text-brown-300 font-medium uppercase tracking-wide">{t('dashboard.retrait.soldeDisponible')}</p>
+            {soldeChargement ? (
+              <div className="w-32 h-7 bg-white/10 rounded animate-pulse mt-1" />
+            ) : solde ? (
+              <p className="font-playfair text-2xl font-bold text-white mt-0.5">
+                {solde.balance?.available?.toLocaleString('fr-FR')} {solde.currency}
+              </p>
+            ) : (
+              <p className="text-sm text-brown-400 mt-1">{t('dashboard.retrait.soldeIndisponible')}</p>
+            )}
+          </div>
+        </div>
+        <button onClick={openRetraitModal} className="btn-primary text-sm flex-shrink-0">
+          <Send className="w-4 h-4" /> {t('dashboard.retrait.faireRetrait')}
+        </button>
       </div>
 
       {/* Grilles principales */}
@@ -247,6 +332,59 @@ const DashboardAdminPage = () => {
           </Link>
         </div>
       </div>
+
+      {/* Modal retrait */}
+      {showRetraitModal && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-2xl max-w-md w-full shadow-2xl">
+            <div className="flex items-center justify-between p-6 border-b border-cream-200">
+              <h2 className="font-playfair text-xl font-bold text-brown-950">{t('dashboard.retrait.modal.titre')}</h2>
+              <button onClick={() => setShowRetraitModal(false)} className="p-1.5 rounded-lg hover:bg-cream-100"><X className="w-5 h-5 text-brown-500" /></button>
+            </div>
+            <form onSubmit={handleRetraitSubmit} className="p-6 space-y-4">
+              {solde && (
+                <p className="text-xs text-brown-400 bg-cream-50 rounded-lg px-3 py-2">
+                  {t('dashboard.retrait.modal.soldeRappel', { montant: solde.balance?.available?.toLocaleString('fr-FR'), devise: solde.currency })}
+                </p>
+              )}
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="input-label">{t('dashboard.retrait.modal.paysLabel')}</label>
+                  <select name="pays" value={retraitForm.pays} onChange={handleRetraitChange} className="input-field">
+                    {paysListe.map((p) => <option key={p.pays} value={p.pays}>{p.nom}</option>)}
+                  </select>
+                </div>
+                <div>
+                  <label className="input-label">{t('dashboard.retrait.modal.operateurLabel')}</label>
+                  <select name="operateur" value={retraitForm.operateur} onChange={handleRetraitChange} required className="input-field">
+                    <option value="">{t('livres.modal.selectionner')}</option>
+                    {operateursDisponibles.map((op) => <option key={op} value={op}>{op}</option>)}
+                  </select>
+                </div>
+              </div>
+              <div>
+                <label className="input-label">{t('dashboard.retrait.modal.telephoneLabel')}</label>
+                <input type="tel" name="telephone" value={retraitForm.telephone} onChange={handleRetraitChange} required className="input-field" placeholder="+237600000000" />
+              </div>
+              <div>
+                <label className="input-label">{t('dashboard.retrait.modal.montantLabel')}</label>
+                <input type="number" name="montant" value={retraitForm.montant} onChange={handleRetraitChange} required min="1" step="1" className="input-field" />
+              </div>
+              <div>
+                <label className="input-label">{t('dashboard.retrait.modal.descriptionLabel')}</label>
+                <input type="text" name="description" value={retraitForm.description} onChange={handleRetraitChange} className="input-field" />
+              </div>
+              <div className="flex justify-end gap-3 pt-4 border-t border-cream-200">
+                <button type="button" onClick={() => setShowRetraitModal(false)} className="btn-outline text-sm">{t('commun.annuler')}</button>
+                <button type="submit" disabled={retraitSubmitting} className="btn-primary text-sm disabled:opacity-60">
+                  {retraitSubmitting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Check className="w-4 h-4" />}
+                  {t('dashboard.retrait.modal.confirmer')}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </AdminLayout>
   );
 };
